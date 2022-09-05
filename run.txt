@@ -1,0 +1,10 @@
+# Here's are some common commands to run this flutter app.
+
+# Run locally
+
+flutter build web --web-renderer canvaskit
+flutter run -d chrome --web-renderer html
+
+flutter run -d windows
+
+# Build
