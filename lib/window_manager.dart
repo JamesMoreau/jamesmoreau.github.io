@@ -32,25 +32,18 @@ class WindowManagerState extends State<WindowManager> {
 
 class WindowController {
 
-  WindowController(this._onUpdate);
-
   List<ResizableWindow> windows = List.empty(growable: true);
   VoidCallback _onUpdate;
-  // List<ResizableWindow> get windows => _windows;
 
-  // void addWindow(ResizableWindow window) {
-  //   windows.add(window);
-  // }
+  WindowController(this._onUpdate);
 
   void addWindow(){
-
     createNewWindow(title: "Calculator", body: SimpleCalculator());
-
   }
 
   void createNewWindow({required String title, required Widget body, double width = 400, double height = 400, double x = -1, double y = -1, dynamic Function(double, double)? onWindowDragged, VoidCallback? onCloseButtonClicked}) {
-    ResizableWindow resizableWindow = ResizableWindow(title: title, body: body, height: height, x: x, y: y, onWindowDragged: (p0, p1) {});
 
+    ResizableWindow resizableWindow = ResizableWindow(title: title, body: body, height: height, x: x, y: y, onWindowDragged: (p0, p1) {});
     //Init onWindowDragged
     resizableWindow.onWindowDragged = (dx,dy) {
 
@@ -62,8 +55,6 @@ class WindowController {
       windows.add(resizableWindow);
 
       _onUpdate();
-
-
     };
 
     //Init onCloseButtonClicked

@@ -18,17 +18,19 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
+
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  MyHomePageState createState() => MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class MyHomePageState extends State<MyHomePage> {
 
   late WindowController windowController;
   @override
@@ -45,7 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(onPressed: (){
-        windowController.createNewWindow(title: "Calculator", body: SimpleCalculator());
+        windowController.createNewWindow(title: "Calculator", body: const SimpleCalculator());
       },),
       body: WindowManager(windowController: windowController),
     );
