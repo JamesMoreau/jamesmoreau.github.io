@@ -2,7 +2,7 @@
 
 # Run locally
 
-flutter build web --web-renderer canvaskit
+flutter run -d chrome --web-renderer canvaskit
 flutter run -d chrome --web-renderer html
 
 flutter run -d windows

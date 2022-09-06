@@ -1,4 +1,60 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_simple_calculator/flutter_simple_calculator.dart';
+import 'package:my_website/resizable_window.dart';
+
+import 'window_manager.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter MDI Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: MyHomePage(),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+
+  late WindowController windowController;
+  @override
+  void initState() {
+    super.initState();
+
+    windowController = WindowController((){
+      setState(() {});
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(onPressed: (){
+        windowController.createNewWindow(title: "Calculator", body: SimpleCalculator());
+      },),
+      body: WindowManager(windowController: windowController),
+    );
+  }
+}
+
+// const SimpleCalculator()
+
+/*import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:statsfl/statsfl.dart';
 
@@ -146,3 +202,4 @@ class MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+*/

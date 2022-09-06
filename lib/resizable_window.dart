@@ -1,40 +1,38 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class ResizableWindow extends StatefulWidget {
-  double currentHeight;
-  double defaultHeight = 400.0;
-  double currentWidth;
-  double defaultWidth = 400.0;
-  double x;
-  double y;
   String title;
   Widget body;
+  double height;
+  double width;
+  double x;
+  double y;
+  Function(double, double)? onWindowDragged;
+  VoidCallback? onCloseButtonClicked;
 
-  Function(double, double) onWindowDragged;
-  VoidCallback onCloseButtonClicked;
-
-
-
-  ResizableWindow(this.title,this.body) : super(key: UniqueKey()) {
-    currentHeight = defaultHeight;
-    currentWidth = defaultWidth;
+  ResizableWindow({required this.title, required this.body, this.width = 400, this.height = 400, this.x = -1, this.y = -1, this.onWindowDragged, this.onCloseButtonClicked}) : super(key: UniqueKey()) {
+    var rng = Random();
+    var num = 500;
+    if (x == -1) x = rng.nextDouble() * num;
+    if (y == -1) y = rng.nextDouble() * num;
   }
 
   @override
-  _ResizableWindowState createState() => _ResizableWindowState();
+  ResizableWindowState createState() => ResizableWindowState();
 }
 
-class _ResizableWindowState extends State<ResizableWindow> {
-  var _headerSize = 50.0;
-  var _borderRadius = 10.0;
+class ResizableWindowState extends State<ResizableWindow> {
+  final headerSize = 50.0;
+  final borderRadius = 10.0;
 
   @override
   Widget build(BuildContext context) {
     return Container(
         decoration: BoxDecoration(
-          //Here goes the same radius, u can put into a var or function
-          borderRadius: BorderRadius.all(Radius.circular(_borderRadius)),
-          boxShadow: [
+          borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
+          boxShadow: const [
             BoxShadow(
               color: Color(0x54000000),
               spreadRadius: 4,
@@ -43,11 +41,11 @@ class _ResizableWindowState extends State<ResizableWindow> {
           ],
         ),
       child: ClipRRect(
-        borderRadius:  BorderRadius.all(Radius.circular(_borderRadius)),
+        borderRadius:  BorderRadius.all(Radius.circular(borderRadius)),
         child: Stack(
           children: [
             Column(
-              children: [_getHeader(), _getBody()],
+              children: [getHeader(), getBody()],
             ),
             Positioned(
                 right: 0,
@@ -167,14 +165,14 @@ class _ResizableWindowState extends State<ResizableWindow> {
     );
   }
 
-  _getHeader() {
+  getHeader() {
     return GestureDetector(
       onPanUpdate: (tapInfo) {
-        widget.onWindowDragged(tapInfo.delta.dx, tapInfo.delta.dy);
+        widget.onWindowDragged!(tapInfo.delta.dx, tapInfo.delta.dy);
       },
       child: Container(
-        width: widget.currentWidth,
-        height: _headerSize,
+        width: widget.width,
+        height: headerSize,
         color: Colors.lightBlueAccent,
         child: Stack(
           children: [
@@ -184,9 +182,9 @@ class _ResizableWindowState extends State<ResizableWindow> {
               bottom: 0,
               child: GestureDetector(
                 onTap: (){
-                  widget.onCloseButtonClicked();
+                  widget.onCloseButtonClicked!();
                 },
-                child: Icon(Icons.circle,color: Colors.red,)
+                child: const Icon(Icons.circle,color: Colors.red,)
               ),
             ),
             Positioned.fill(child: Center(child: Text(widget.title))),
@@ -196,10 +194,10 @@ class _ResizableWindowState extends State<ResizableWindow> {
     );
   }
 
-  _getBody() {
+  getBody() {
     return Container(
-      width: widget.currentWidth,
-      height: widget.currentHeight - _headerSize,
+      width: widget.width,
+      height: widget.height - headerSize,
       color: Colors.blueGrey,
       child: widget.body,
     );
@@ -207,23 +205,21 @@ class _ResizableWindowState extends State<ResizableWindow> {
 
 
   void _onHorizontalDragLeft(DragUpdateDetails details) {
-
-
     setState(() {
-      widget.currentWidth -= details.delta.dx;
-      if (widget.currentWidth < widget.defaultWidth) {
-        widget.currentWidth = widget.defaultWidth;
+      widget.width -= details.delta.dx;
+      if (widget.width < widget.width) {
+        widget.width = widget.width;
       } else {
-        widget.onWindowDragged(details.delta.dx, 0);
+        widget.onWindowDragged!(details.delta.dx, 0);
       }
     });
   }
 
   void _onHorizontalDragRight(DragUpdateDetails details) {
     setState(() {
-      widget.currentWidth += details.delta.dx;
-      if (widget.currentWidth < widget.defaultWidth) {
-        widget.currentWidth = widget.defaultWidth;
+      widget.width += details.delta.dx;
+      if (widget.width < widget.width) {
+        widget.width = widget.width;
       }
     });
   }
@@ -231,9 +227,9 @@ class _ResizableWindowState extends State<ResizableWindow> {
   void _onHorizontalDragBottom(DragUpdateDetails details) {
 
     setState(() {
-      widget.currentHeight += details.delta.dy;
-      if (widget.currentHeight < widget.defaultHeight) {
-        widget.currentHeight = widget.defaultHeight;
+      widget.height += details.delta.dy;
+      if (widget.height < widget.height) {
+        widget.height = widget.height;
       }
     });
   }
@@ -241,11 +237,11 @@ class _ResizableWindowState extends State<ResizableWindow> {
   void _onHorizontalDragTop(DragUpdateDetails details) {
 
     setState(() {
-      widget.currentHeight -= details.delta.dy;
-      if (widget.currentHeight < widget.defaultHeight) {
-        widget.currentHeight = widget.defaultHeight;
+      widget.height -= details.delta.dy;
+      if (widget.height < widget.height) {
+        widget.height = widget.height;
       } else {
-        widget.onWindowDragged(0, details.delta.dy);
+        widget.onWindowDragged!(0, details.delta.dy);
       }
     });
   }
