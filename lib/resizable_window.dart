@@ -10,19 +10,17 @@ class ResizableWindow extends StatefulWidget {
   double width;
   double x;
   double y;
-  Function(double, double)? onWindowDragged;
-  VoidCallback? onCloseButtonClicked;
 
-  // Window need a pointer to the window manager so it can refresh state.
-  WindowArea? windowManager;
+  void Function(Key) onWindowClosed;
+  void Function(Key) onWindowFocus;
 
-  ResizableWindow({required this.title, required this.body, this.width = 400, this.height = 400, this.x = -1, this.y = -1, this.onWindowDragged, this.onCloseButtonClicked}) : super(key: UniqueKey()) {
+  ResizableWindow({required Key key, required this.title, required this.body, this.width = 400, this.height = 400, this.x = -1, this.y = -1, required this.onWindowClosed, required this.onWindowFocus}) : super(key: key) {
+    
+    // Give the window radom position if none is supplied.
     var rng = Random();
     var num = 500;
     if (x == -1) x = rng.nextDouble() * num;
     if (y == -1) y = rng.nextDouble() * num;
-
-    windowManager = null;
   }
 
   @override
@@ -174,7 +172,10 @@ class ResizableWindowState extends State<ResizableWindow> {
   getHeader() {
     return GestureDetector(
       onPanUpdate: (tapInfo) {
-        widget.onWindowDragged!(tapInfo.delta.dx, tapInfo.delta.dy);
+        widget.onWindowFocus(widget.key!);
+
+        widget.x += tapInfo.delta.dx;
+        widget.y += tapInfo.delta.dy;
       },
       child: Container(
         width: widget.width,
@@ -188,7 +189,7 @@ class ResizableWindowState extends State<ResizableWindow> {
               bottom: 0,
               child: GestureDetector(
                 onTap: (){
-                  widget.onCloseButtonClicked!();
+                  widget.onWindowClosed(widget.key!);
                 },
                 child: const Icon(Icons.circle,color: Colors.red,)
               ),
@@ -209,11 +210,11 @@ class ResizableWindowState extends State<ResizableWindow> {
     );
   }
 
-
   void onHorizontalDragLeft(DragUpdateDetails details) {
     setState(() {
       widget.width -= details.delta.dx;
-      widget.onWindowDragged!(details.delta.dx, 0);
+      widget.x += details.delta.dx;
+      widget.y += 0;
     });
   }
 
@@ -232,7 +233,8 @@ class ResizableWindowState extends State<ResizableWindow> {
   void onHorizontalDragTop(DragUpdateDetails details) {
     setState(() {
       widget.height -= details.delta.dy;
-      widget.onWindowDragged!(0, details.delta.dy);
+      widget.x += details.delta.dx;
+      widget.y += details.delta.dy;
     });
   }
 

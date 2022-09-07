@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_function_declarations_over_variables
+
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:flutter_simple_calculator/flutter_simple_calculator.dart';
@@ -24,26 +26,24 @@ class WindowAreaState extends State<WindowArea> {
 
   void createNewWindow({required String title, required Widget body, double width = 400, double height = 400, double x = -1, double y = -1, dynamic Function(double, double)? onWindowDragged, VoidCallback? onCloseButtonClicked}) {
 
-    ResizableWindow resizableWindow = ResizableWindow(title: title, body: body, height: height, x: x, y: y, onWindowDragged: (p0, p1) {});
-    //Init onWindowDragged
-    resizableWindow.onWindowDragged = (dx,dy) {
-
-      resizableWindow.x += dx;
-      resizableWindow.y += dy;
-
-      //Put on top of stack
-      windows.remove(resizableWindow);
-      windows.add(resizableWindow);
+    var onWindowFocus = (Key key) {
+      var window = windows.firstWhere((element) => element.key == key);
+      
+      // This takes pushes the window to the top of the stack.
+      windows.remove(window);
+      windows.add(window);
 
       onUpdate();
     };
 
-    //Init onCloseButtonClicked
-    resizableWindow.onCloseButtonClicked = () {
-      windows.remove(resizableWindow);
+    var onWindowClosed = (Key key) {
+      var window = windows.firstWhere((element) => element.key == key);
+
+      windows.remove(window);
       onUpdate();
     };
 
+    ResizableWindow resizableWindow = ResizableWindow(key: UniqueKey(), title: title, body: body, height: height, x: x, y: y, onWindowFocus: onWindowFocus, onWindowClosed: onWindowClosed);
 
     //Add Window to List
     windows.add(resizableWindow);
