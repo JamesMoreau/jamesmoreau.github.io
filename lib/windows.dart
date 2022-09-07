@@ -19,7 +19,7 @@ class WindowAreaState extends State<WindowArea> {
     setState(() {});
   }
 
-  void addWindow(){
+  void addCalculatorWindow(){
     createNewWindow(title: "Calculator", body: const SimpleCalculator());
   }
 
@@ -69,8 +69,8 @@ class WindowAreaState extends State<WindowArea> {
 
 // This is the actual window widget.
 class ResizableWindow extends StatefulWidget {
-  String title;
-  Widget body;
+  final String title;
+  final Widget body;
   double height;
   double width;
   double x;

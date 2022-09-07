@@ -46,7 +46,7 @@ class MyHomePageState extends State<MyHomePage> {
         child: const Icon(Icons.add),
         onPressed: () {
           // windowArea.addWindow(title: "Calculator", body: const SimpleCalculator());
-          windowAreakey.currentState!.addWindow();
+          windowAreakey.currentState!.addCalculatorWindow();
         },
       ),
       body: WindowArea(key: windowAreakey),
