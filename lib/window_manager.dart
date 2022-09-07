@@ -33,7 +33,7 @@ class WindowManagerState extends State<WindowManager> {
 class WindowController {
 
   List<ResizableWindow> windows = List.empty(growable: true);
-  VoidCallback _onUpdate;
+  void Function() _onUpdate;
 
   WindowController(this._onUpdate);
 

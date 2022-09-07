@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:my_website/window_manager.dart';
 
 class ResizableWindow extends StatefulWidget {
   String title;
@@ -12,11 +13,16 @@ class ResizableWindow extends StatefulWidget {
   Function(double, double)? onWindowDragged;
   VoidCallback? onCloseButtonClicked;
 
+  // Window need a pointer to the window manager so it can refresh state.
+  WindowManager? windowManager;
+
   ResizableWindow({required this.title, required this.body, this.width = 400, this.height = 400, this.x = -1, this.y = -1, this.onWindowDragged, this.onCloseButtonClicked}) : super(key: UniqueKey()) {
     var rng = Random();
     var num = 500;
     if (x == -1) x = rng.nextDouble() * num;
     if (y == -1) y = rng.nextDouble() * num;
+
+    windowManager = null;
   }
 
   @override
