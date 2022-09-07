@@ -58,7 +58,7 @@ class ResizableWindowState extends State<ResizableWindow> {
                 top: 0,
                 bottom: 0,
                 child: GestureDetector(
-                  onHorizontalDragUpdate: _onHorizontalDragRight,
+                  onHorizontalDragUpdate: onHorizontalDragRight,
                   child: MouseRegion(
                     cursor: SystemMouseCursors.resizeLeftRight,
                     opaque: true,
@@ -72,7 +72,7 @@ class ResizableWindowState extends State<ResizableWindow> {
                 top: 0,
                 bottom: 0,
                 child: GestureDetector(
-                  onHorizontalDragUpdate: _onHorizontalDragLeft,
+                  onHorizontalDragUpdate: onHorizontalDragLeft,
                   child: MouseRegion(
                     cursor: SystemMouseCursors.resizeLeftRight,
                     opaque: true,
@@ -86,7 +86,7 @@ class ResizableWindowState extends State<ResizableWindow> {
                 top: 0,
                 right: 0,
                 child: GestureDetector(
-                  onVerticalDragUpdate: _onHorizontalDragTop,
+                  onVerticalDragUpdate: onHorizontalDragTop,
                   child: MouseRegion(
                     cursor: SystemMouseCursors.resizeUpDown,
                     opaque: true,
@@ -100,7 +100,7 @@ class ResizableWindowState extends State<ResizableWindow> {
                 bottom: 0,
                 right: 0,
                 child: GestureDetector(
-                  onVerticalDragUpdate: _onHorizontalDragBottom,
+                  onVerticalDragUpdate: onHorizontalDragBottom,
                   child: MouseRegion(
                     cursor: SystemMouseCursors.resizeUpDown,
                     opaque: true,
@@ -114,10 +114,10 @@ class ResizableWindowState extends State<ResizableWindow> {
                 right: 0,
                 child: GestureDetector(
                   onPanUpdate: _onHorizontalDragBottomRight,
-                  child: MouseRegion(
+                  child: const MouseRegion(
                     cursor: SystemMouseCursors.resizeUpLeftDownRight,
                     opaque: true,
-                    child: Container(
+                    child: SizedBox(
                       height: 6,
                       width: 6,
                     ),
@@ -128,10 +128,10 @@ class ResizableWindowState extends State<ResizableWindow> {
                 left: 0,
                 child: GestureDetector(
                   onPanUpdate: _onHorizontalDragBottomLeft,
-                  child: MouseRegion(
+                  child: const MouseRegion(
                     cursor: SystemMouseCursors.resizeUpRightDownLeft,
                     opaque: true,
-                    child: Container(
+                    child: SizedBox(
                       height: 6,
                       width: 6,
                     ),
@@ -142,10 +142,10 @@ class ResizableWindowState extends State<ResizableWindow> {
                 right: 0,
                 child: GestureDetector(
                   onPanUpdate: _onHorizontalDragTopRight,
-                  child: MouseRegion(
+                  child: const MouseRegion(
                     cursor: SystemMouseCursors.resizeUpRightDownLeft,
                     opaque: true,
-                    child: Container(
+                    child: SizedBox(
                       height: 6,
                       width: 6,
                     ),
@@ -156,10 +156,10 @@ class ResizableWindowState extends State<ResizableWindow> {
                 top: 0,
                 child: GestureDetector(
                   onPanUpdate: _onHorizontalDragTopLeft,
-                  child: MouseRegion(
+                  child: const MouseRegion(
                     cursor: SystemMouseCursors.resizeUpLeftDownRight,
                     opaque: true,
-                    child: Container(
+                    child: SizedBox(
                       height: 6,
                       width: 6,
                     ),
@@ -210,66 +210,50 @@ class ResizableWindowState extends State<ResizableWindow> {
   }
 
 
-  void _onHorizontalDragLeft(DragUpdateDetails details) {
+  void onHorizontalDragLeft(DragUpdateDetails details) {
     setState(() {
       widget.width -= details.delta.dx;
-      if (widget.width < widget.width) {
-        widget.width = widget.width;
-      } else {
-        widget.onWindowDragged!(details.delta.dx, 0);
-      }
+      widget.onWindowDragged!(details.delta.dx, 0);
     });
   }
 
-  void _onHorizontalDragRight(DragUpdateDetails details) {
+  void onHorizontalDragRight(DragUpdateDetails details) {
     setState(() {
       widget.width += details.delta.dx;
-      if (widget.width < widget.width) {
-        widget.width = widget.width;
-      }
     });
   }
 
-  void _onHorizontalDragBottom(DragUpdateDetails details) {
-
+  void onHorizontalDragBottom(DragUpdateDetails details) {
     setState(() {
       widget.height += details.delta.dy;
-      if (widget.height < widget.height) {
-        widget.height = widget.height;
-      }
     });
   }
 
-  void _onHorizontalDragTop(DragUpdateDetails details) {
-
+  void onHorizontalDragTop(DragUpdateDetails details) {
     setState(() {
       widget.height -= details.delta.dy;
-      if (widget.height < widget.height) {
-        widget.height = widget.height;
-      } else {
-        widget.onWindowDragged!(0, details.delta.dy);
-      }
+      widget.onWindowDragged!(0, details.delta.dy);
     });
   }
 
   void _onHorizontalDragBottomRight(DragUpdateDetails details) {
-    _onHorizontalDragRight(details);
-    _onHorizontalDragBottom(details);
+    onHorizontalDragRight(details);
+    onHorizontalDragBottom(details);
   }
 
   void _onHorizontalDragBottomLeft(DragUpdateDetails details) {
-    _onHorizontalDragLeft(details);
-    _onHorizontalDragBottom(details);
+    onHorizontalDragLeft(details);
+    onHorizontalDragBottom(details);
   }
 
   void _onHorizontalDragTopRight(DragUpdateDetails details) {
-    _onHorizontalDragRight(details);
-    _onHorizontalDragTop(details);
+    onHorizontalDragRight(details);
+    onHorizontalDragTop(details);
   }
 
   void _onHorizontalDragTopLeft(DragUpdateDetails details) {
-    _onHorizontalDragLeft(details);
-    _onHorizontalDragTop(details);
+    onHorizontalDragLeft(details);
+    onHorizontalDragTop(details);
   }
 
 }
