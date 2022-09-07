@@ -5,40 +5,21 @@ import 'resizable_window.dart';
 
 class WindowArea extends StatefulWidget {
 
-  final WindowController windowController;
-
-  const WindowArea({Key? key, required this.windowController}) : super(key: key);
+  const WindowArea({Key? key}) : super(key: key);
 
   @override
   WindowAreaState createState() => WindowAreaState();
 }
 
 class WindowAreaState extends State<WindowArea> {
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: widget.windowController.windows.map((e){
-        return Positioned(
-          left: e.x,
-          top: e.y,
-          key: e.key,
-          child: e,
-        );
-      }).toList()
-    );
-  }
-}
-
-class WindowController {
-
   List<ResizableWindow> windows = List.empty(growable: true);
-  void Function() onUpdate;
-
-  WindowController(this.onUpdate);
+  
+  onUpdate() {
+    setState(() {});
+  }
 
   void addWindow(){
-    createNewWindow(title: "Calculator", body: SimpleCalculator());
+    createNewWindow(title: "Calculator", body: const SimpleCalculator());
   }
 
   void createNewWindow({required String title, required Widget body, double width = 400, double height = 400, double x = -1, double y = -1, dynamic Function(double, double)? onWindowDragged, VoidCallback? onCloseButtonClicked}) {
@@ -70,5 +51,18 @@ class WindowController {
     // Update Widgets after adding the new App
     onUpdate();
   }
-}
 
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: windows.map((e){
+        return Positioned(
+          left: e.x,
+          top: e.y,
+          key: e.key,
+          child: e,
+        );
+      }).toList()
+    );
+  }
+}

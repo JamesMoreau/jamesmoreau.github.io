@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:my_website/window_manager.dart';
+import 'package:my_website/window_area.dart';
 
 class ResizableWindow extends StatefulWidget {
   String title;

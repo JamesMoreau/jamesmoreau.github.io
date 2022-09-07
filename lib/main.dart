@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_simple_calculator/flutter_simple_calculator.dart';
 import 'package:my_website/resizable_window.dart';
 
-import 'window_manager.dart';
+import 'window_area.dart';
 
 void main() {
   runApp(MyApp());
@@ -32,24 +32,26 @@ class MyHomePage extends StatefulWidget {
 
 class MyHomePageState extends State<MyHomePage> {
 
-  late WindowController windowController;
   @override
   void initState() {
     super.initState();
-
-    windowController = WindowController((){
-      setState(() {});
-    });
   }
+
+  // late WindowController windowController;
+  final GlobalKey<WindowAreaState> windowAreakey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: (){
-        windowController.createNewWindow(title: "Calculator", body: const SimpleCalculator());
-      },),
-      body: WindowArea(windowController: windowController),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () {
+          // windowArea.addWindow(title: "Calculator", body: const SimpleCalculator());
+          windowAreakey.currentState!.addWindow();
+        },
+      ),
+      body: WindowArea(key: windowAreakey),
     );
   }
 }
