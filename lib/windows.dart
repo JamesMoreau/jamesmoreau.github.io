@@ -1,8 +1,73 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:my_website/window_area.dart';
+import 'package:flutter_simple_calculator/flutter_simple_calculator.dart';
 
+
+// This is the widget that holds all the windows.
+class WindowArea extends StatefulWidget {
+
+  const WindowArea({Key? key}) : super(key: key);
+
+  @override
+  WindowAreaState createState() => WindowAreaState();
+}
+
+class WindowAreaState extends State<WindowArea> {
+  List<ResizableWindow> windows = List.empty(growable: true);
+  
+  onUpdate() {
+    setState(() {});
+  }
+
+  void addWindow(){
+    createNewWindow(title: "Calculator", body: const SimpleCalculator());
+  }
+
+  void createNewWindow({required String title, required Widget body, double width = 400, double height = 400, double x = -1, double y = -1, dynamic Function(double, double)? onWindowDragged, VoidCallback? onCloseButtonClicked}) {
+
+    onWindowFocus(Key key) {
+      var window = windows.firstWhere((element) => element.key == key);
+      
+      // This takes pushes the window to the top of the stack.
+      windows.remove(window);
+      windows.add(window);
+
+      onUpdate();
+    }
+
+    onWindowClosed(Key key) {
+      var window = windows.firstWhere((element) => element.key == key);
+
+      windows.remove(window);
+      onUpdate();
+    }
+
+    ResizableWindow resizableWindow = ResizableWindow(key: UniqueKey(), title: title, body: body, height: height, x: x, y: y, onWindowFocus: onWindowFocus, onWindowClosed: onWindowClosed);
+
+    //Add Window to List
+    windows.add(resizableWindow);
+
+    // Update Widgets after adding the new App
+    onUpdate();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: windows.map((e){
+        return Positioned(
+          left: e.x,
+          top: e.y,
+          key: e.key,
+          child: e,
+        );
+      }).toList()
+    );
+  }
+}
+
+
+// This is the actual window widget.
 class ResizableWindow extends StatefulWidget {
   String title;
   Widget body;
@@ -111,7 +176,7 @@ class ResizableWindowState extends State<ResizableWindow> {
                 bottom: 0,
                 right: 0,
                 child: GestureDetector(
-                  onPanUpdate: _onHorizontalDragBottomRight,
+                  onPanUpdate: onHorizontalDragBottomRight,
                   child: const MouseRegion(
                     cursor: SystemMouseCursors.resizeUpLeftDownRight,
                     opaque: true,
@@ -125,7 +190,7 @@ class ResizableWindowState extends State<ResizableWindow> {
                 bottom: 0,
                 left: 0,
                 child: GestureDetector(
-                  onPanUpdate: _onHorizontalDragBottomLeft,
+                  onPanUpdate: onHorizontalDragBottomLeft,
                   child: const MouseRegion(
                     cursor: SystemMouseCursors.resizeUpRightDownLeft,
                     opaque: true,
@@ -139,7 +204,7 @@ class ResizableWindowState extends State<ResizableWindow> {
                 top: 0,
                 right: 0,
                 child: GestureDetector(
-                  onPanUpdate: _onHorizontalDragTopRight,
+                  onPanUpdate: onHorizontalDragTopRight,
                   child: const MouseRegion(
                     cursor: SystemMouseCursors.resizeUpRightDownLeft,
                     opaque: true,
@@ -153,7 +218,7 @@ class ResizableWindowState extends State<ResizableWindow> {
                 left: 0,
                 top: 0,
                 child: GestureDetector(
-                  onPanUpdate: _onHorizontalDragTopLeft,
+                  onPanUpdate: onHorizontalDragTopLeft,
                   child: const MouseRegion(
                     cursor: SystemMouseCursors.resizeUpLeftDownRight,
                     opaque: true,
@@ -238,22 +303,22 @@ class ResizableWindowState extends State<ResizableWindow> {
     });
   }
 
-  void _onHorizontalDragBottomRight(DragUpdateDetails details) {
+  void onHorizontalDragBottomRight(DragUpdateDetails details) {
     onHorizontalDragRight(details);
     onHorizontalDragBottom(details);
   }
 
-  void _onHorizontalDragBottomLeft(DragUpdateDetails details) {
+  void onHorizontalDragBottomLeft(DragUpdateDetails details) {
     onHorizontalDragLeft(details);
     onHorizontalDragBottom(details);
   }
 
-  void _onHorizontalDragTopRight(DragUpdateDetails details) {
+  void onHorizontalDragTopRight(DragUpdateDetails details) {
     onHorizontalDragRight(details);
     onHorizontalDragTop(details);
   }
 
-  void _onHorizontalDragTopLeft(DragUpdateDetails details) {
+  void onHorizontalDragTopLeft(DragUpdateDetails details) {
     onHorizontalDragLeft(details);
     onHorizontalDragTop(details);
   }

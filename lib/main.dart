@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_simple_calculator/flutter_simple_calculator.dart';
-import 'package:my_website/resizable_window.dart';
-
-import 'window_area.dart';
+import 'package:my_website/windows.dart';
 
 void main() {
   runApp(MyApp());
