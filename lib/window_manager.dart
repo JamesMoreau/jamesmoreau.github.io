@@ -3,17 +3,17 @@ import 'dart:math';
 import 'package:flutter_simple_calculator/flutter_simple_calculator.dart';
 import 'resizable_window.dart';
 
-class WindowManager extends StatefulWidget {
+class WindowArea extends StatefulWidget {
 
   final WindowController windowController;
 
-  const WindowManager({Key? key, required this.windowController}) : super(key: key);
+  const WindowArea({Key? key, required this.windowController}) : super(key: key);
 
   @override
-  WindowManagerState createState() => WindowManagerState();
+  WindowAreaState createState() => WindowAreaState();
 }
 
-class WindowManagerState extends State<WindowManager> {
+class WindowAreaState extends State<WindowArea> {
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +33,9 @@ class WindowManagerState extends State<WindowManager> {
 class WindowController {
 
   List<ResizableWindow> windows = List.empty(growable: true);
-  void Function() _onUpdate;
+  void Function() onUpdate;
 
-  WindowController(this._onUpdate);
+  WindowController(this.onUpdate);
 
   void addWindow(){
     createNewWindow(title: "Calculator", body: SimpleCalculator());
@@ -54,13 +54,13 @@ class WindowController {
       windows.remove(resizableWindow);
       windows.add(resizableWindow);
 
-      _onUpdate();
+      onUpdate();
     };
 
     //Init onCloseButtonClicked
     resizableWindow.onCloseButtonClicked = () {
       windows.remove(resizableWindow);
-      _onUpdate();
+      onUpdate();
     };
 
 
@@ -68,8 +68,7 @@ class WindowController {
     windows.add(resizableWindow);
 
     // Update Widgets after adding the new App
-    _onUpdate();
-
+    onUpdate();
   }
 }
 

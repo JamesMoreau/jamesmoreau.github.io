@@ -14,7 +14,7 @@ class ResizableWindow extends StatefulWidget {
   VoidCallback? onCloseButtonClicked;
 
   // Window need a pointer to the window manager so it can refresh state.
-  WindowManager? windowManager;
+  WindowArea? windowManager;
 
   ResizableWindow({required this.title, required this.body, this.width = 400, this.height = 400, this.x = -1, this.y = -1, this.onWindowDragged, this.onCloseButtonClicked}) : super(key: UniqueKey()) {
     var rng = Random();

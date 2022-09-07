@@ -49,7 +49,7 @@ class MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(onPressed: (){
         windowController.createNewWindow(title: "Calculator", body: const SimpleCalculator());
       },),
-      body: WindowManager(windowController: windowController),
+      body: WindowArea(windowController: windowController),
     );
   }
 }
