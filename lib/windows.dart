@@ -6,7 +6,9 @@ import 'package:flutter_simple_calculator/flutter_simple_calculator.dart';
 // This is the widget that holds all the windows.
 class WindowArea extends StatefulWidget {
 
-  const WindowArea({Key? key}) : super(key: key);
+  final WindowController windowController;
+
+  const WindowArea({Key? key, required this.windowController}) : super(key: key);
 
   @override
   WindowAreaState createState() => WindowAreaState();
@@ -14,16 +16,35 @@ class WindowArea extends StatefulWidget {
 
 class WindowAreaState extends State<WindowArea> {
   List<ResizableWindow> windows = List.empty(growable: true);
-  
-  onUpdate() {
-    setState(() {});
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: windows.map((e){
+        return Positioned(
+          left: e.x,
+          top: e.y,
+          key: e.key,
+          child: e,
+        );
+      }).toList()
+    );
   }
+}
+
+// This class manages the windows.
+class WindowController {
+  WindowController(this.onUpdate);
+
+  List<ResizableWindow> windows = List.empty(growable: true);
+
+  VoidCallback onUpdate;
 
   void addCalculatorWindow(){
     createNewWindow(title: "Calculator", body: const SimpleCalculator());
   }
 
-  void createNewWindow({required String title, required Widget body, double width = 400, double height = 400, double x = -1, double y = -1, dynamic Function(double, double)? onWindowDragged, VoidCallback? onCloseButtonClicked}) {
+  void createNewWindow({required String title, required Widget body, double width = 400, double height = 400, double x = -1, double y = -1}) {
 
     onWindowFocus(Key key) {
       var window = windows.firstWhere((element) => element.key == key);
@@ -51,21 +72,7 @@ class WindowAreaState extends State<WindowArea> {
     onUpdate();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: windows.map((e){
-        return Positioned(
-          left: e.x,
-          top: e.y,
-          key: e.key,
-          child: e,
-        );
-      }).toList()
-    );
-  }
 }
-
 
 // This is the actual window widget.
 class ResizableWindow extends StatefulWidget {

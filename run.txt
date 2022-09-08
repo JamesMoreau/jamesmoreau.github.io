@@ -6,6 +6,7 @@ flutter run -d chrome --web-renderer canvaskit
 flutter run -d chrome --web-renderer canvaskit --release
 flutter run -d chrome --web-renderer html
 
+flutter run -d windows
 flutter run --release -d windows
 
 # Build

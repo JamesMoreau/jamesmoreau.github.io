@@ -30,13 +30,18 @@ class MyHomePage extends StatefulWidget {
 
 class MyHomePageState extends State<MyHomePage> {
 
+  WindowController? windowController;
+
   @override
   void initState() {
     super.initState();
+
+    windowController = WindowController(() { setState(() {}); });
   }
 
   // late WindowController windowController;
-  final GlobalKey<WindowAreaState> windowAreakey = GlobalKey();
+  // final GlobalKey<WindowAreaState> windowAreakey = GlobalKey();
+
 
   @override
   Widget build(BuildContext context) {
@@ -46,10 +51,12 @@ class MyHomePageState extends State<MyHomePage> {
         child: const Icon(Icons.add),
         onPressed: () {
           // windowArea.addWindow(title: "Calculator", body: const SimpleCalculator());
-          windowAreakey.currentState!.addCalculatorWindow();
+          // windowAreakey.currentState!.addCalculatorWindow();
+          windowController!.addCalculatorWindow();
         },
       ),
-      body: WindowArea(key: windowAreakey),
+      // body: WindowArea(key: windowAreakey),
+      body: WindowArea(windowController: windowController!)
     );
   }
 }
