@@ -2,7 +2,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_simple_calculator/flutter_simple_calculator.dart';
 
-
 // This is the widget that holds all the windows.
 class WindowArea extends StatefulWidget {
 
@@ -43,36 +42,33 @@ class WindowController {
     createNewWindow(title: "Calculator", body: const SimpleCalculator());
   }
 
-  void createNewWindow({required String title, required Widget body, double width = 400, double height = 400, double x = -1, double y = -1}) {
+  void createNewWindow({required String title, required Widget body, double width = -1, double height = -1, double x = -1, double y = -1}) {
    
    ResizableWindow resizableWindow = ResizableWindow(title, body);
 
-    //Set initial position
-    var rng = new Random();
-    resizableWindow.x =  rng.nextDouble() * 500;
-    resizableWindow.y =  rng.nextDouble() * 500;
+    // Set initial position if none supplied.
+    var rng = Random();
+    x == -1 ? resizableWindow.x = rng.nextDouble() * 500 : resizableWindow.x = x;
+    y == -1 ? resizableWindow.y = rng.nextDouble() * 500 : resizableWindow.y = y;
 
-    //Init onWindowDragged
-    resizableWindow.onWindowFocus = (dx, dy) {
+    // Set initial dimensions if none supplied.
+    width == -1  ? resizableWindow.width  = 400 : resizableWindow.x = x;
+    height == -1 ? resizableWindow.height = 400 : resizableWindow.y = y;
 
-      resizableWindow.x += dx;
-      resizableWindow.y += dy;
+    resizableWindow.onWindowFocus = () {
 
-      //Put on top of stack
+      // Put on top of stack.
       windows.remove(resizableWindow);
       windows.add(resizableWindow);
 
       onUpdate();
     };
 
-    //Init onCloseButtonClicked
-    resizableWindow.onWindowClosed = (){
+    resizableWindow.onWindowClosed = () {
       windows.remove(resizableWindow);
       onUpdate();
     };
 
-
-    //Add Window to List
     windows.add(resizableWindow);
 
     // Update Widgets after adding the new App
@@ -91,7 +87,7 @@ class ResizableWindow extends StatefulWidget {
   double y = 1;
 
   void Function()? onWindowClosed;
-  void Function(double, double)? onWindowFocus;
+  void Function()? onWindowFocus;
 
   ResizableWindow(this.title, this.body) : super(key: UniqueKey());
 
@@ -244,10 +240,12 @@ class ResizableWindowState extends State<ResizableWindow> {
   getHeader() {
     return GestureDetector(
       onPanUpdate: (tapInfo) {
-        widget.onWindowFocus!(tapInfo.delta.dx, tapInfo.delta.dy);
+        widget.onWindowFocus!();
 
-        // widget.x += tapInfo.delta.dx;
-        // widget.y += tapInfo.delta.dy;
+        setState(() {
+          widget.x += tapInfo.delta.dx;
+          widget.y += tapInfo.delta.dy;
+        });
       },
       child: Container(
         width: widget.width,
