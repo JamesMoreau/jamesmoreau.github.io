@@ -15,12 +15,11 @@ class WindowArea extends StatefulWidget {
 }
 
 class WindowAreaState extends State<WindowArea> {
-  List<ResizableWindow> windows = List.empty(growable: true);
 
   @override
   Widget build(BuildContext context) {
     return Stack(
-      children: windows.map((e){
+      children: widget.windowController.windows.map((e){
         return Positioned(
           left: e.x,
           top: e.y,
@@ -45,25 +44,33 @@ class WindowController {
   }
 
   void createNewWindow({required String title, required Widget body, double width = 400, double height = 400, double x = -1, double y = -1}) {
+   
+   ResizableWindow resizableWindow = ResizableWindow(title, body);
 
-    onWindowFocus(Key key) {
-      var window = windows.firstWhere((element) => element.key == key);
-      
-      // This takes pushes the window to the top of the stack.
-      windows.remove(window);
-      windows.add(window);
+    //Set initial position
+    var rng = new Random();
+    resizableWindow.x =  rng.nextDouble() * 500;
+    resizableWindow.y =  rng.nextDouble() * 500;
+
+    //Init onWindowDragged
+    resizableWindow.onWindowFocus = (dx, dy) {
+
+      resizableWindow.x += dx;
+      resizableWindow.y += dy;
+
+      //Put on top of stack
+      windows.remove(resizableWindow);
+      windows.add(resizableWindow);
 
       onUpdate();
-    }
+    };
 
-    onWindowClosed(Key key) {
-      var window = windows.firstWhere((element) => element.key == key);
-
-      windows.remove(window);
+    //Init onCloseButtonClicked
+    resizableWindow.onWindowClosed = (){
+      windows.remove(resizableWindow);
       onUpdate();
-    }
+    };
 
-    ResizableWindow resizableWindow = ResizableWindow(key: UniqueKey(), title: title, body: body, height: height, x: x, y: y, onWindowFocus: onWindowFocus, onWindowClosed: onWindowClosed);
 
     //Add Window to List
     windows.add(resizableWindow);
@@ -78,22 +85,15 @@ class WindowController {
 class ResizableWindow extends StatefulWidget {
   final String title;
   final Widget body;
-  double height;
-  double width;
-  double x;
-  double y;
+  double height = 400;
+  double width = 400;
+  double x = 1;
+  double y = 1;
 
-  void Function(Key) onWindowClosed;
-  void Function(Key) onWindowFocus;
+  void Function()? onWindowClosed;
+  void Function(double, double)? onWindowFocus;
 
-  ResizableWindow({required Key key, required this.title, required this.body, this.width = 400, this.height = 400, this.x = -1, this.y = -1, required this.onWindowClosed, required this.onWindowFocus}) : super(key: key) {
-    
-    // Give the window radom position if none is supplied.
-    var rng = Random();
-    var num = 500;
-    if (x == -1) x = rng.nextDouble() * num;
-    if (y == -1) y = rng.nextDouble() * num;
-  }
+  ResizableWindow(this.title, this.body) : super(key: UniqueKey());
 
   @override
   ResizableWindowState createState() => ResizableWindowState();
@@ -244,10 +244,10 @@ class ResizableWindowState extends State<ResizableWindow> {
   getHeader() {
     return GestureDetector(
       onPanUpdate: (tapInfo) {
-        widget.onWindowFocus(widget.key!);
+        widget.onWindowFocus!(tapInfo.delta.dx, tapInfo.delta.dy);
 
-        widget.x += tapInfo.delta.dx;
-        widget.y += tapInfo.delta.dy;
+        // widget.x += tapInfo.delta.dx;
+        // widget.y += tapInfo.delta.dy;
       },
       child: Container(
         width: widget.width,
@@ -261,7 +261,7 @@ class ResizableWindowState extends State<ResizableWindow> {
               bottom: 0,
               child: GestureDetector(
                 onTap: (){
-                  widget.onWindowClosed(widget.key!);
+                  widget.onWindowClosed!();
                 },
                 child: const Icon(Icons.circle,color: Colors.red,)
               ),
