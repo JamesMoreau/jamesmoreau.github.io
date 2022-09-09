@@ -39,10 +39,6 @@ class MyHomePageState extends State<MyHomePage> {
     windowController = WindowController(() { setState(() {}); });
   }
 
-  // late WindowController windowController;
-  // final GlobalKey<WindowAreaState> windowAreakey = GlobalKey();
-
-
   @override
   Widget build(BuildContext context) {
 
@@ -50,12 +46,10 @@ class MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
-          // windowArea.addWindow(title: "Calculator", body: const SimpleCalculator());
-          // windowAreakey.currentState!.addCalculatorWindow();
           windowController!.addCalculatorWindow();
+          windowController!.addAboutWindow();
         },
       ),
-      // body: WindowArea(key: windowAreakey),
       body: WindowArea(windowController: windowController!)
     );
   }

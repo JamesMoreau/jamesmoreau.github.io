@@ -52,8 +52,8 @@ class WindowController {
     y == -1 ? resizableWindow.y = rng.nextDouble() * 500 : resizableWindow.y = y;
 
     // Set initial dimensions if none supplied.
-    width == -1  ? resizableWindow.width  = 400 : resizableWindow.x = x;
-    height == -1 ? resizableWindow.height = 400 : resizableWindow.y = y;
+    width == -1  ? resizableWindow.width  = 400 : resizableWindow.width = width;
+    height == -1 ? resizableWindow.height = 400 : resizableWindow.height = height;
 
     resizableWindow.onWindowFocus = () {
 
@@ -75,16 +75,35 @@ class WindowController {
     onUpdate();
   }
 
+  void addAboutWindow() { 
+    var bodyText = 
+    """
+    Hello, and welcome to my website. This site is all about myself, so if you aren't interested in me, then feel free to close this window!
+    
+    I use this site to showcase my work, and write about what i'm up to.
+    
+    This site was implemented using imgui (an immediate mode graphics library) and is running in WebAssembly (compiled using emscripten), so it is unlike traditional js/html websites.
+    """;
+
+    createNewWindow(title: "About This Site", width: 300, height: 350, body: 
+      Container(
+        color: Colors.white,
+        padding: const EdgeInsets.all(10.0),
+        child: Text(bodyText),
+      )
+    );
+  }
+
 }
 
 // This is the actual window widget.
 class ResizableWindow extends StatefulWidget {
   final String title;
   final Widget body;
-  double height = 400;
-  double width = 400;
-  double x = 1;
-  double y = 1;
+  double height = -1;
+  double width = -1;
+  double x = -1;
+  double y = -1;
 
   void Function()? onWindowClosed;
   void Function()? onWindowFocus;
