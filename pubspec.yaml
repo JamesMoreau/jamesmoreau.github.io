@@ -40,6 +40,7 @@ dependencies:
   statsfl: ^2.3.0
   url_launcher: ^6.1.5
   flutter_simple_calculator: ^2.2.2
+  google_fonts: ^3.0.1
 
 dev_dependencies:
   flutter_test:

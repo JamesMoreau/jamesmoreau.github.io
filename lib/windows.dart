@@ -1,6 +1,8 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_simple_calculator/flutter_simple_calculator.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 // This is the widget that holds all the windows.
 class WindowArea extends StatefulWidget {
@@ -76,20 +78,22 @@ class WindowController {
   }
 
   void addAboutWindow() { 
-    var bodyText = 
-    """
-    Hello, and welcome to my website. This site is all about myself, so if you aren't interested in me, then feel free to close this window!
-    
-    I use this site to showcase my work, and write about what i'm up to.
-    
-    This site was implemented using imgui (an immediate mode graphics library) and is running in WebAssembly (compiled using emscripten), so it is unlike traditional js/html websites.
-    """;
+    var bodyText =  
+'''Hello, and welcome to my website. This site is all about myself, so if you aren't interested in me, then feel free to close this window!
+                        
+I use this site to showcase my work, and write about what i'm up to.
+                       
+This site was implemented using Flutter (a UI software development kit created by Google) and is compiled to target the web, so it is unlike a traditional js/html website.''';
 
-    createNewWindow(title: "About This Site", width: 300, height: 350, body: 
+    createNewWindow(title: "About This Site", width: 300, height: 300, body: 
       Container(
-        color: Colors.white,
+        // color: Theme.of(context).primaryColor,
         padding: const EdgeInsets.all(10.0),
-        child: Text(bodyText),
+        child: Column(
+          children: [
+            Text(bodyText, style: GoogleFonts.ptSerif())
+          ],
+        ),
       )
     );
   }
@@ -283,7 +287,7 @@ class ResizableWindowState extends State<ResizableWindow> {
                 child: const Icon(Icons.circle,color: Colors.red,)
               ),
             ),
-            Positioned.fill(child: Center(child: Text(widget.title))),
+            Positioned.fill(child: Center(child: Text(widget.title, style: const TextStyle(fontWeight: FontWeight.bold)))),
           ],
         ),
       ),

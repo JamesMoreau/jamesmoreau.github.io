@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:my_website/windows.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -11,12 +12,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter MDI Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      title: "James' Website",
+      // theme: ThemeData(primarySwatch: Colors.blue, primaryColor: Colors.blue),
+      // darkTheme: ThemeData(
+      //   brightness: Brightness.dark,
+      //   /* dark theme settings */
+      // ),
       home: const MyHomePage(),
-      debugShowCheckedModeBanner: false,
+      // debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -30,6 +33,7 @@ class MyHomePage extends StatefulWidget {
 
 class MyHomePageState extends State<MyHomePage> {
 
+  Color currentColor = const Color.fromARGB(0xFF, 0xFA, 0xFF, 0xBF);
   WindowController? windowController;
 
   @override
@@ -43,6 +47,7 @@ class MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      backgroundColor: currentColor,
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
