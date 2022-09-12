@@ -81,17 +81,17 @@ class WindowController {
     var bodyText =  
 '''Hello, and welcome to my website. This site is all about myself, so if you aren't interested in me, then feel free to close this window!
                         
-I use this site to showcase my work, and write about what i'm up to.
+I use this site to showcase my work, and write about what I'm up to.
                        
 This site was implemented using Flutter (a UI software development kit created by Google) and is compiled to target the web, so it is unlike a traditional js/html website.''';
 
     createNewWindow(title: "About This Site", width: 300, height: 300, body: 
       Container(
-        // color: Theme.of(context).primaryColor,
+        color: Colors.grey.shade800,
         padding: const EdgeInsets.all(10.0),
         child: Column(
           children: [
-            Text(bodyText, style: GoogleFonts.ptSerif())
+            Text(bodyText, style: GoogleFonts.ptSerif(color: Colors.white))
           ],
         ),
       )
@@ -273,7 +273,7 @@ class ResizableWindowState extends State<ResizableWindow> {
       child: Container(
         width: widget.width,
         height: headerSize,
-        color: Colors.lightBlueAccent,
+        color: Colors.grey.shade900,
         child: Stack(
           children: [
             Positioned(
@@ -287,7 +287,7 @@ class ResizableWindowState extends State<ResizableWindow> {
                 child: const Icon(Icons.circle,color: Colors.red,)
               ),
             ),
-            Positioned.fill(child: Center(child: Text(widget.title, style: const TextStyle(fontWeight: FontWeight.bold)))),
+            Positioned.fill(child: Center(child: Text(widget.title, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white)))),
           ],
         ),
       ),

@@ -9,23 +9,27 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  static const String title = "James' Website"; 
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "James' Website",
-      // theme: ThemeData(primarySwatch: Colors.blue, primaryColor: Colors.blue),
+      title: title,
+      theme: ThemeData(primaryColor: Colors.grey.shade800),
       // darkTheme: ThemeData(
       //   brightness: Brightness.dark,
       //   /* dark theme settings */
       // ),
-      home: const MyHomePage(),
+      home: const MyHomePage(title: title),
       // debugShowCheckedModeBanner: false,
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+  const MyHomePage({super.key, required this.title});
+
+  final String title;
 
   @override
   MyHomePageState createState() => MyHomePageState();
@@ -47,6 +51,13 @@ class MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      appBar: AppBar(
+        // Here we take the value from the MyHomePage object that was created by
+        // the App.build method, and use it to set our appbar title.
+        title: Text(widget.title, style: const TextStyle(color: Colors.black)),
+        backgroundColor: const Color.fromARGB(0, 0, 0, 0),
+        elevation: 0,
+      ),
       backgroundColor: currentColor,
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
