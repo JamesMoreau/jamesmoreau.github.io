@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:my_website/constants.dart';
 import 'package:my_website/windows.dart';
 
 void main() {
@@ -9,18 +10,12 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  static const String title = "James' Website"; 
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: title,
+      title: websiteTitle,
       theme: ThemeData(primaryColor: Colors.grey.shade800),
-      // darkTheme: ThemeData(
-      //   brightness: Brightness.dark,
-      //   /* dark theme settings */
-      // ),
-      home: const MyHomePage(title: title),
+      home: const MyHomePage(title: websiteTitle),
       // debugShowCheckedModeBanner: false,
     );
   }
@@ -37,7 +32,9 @@ class MyHomePage extends StatefulWidget {
 
 class MyHomePageState extends State<MyHomePage> {
 
-  Color currentColor = const Color.fromARGB(0xFF, 0xFA, 0xFF, 0xBF);
+  Color currentColor = MyColors.backgroundColor;
+  void changeColor(Color color) => setState(() => currentColor = color);
+
   WindowController? windowController;
 
   @override
@@ -50,23 +47,34 @@ class MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title, style: const TextStyle(color: Colors.black)),
-        backgroundColor: const Color.fromARGB(0, 0, 0, 0),
-        elevation: 0,
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(widget.title, style: const TextStyle(color: MyColors.grey)),
+          
+          bottom: const TabBar(
+            indicatorColor: MyColors.grey,
+            tabs: [
+              Tab(icon: Icon(Icons.directions_bike, color: MyColors.grey)),
+              Tab(icon: Icon(Icons.access_alarm, color: MyColors.grey)),
+              Tab(icon: Icon(Icons.factory, color: MyColors.grey))
+            ],
+          ),
+          backgroundColor: MyColors.transparent,
+          elevation: 0,
+        ),
+        backgroundColor: currentColor,
+        floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.add),
+          onPressed: () {
+            windowController!.addCalculatorWindow();
+            windowController!.addAboutWindow();
+            windowController!.addColorPickerWindow(currentColor, changeColor);
+          },
+        ),
+        body: WindowArea(windowController: windowController!)
       ),
-      backgroundColor: currentColor,
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () {
-          windowController!.addCalculatorWindow();
-          windowController!.addAboutWindow();
-        },
-      ),
-      body: WindowArea(windowController: windowController!)
     );
   }
 }

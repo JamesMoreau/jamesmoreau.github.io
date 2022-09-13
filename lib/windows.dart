@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_simple_calculator/flutter_simple_calculator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:my_website/constants.dart';
+import 'package:my_website/main.dart';
 
 // This is the widget that holds all the windows.
 class WindowArea extends StatefulWidget {
@@ -83,21 +85,39 @@ class WindowController {
                         
 I use this site to showcase my work, and write about what I'm up to.
                        
-This site was implemented using Flutter (a UI software development kit created by Google) and is compiled to target the web, so it is unlike a traditional js/html website.''';
+This site was implemented using Flutter (a UI software development kit created by Google) and is compiled to target the web, so it is unlike a traditional js/html website.
 
-    createNewWindow(title: "About This Site", width: 300, height: 300, body: 
+Try moving around some windows.''';
+
+    createNewWindow(title: "About This Site", width: 300, height: 330, x: 100, y: 20, body: 
       Container(
-        color: Colors.grey.shade800,
+        color: MyColors.grey,
         padding: const EdgeInsets.all(10.0),
         child: Column(
           children: [
-            Text(bodyText, style: GoogleFonts.ptSerif(color: Colors.white))
+            Text(bodyText, style: GoogleFonts.ptSerif(color: MyColors.white))
           ],
         ),
       )
     );
   }
 
+  void addColorPickerWindow(Color c, void Function(Color c) colorChangeCallback) {
+    var title = "Try Changing the color!";
+
+    createNewWindow(title: title, width: 300, height: 220, x: 100, y: 350, body: 
+      Container(
+        color: MyColors.grey,
+        child: SlidePicker(
+          pickerColor: c,
+          onColorChanged: colorChangeCallback,
+          enableAlpha: false,
+          showParams: false,
+          showIndicator: false,
+        ),
+      )
+    );
+  }
 }
 
 // This is the actual window widget.
@@ -273,7 +293,7 @@ class ResizableWindowState extends State<ResizableWindow> {
       child: Container(
         width: widget.width,
         height: headerSize,
-        color: Colors.grey.shade900,
+        color: MyColors.darkGrey,
         child: Stack(
           children: [
             Positioned(
