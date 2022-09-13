@@ -51,29 +51,52 @@ class MyHomePageState extends State<MyHomePage> {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(widget.title, style: const TextStyle(color: MyColors.grey)),
-          
-          bottom: const TabBar(
-            indicatorColor: MyColors.grey,
-            tabs: [
-              Tab(icon: Icon(Icons.directions_bike, color: MyColors.grey)),
-              Tab(icon: Icon(Icons.access_alarm, color: MyColors.grey)),
-              Tab(icon: Icon(Icons.factory, color: MyColors.grey))
+          title: Row(
+            children: [
+              Text(widget.title, style: const TextStyle(color: MyColors.grey)),
+              const Spacer(),
+              const Expanded(
+              child: TabBar(
+                indicatorColor: MyColors.grey,
+                tabs: [
+                  Tab(child: Text("Home", style: TextStyle(color: MyColors.grey))),
+                  Tab(child: Text("Co-op", style: TextStyle(color: MyColors.grey))),
+                  Tab(child: Text("Resume", style: TextStyle(color: MyColors.grey)))
+                ],
+              ),
+            ),
             ],
           ),
           backgroundColor: MyColors.transparent,
           elevation: 0,
         ),
-        backgroundColor: currentColor,
-        floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.add),
-          onPressed: () {
-            windowController!.addCalculatorWindow();
-            windowController!.addAboutWindow();
-            windowController!.addMetricsWindow();
-          },
+          backgroundColor: currentColor,
+          floatingActionButton: Wrap(children: <Widget>[
+            FloatingActionButton(
+              child: const Icon(Icons.add),
+              onPressed: () {
+                windowController!.addCalculatorWindow();
+                windowController!.addAboutWindow();
+                windowController!.addColorPickerWindow(currentColor, changeColor);
+                windowController!.addMetricsWindow();
+              },
+            ),
+            FloatingActionButton(
+              child: const Icon(Icons.cancel),
+              onPressed: () {
+                windowController!.closeAllWindows();
+              }
+            )
+          ]
         ),
-        body: WindowArea(windowController: windowController!)
+        body: TabBarView(
+          children: [
+            WindowArea(windowController: windowController!),
+            Text("Hello, Sailor!"),
+            Text("Foobar!")
+          ],
+        )
+        
       ),
     );
   }

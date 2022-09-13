@@ -80,6 +80,11 @@ class WindowController {
     onUpdate();
   }
 
+  closeAllWindows() {
+    windows.clear();
+    onUpdate();
+  }
+
   void addAboutWindow() { 
     var bodyText =  
 '''Hello, and welcome to my website. This site is all about myself, so if you aren't interested in me, then feel free to close this window!
