@@ -5,6 +5,7 @@ import 'package:flutter_simple_calculator/flutter_simple_calculator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_website/constants.dart';
 import 'package:my_website/main.dart';
+import 'package:statsfl/statsfl.dart';
 
 // This is the widget that holds all the windows.
 class WindowArea extends StatefulWidget {
@@ -105,7 +106,7 @@ Try moving around some windows.''';
   void addColorPickerWindow(Color c, void Function(Color c) colorChangeCallback) {
     var title = "Try Changing the color!";
 
-    createNewWindow(title: title, width: 300, height: 220, x: 100, y: 350, body: 
+    createNewWindow(title: title, width: 300, height: 220, x: 100, y: 390, body: 
       Container(
         color: MyColors.grey,
         child: SlidePicker(
@@ -115,6 +116,17 @@ Try moving around some windows.''';
           showParams: false,
           showIndicator: false,
         ),
+      )
+    );
+  }
+
+  void addMetricsWindow() {
+    var title = "App Metrics";
+
+    createNewWindow(title: title, width: 150, height: 120, body: 
+      Container(
+        color: MyColors.grey,
+        child: StatsFl(maxFps: 300),
       )
     );
   }

@@ -70,7 +70,7 @@ class MyHomePageState extends State<MyHomePage> {
           onPressed: () {
             windowController!.addCalculatorWindow();
             windowController!.addAboutWindow();
-            windowController!.addColorPickerWindow(currentColor, changeColor);
+            windowController!.addMetricsWindow();
           },
         ),
         body: WindowArea(windowController: windowController!)
