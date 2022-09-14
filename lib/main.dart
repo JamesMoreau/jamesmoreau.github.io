@@ -15,22 +15,22 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: websiteTitle,
       theme: ThemeData(primaryColor: Colors.grey.shade800),
-      home: const MyHomePage(title: websiteTitle),
+      home: const MainPage(title: websiteTitle),
       // debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class MainPage extends StatefulWidget {
+  const MainPage({super.key, required this.title});
 
   final String title;
 
   @override
-  MyHomePageState createState() => MyHomePageState();
+  MainPageState createState() => MainPageState();
 }
 
-class MyHomePageState extends State<MyHomePage> {
+class MainPageState extends State<MainPage> {
 
   Color currentColor = MyColors.backgroundColor;
   void changeColor(Color color) => setState(() => currentColor = color);
@@ -55,16 +55,15 @@ class MyHomePageState extends State<MyHomePage> {
             children: [
               Text(widget.title, style: const TextStyle(color: MyColors.grey)),
               const Spacer(),
-              const Expanded(
-              child: TabBar(
-                indicatorColor: MyColors.grey,
-                tabs: [
-                  Tab(child: Text("Home", style: TextStyle(color: MyColors.grey))),
-                  Tab(child: Text("Co-op", style: TextStyle(color: MyColors.grey))),
-                  Tab(child: Text("Resume", style: TextStyle(color: MyColors.grey)))
-                ],
-              ),
-            ),
+              const TabBar(
+                  isScrollable: true,
+                  indicatorColor: MyColors.grey,
+                  tabs: [
+                    Tab(child: Text("Home", style: TextStyle(color: MyColors.grey))),
+                    Tab(child: Text("Co-op", style: TextStyle(color: MyColors.grey))),
+                    Tab(child: Text("Resume", style: TextStyle(color: MyColors.grey)))
+                  ],
+                ),
             ],
           ),
           backgroundColor: MyColors.transparent,
@@ -101,6 +100,8 @@ class MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+// class Home
 
 // const SimpleCalculator()
 

@@ -43,7 +43,7 @@ class WindowController {
 
   VoidCallback onUpdate;
 
-  void addCalculatorWindow(){
+  void addCalculatorWindow() {
     createNewWindow(title: "Calculator", body: const SimpleCalculator());
   }
 
@@ -91,11 +91,11 @@ class WindowController {
                         
 I use this site to showcase my work, and write about what I'm up to.
                        
-This site was implemented using Flutter (a UI software development kit created by Google) and is compiled to target the web, so it is unlike a traditional js/html website.
+This site was implemented using Flutter (a UI software development kit created by Google) and is compiled to target the web, so it is unlike a traditional javascript/html website.
 
 Try moving around some windows.''';
 
-    createNewWindow(title: "About This Site", width: 300, height: 330, x: 100, y: 20, body: 
+    createNewWindow(title: "About This Site", width: 300, height: 340, x: 100, y: 20, body: 
       Container(
         color: MyColors.grey,
         padding: const EdgeInsets.all(10.0),
