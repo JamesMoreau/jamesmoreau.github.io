@@ -36,12 +36,14 @@ class MainPageState extends State<MainPage> {
   void changeColor(Color color) => setState(() => currentColor = color);
 
   WindowController? windowController;
+  // ChessGameState? state;
 
   @override
   void initState() {
     super.initState();
 
     windowController = WindowController(() { setState(() {}); });
+    // state = ches.initialBoardPosition();
   }
 
   @override
@@ -91,8 +93,9 @@ class MainPageState extends State<MainPage> {
         body: TabBarView(
           children: [
             WindowArea(windowController: windowController!),
-            Text("Hello, Sailor!"),
-            Text("Foobar!")
+            // const Text("Hello, Sailor!"),
+            const CoopTab(),
+            const Text("Foobar!")
           ],
         )
         
@@ -101,7 +104,17 @@ class MainPageState extends State<MainPage> {
   }
 }
 
-// class Home
+// class Home extends StatefulWidget
+
+class CoopTab extends StatelessWidget {
+  const CoopTab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        padding: const EdgeInsets.all(10), child: const Text("Hello, Sailor!"));
+  }
+}
 
 // const SimpleCalculator()
 

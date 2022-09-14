@@ -53,8 +53,8 @@ class WindowController {
 
     // Set initial position if none supplied.
     var rng = Random();
-    x == -1 ? resizableWindow.x = rng.nextDouble() * 500 : resizableWindow.x = x;
-    y == -1 ? resizableWindow.y = rng.nextDouble() * 500 : resizableWindow.y = y;
+    x == -1 ? resizableWindow.x = rng.nextDouble() * 600 : resizableWindow.x = x;
+    y == -1 ? resizableWindow.y = rng.nextDouble() * 600: resizableWindow.y = y;
 
     // Set initial dimensions if none supplied.
     width == -1  ? resizableWindow.width  = 400 : resizableWindow.width = width;
