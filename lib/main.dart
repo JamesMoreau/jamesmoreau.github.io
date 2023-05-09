@@ -40,7 +40,11 @@ class MainPage extends StatefulWidget {
   MainPageState createState() => MainPageState();
 }
 
-class MainPageState extends State<MainPage> {
+class MainPageState extends State<MainPage>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController tabSelector;
+  late final Animation<double> tabSelectorAnimation;
+
   // Color currentColor = MyColors.backgroundColor;
   // void changeColor(Color color) => setState(() => currentColor = color);
   Tab currentTab = Tab.main;
@@ -58,6 +62,21 @@ This site was implemented using Flutter (a UI software development kit created b
   @override
   void initState() {
     super.initState();
+
+    tabSelector = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+    tabSelector.repeat(reverse: true);
+
+    tabSelectorAnimation =
+        Tween<double>(begin: -5, end: 0).animate(tabSelector);
+  }
+
+  @override
+  void dispose() {
+    tabSelector.dispose();
+    super.dispose();
   }
 
   void onTabChanged(Tab tab) {
@@ -113,27 +132,61 @@ This site was implemented using Flutter (a UI software development kit created b
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                TextButton(
-                                    child: const Text('Home',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18)),
-                                    onPressed: () => onTabChanged(Tab.main)),
-                                TextButton(
-                                    child: const Text('Work',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18)),
-                                    onPressed: () => onTabChanged(Tab.work)),
-                                TextButton(
-                                    child: const Text('Contact',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18)),
-                                    onPressed: () => onTabChanged(Tab.contact)),
-                              ])
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    for (var value in Tab.values)
+                                      value ==
+                                              currentTab // draw the currently selected tab differently.
+                                          ? Row(
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: TextButton(
+                                                      child: Text(value.name,
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize:
+                                                                      18)),
+                                                      onPressed: () =>
+                                                          onTabChanged(value)),
+                                                ),
+                                                Center(
+                                                  child: AnimatedBuilder(
+                                                    animation:
+                                                        tabSelectorAnimation,
+                                                    builder:
+                                                        (BuildContext context,
+                                                            Widget? child) {
+                                                      return Transform
+                                                          .translate(
+                                                        offset: Offset(
+                                                            tabSelectorAnimation
+                                                                .value,
+                                                            0),
+                                                        child: child,
+                                                      );
+                                                    },
+                                                    child: const Icon(
+                                                        Icons.arrow_back_ios),
+                                                  ),
+                                                )
+                                              ],
+                                            )
+                                          : Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: TextButton(
+                                                  child: Text(value.name,
+                                                      style: const TextStyle(
+                                                          fontSize: 18)),
+                                                  onPressed: () =>
+                                                      onTabChanged(value)),
+                                            )
+                                  ])
                             ],
                           )
                         ],
