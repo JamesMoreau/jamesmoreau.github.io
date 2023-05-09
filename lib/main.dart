@@ -1,7 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_website/constants.dart';
+import 'package:my_website/tab_container.dart';
 import 'package:my_website/windows.dart';
+
+/*
+  TODO:
+    add fade in to text
+    make sizes relative to screen size.
+    add contact send email ui and other links
+    show different ui based on which tab was clicked (could be an arrow that flashes?)
+    add resume, co-op, previous work, contact/links, game.  
+
+*/
 
 void main() {
   runApp(const MyApp());
@@ -14,9 +25,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: websiteTitle,
-      theme: ThemeData(primaryColor: Colors.grey.shade800),
+      theme: lightApplicationTheme,
       home: const MainPage(title: websiteTitle),
-      // debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -31,80 +41,181 @@ class MainPage extends StatefulWidget {
 }
 
 class MainPageState extends State<MainPage> {
+  // Color currentColor = MyColors.backgroundColor;
+  // void changeColor(Color color) => setState(() => currentColor = color);
+  Tab currentTab = Tab.main;
 
-  Color currentColor = MyColors.backgroundColor;
-  void changeColor(Color color) => setState(() => currentColor = color);
+  String aboutText = '''
+Hello, and welcome to my website. This site is all about myself, so if you aren't interested in me, then feel free to close this window! 
+  
+I use this site to showcase my work, and write about what I'm up to.''';
 
-  WindowController? windowController;
-  // ChessGameState? state;
+  final aboutThisWebsiteText = '''
+This site was implemented using Flutter (a UI software development kit created by Google) and is compiled to target the web, so it is unlike a traditional JS Framework + html website.''';
+
+  final contactText = '''email: jamespmoreau@protonmail.ca''';
 
   @override
   void initState() {
     super.initState();
+  }
 
-    windowController = WindowController(() { setState(() {}); });
-    // state = ches.initialBoardPosition();
+  void onTabChanged(Tab tab) {
+    setState(() {
+      currentTab = tab;
+      print('Changing tab to ' + currentTab.name);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-
     return DefaultTabController(
       length: 3,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Row(
+      child: Container(
+        color: Theme.of(context).colorScheme.background,
+        padding: const EdgeInsets.all(50),
+        child: Scaffold(
+            body: Container(
+          decoration: BoxDecoration(
+              border: Border.all(
+            color: Theme.of(context).colorScheme.primary,
+          )),
+          alignment: Alignment.center,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text(widget.title, style: const TextStyle(color: MyColors.grey)),
-              const Spacer(),
-              const TabBar(
-                  isScrollable: true,
-                  indicatorColor: MyColors.grey,
-                  tabs: [
-                    Tab(child: Text("Home", style: TextStyle(color: MyColors.grey))),
-                    Tab(child: Text("Co-op", style: TextStyle(color: MyColors.grey))),
-                    Tab(child: Text("Resume", style: TextStyle(color: MyColors.grey)))
-                  ],
-                ),
+              Flexible(
+                flex: 1,
+                child: Container(
+                    alignment: Alignment.topLeft,
+                    padding: const EdgeInsets.all(30),
+                    child: Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(websiteTitle,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 30)),
+                          const SizedBox(height: 10),
+                          const Text(jobTitle),
+                          const SizedBox(height: 100),
+                          const Text('About',
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                          const SizedBox(height: 20),
+                          Text(aboutText),
+                          const SizedBox(height: 30),
+                          const Text('This Site',
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                          const SizedBox(height: 20),
+                          Text(aboutThisWebsiteText),
+                          const SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                TextButton(
+                                    child: const Text('Home',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18)),
+                                    onPressed: () => onTabChanged(Tab.main)),
+                                TextButton(
+                                    child: const Text('Work',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18)),
+                                    onPressed: () => onTabChanged(Tab.work)),
+                                TextButton(
+                                    child: const Text('Contact',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18)),
+                                    onPressed: () => onTabChanged(Tab.contact)),
+                              ])
+                            ],
+                          )
+                        ],
+                      ),
+                    )),
+              ),
+              Flexible(
+                flex: 1,
+                child: Container(
+                    padding: const EdgeInsets.all(30),
+                    alignment: Alignment.center,
+                    child: getTab(currentTab)),
+              ),
             ],
           ),
-          backgroundColor: MyColors.transparent,
-          elevation: 0,
-        ),
-          backgroundColor: currentColor,
-          floatingActionButton: Wrap(children: <Widget>[
-            FloatingActionButton(
-              child: const Icon(Icons.add),
-              onPressed: () {
-                windowController!.addCalculatorWindow();
-                windowController!.addAboutWindow();
-                windowController!.addColorPickerWindow(currentColor, changeColor);
-                windowController!.addMetricsWindow();
-              },
-            ),
-            FloatingActionButton(
-              child: const Icon(Icons.cancel),
-              onPressed: () {
-                windowController!.closeAllWindows();
-              }
-            )
-          ]
-        ),
-        body: TabBarView(
-          children: [
-            WindowArea(windowController: windowController!),
-            // const Text("Hello, Sailor!"),
-            const CoopTab(),
-            const Text("Foobar!")
-          ],
-        )
-        
+        )),
       ),
     );
   }
 }
 
-// class Home extends StatefulWidget
+class MainFerrariTab extends StatelessWidget {
+  const MainFerrariTab({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          const SizedBox(
+            width: 400,
+            height: 400,
+          ),
+          Positioned(
+            left: 0,
+            top: 0,
+            child: Container(
+                width: 300,
+                height: 300,
+                decoration: BoxDecoration(
+                    border: Border.all(
+                  color: Colors.black,
+                  width: 10,
+                ))),
+          ),
+          Positioned(
+              bottom: 0,
+              right: 0,
+              child: Container(
+                decoration: BoxDecoration(
+                    border: Border.all(
+                  color: Colors.black,
+                  width: 1,
+                )),
+                child: Image.asset('assets/mark_ferrari_nature.gif',
+                    width: 300, height: 300, fit: BoxFit.cover),
+              )),
+        ],
+      ),
+    );
+  }
+}
+
+Widget getTab(Tab tab) {
+  switch (tab) {
+    case Tab.main:
+      return MainFerrariTab();
+    case Tab.work:
+      return Text('work');
+    case Tab.contact:
+      return Text('contact');
+    case Tab.flutter:
+      return Text('flutter');
+    case Tab.game:
+      return Text('game');
+  }
+}
+
+enum Tab { main, work, contact, flutter, game }
 
 class CoopTab extends StatelessWidget {
   const CoopTab({super.key});
@@ -116,154 +227,67 @@ class CoopTab extends StatelessWidget {
   }
 }
 
-// const SimpleCalculator()
+/* Theme data */
 
-/*import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:statsfl/statsfl.dart';
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: "James' Website"),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => MyHomePageState();
-}
-
-class MyHomePageState extends State<MyHomePage> {
-  int counter = 0;
-  Color currentColor = const Color.fromARGB(0xFF, 0xFA, 0xFF, 0xBF);
-  List<Color> currentColors = [Colors.yellow, Colors.green];
-  List<Color> colorHistory = [];
-
-  void changeColor(Color color) => setState(() => currentColor = color);
-  void changeColors(List<Color> colors) => setState(() => currentColors = colors);
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      backgroundColor: currentColor,
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-        backgroundColor: const Color.fromARGB(0, 0, 0, 0),
-        elevation: 0,
-        
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            ElevatedButton(
-              onPressed: () => showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                        title: const Text("Change Color"),
-                        content: Container(
-                          color: Colors.white,
-                          child: SlidePicker(
-                            pickerColor: currentColor,
-                            onColorChanged: changeColor,
-                            enableAlpha: false,
-                            showParams: false,
-                            showIndicator: false,
-                          ),
-                        ),
-                      )),
-              child: null,
-            ),
-            StatsFl(maxFps: 300),
-            Text(currentColor.toString())
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
-}
-*/
+ThemeData lightApplicationTheme = ThemeData(
+  // primarySwatch: MaterialColor(0xff6fb3b8, {}),
+  brightness: Brightness.light,
+  colorScheme: const ColorScheme(
+      brightness: Brightness.light,
+      primary: Color(0xff2b2b2b),
+      onPrimary: Colors.white,
+      secondary: Colors.yellow,
+      onSecondary: Colors.white,
+      error: Colors.red,
+      onError: Colors.white,
+      background: Color(0xffe6e6e6),
+      onBackground: Color(0xff2b2b2b),
+      surface: Color(0xffc2edce),
+      onSurface: Colors.white),
+  appBarTheme: AppBarTheme(
+      backgroundColor: Color(0xffe6e6e6),
+      titleTextStyle: TextStyle(
+          color: Color(0xff2b2b2b),
+          fontWeight: FontWeight.bold,
+          fontSize: 30,
+          fontFamily: GoogleFonts.inconsolata().fontFamily)),
+  iconTheme: const IconThemeData(),
+  fontFamily: GoogleFonts.inconsolata().fontFamily,
+  // textTheme: const TextTheme(
+  //   displayLarge: TextStyle(fontSize: 18, color: Color(0xff2b2b2b)),
+  //   displayMedium: TextStyle(fontSize: 16, color: Color(0xff2b2b2b)),
+  //   displaySmall: TextStyle(fontSize: 14, color: Color(0xff2b2b2b)),
+  //   headlineSmall: TextStyle(
+  //       fontSize: 14, fontWeight: FontWeight.bold, color: Color(0xff2b2b2b)),
+  //   headlineMedium: TextStyle(
+  //       fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xff2b2b2b)),
+  // ),
+  // tabBarTheme: const TabBarTheme(
+  //   labelColor: Color(0xff2b2b2b),
+  //   unselectedLabelColor: Colors.grey,
+  //   labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+  //   // unselectedLabelStyle: TextStyle(fontSize: 14),
+  // ),
+  tabBarTheme: TabBarTheme(
+    labelColor: const Color(0xff2b2b2b),
+    unselectedLabelColor: Colors.grey,
+    // labelStyle: TextStyle(
+    //     fontSize: 16,
+    //     fontWeight: FontWeight.bold,
+    //     fontFamily: GoogleFonts.inconsolata().fontFamily),
+    // unselectedLabelStyle: TextStyle(
+    //     fontSize: 16,
+    //     fontWeight: FontWeight.bold,
+    //     fontFamily: GoogleFonts.inconsolata().fontFamily),
+    indicator: const BoxDecoration(), // this make the indicator invisible
+    overlayColor:
+        MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+      if (states.contains(MaterialState.hovered) ||
+          states.contains(MaterialState.pressed)) return Colors.transparent;
+      return Colors.red;
+    }),
+  ),
+  splashColor: Colors.transparent,
+  hoverColor: Colors.transparent,
+  scaffoldBackgroundColor: const Color(0xffe6e6e6),
+);

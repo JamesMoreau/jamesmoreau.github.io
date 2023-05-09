@@ -11,4 +11,5 @@ class MyColors {
   static const transparent = Color.fromARGB(0, 0, 0, 0);
 }
 
-const websiteTitle = "James' Website"; 
+const websiteTitle = "James Rush";
+const jobTitle = "Programmer";
