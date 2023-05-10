@@ -11,5 +11,11 @@ class MyColors {
   static const transparent = Color.fromARGB(0, 0, 0, 0);
 }
 
-const websiteTitle = "James Rush";
+const myName = "James Rush";
 const jobTitle = "Programmer";
+const email = "jamespmoreau@protonmail.ca";
+const githubLink = 'https://github.com/JamesMoreau';
+const university = 'University of Guelph';
+const degree = 'Honours Bachelors of Computer Science';
+const linkedInLink = 'https://www.linkedin.com/in/james-moreau/';
+const markFerrariNatureGifPath = 'assets/mark_ferrari_nature.gif';

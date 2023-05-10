@@ -6,12 +6,10 @@ import 'package:my_website/windows.dart';
 
 /*
   TODO:
-    add fade in to text
     make sizes relative to screen size.
     add contact send email ui and other links
-    show different ui based on which tab was clicked (could be an arrow that flashes?)
-    add resume, co-op, previous work, contact/links, game.  
-
+    add resume, co-op, previous work, contact/links, game.
+    figure how to name the tabs better
 */
 
 void main() {
@@ -24,17 +22,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: websiteTitle,
       theme: lightApplicationTheme,
-      home: const MainPage(title: websiteTitle),
+      home: const MainPage(),
     );
   }
 }
 
 class MainPage extends StatefulWidget {
-  const MainPage({super.key, required this.title});
-
-  final String title;
+  const MainPage({super.key});
 
   @override
   MainPageState createState() => MainPageState();
@@ -47,17 +42,7 @@ class MainPageState extends State<MainPage>
 
   // Color currentColor = MyColors.backgroundColor;
   // void changeColor(Color color) => setState(() => currentColor = color);
-  Tab currentTab = Tab.main;
-
-  String aboutText = '''
-Hello, and welcome to my website. This site is all about myself, so if you aren't interested in me, then feel free to close this window! 
-  
-I use this site to showcase my work, and write about what I'm up to.''';
-
-  final aboutThisWebsiteText = '''
-This site was implemented using Flutter (a UI software development kit created by Google) and is compiled to target the web, so it is unlike a traditional JS Framework + html website.''';
-
-  final contactText = '''email: jamespmoreau@protonmail.ca''';
+  Tab currentTab = Tab.about;
 
   @override
   void initState() {
@@ -112,89 +97,63 @@ This site was implemented using Flutter (a UI software development kit created b
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(websiteTitle,
+                          const Text(myName,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 30)),
                           const SizedBox(height: 10),
                           const Text(jobTitle),
-                          const SizedBox(height: 100),
-                          const Text('About',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                          const SizedBox(height: 20),
-                          Text(aboutText),
-                          const SizedBox(height: 30),
-                          const Text('This Site',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                          const SizedBox(height: 20),
-                          Text(aboutThisWebsiteText),
-                          const SizedBox(height: 20),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                          const SizedBox(height: 40),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    for (var value in Tab.values)
-                                      value ==
-                                              currentTab // draw the currently selected tab differently.
-                                          ? Row(
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: TextButton(
-                                                      child: Text(value.name,
-                                                          style:
-                                                              const TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  fontSize:
-                                                                      18)),
-                                                      onPressed: () =>
-                                                          onTabChanged(value)),
-                                                ),
-                                                Center(
-                                                  child: AnimatedBuilder(
-                                                    animation:
-                                                        tabSelectorAnimation,
-                                                    builder:
-                                                        (BuildContext context,
-                                                            Widget? child) {
-                                                      return Transform
-                                                          .translate(
-                                                        offset: Offset(
-                                                            tabSelectorAnimation
-                                                                .value,
-                                                            0),
-                                                        child: child,
-                                                      );
-                                                    },
-                                                    child: const Icon(
-                                                        Icons.arrow_back_ios),
-                                                  ),
-                                                )
-                                              ],
-                                            )
-                                          : Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: TextButton(
-                                                  child: Text(value.name,
-                                                      style: const TextStyle(
-                                                          fontSize: 18)),
-                                                  onPressed: () =>
-                                                      onTabChanged(value)),
-                                            )
-                                  ])
-                            ],
-                          )
+                            for (var value in Tab.values)
+                              value ==
+                                      currentTab // draw the currently selected tab differently.
+                                  ? Padding(
+                                    padding: const EdgeInsets.only(bottom: 8),
+                                    child: Row(
+                                        children: [
+                                          TextButton(
+                                              child: Text(value.name,
+                                                  style: const TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: 18)),
+                                              onPressed: () =>
+                                                  onTabChanged(value)),
+                                          Center(
+                                            child: AnimatedBuilder(
+                                              animation: tabSelectorAnimation,
+                                              builder: (BuildContext context,
+                                                  Widget? child) {
+                                                return Transform.translate(
+                                                  offset: Offset(
+                                                      tabSelectorAnimation.value,
+                                                      0),
+                                                  child: child,
+                                                );
+                                              },
+                                              child: const Icon(
+                                                  Icons.arrow_back_ios),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                  )
+                                  : Padding(
+                                    padding: const EdgeInsets.only(bottom: 8),
+                                    child: TextButton(
+                                        child: Text(value.name,
+                                            style: const TextStyle(fontSize: 18)),
+                                        onPressed: () => onTabChanged(value)),
+                                  ),
+                                const SizedBox(height: 10)
+                          ]),
                         ],
                       ),
                     )),
               ),
               Flexible(
-                flex: 1,
+                flex: 3,
                 child: Container(
                     padding: const EdgeInsets.all(30),
                     alignment: Alignment.center,
@@ -208,45 +167,78 @@ This site was implemented using Flutter (a UI software development kit created b
   }
 }
 
-class MainFerrariTab extends StatelessWidget {
-  const MainFerrariTab({
+class AboutTab extends StatelessWidget {
+  final String aboutText = '''
+Hello, and welcome to my website. This site is all about myself, so if you aren't interested in me, then feel free to close this window! 
+  
+I use this site to showcase my work, and write about what I'm up to.''';
+
+  final String aboutThisWebsiteText = '''
+This site was implemented using Flutter (a UI software development kit created by Google) and is compiled to target the web, so it is unlike a traditional JS Framework + html website.''';
+
+  const AboutTab({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Stack(
-        alignment: Alignment.center,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          const SizedBox(
-            width: 400,
-            height: 400,
+          Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const Text('About',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+                const SizedBox(height: 20),
+                Text(aboutText),
+                const SizedBox(height: 30),
+                const Text('This Site',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+                const SizedBox(height: 20),
+                Text(aboutThisWebsiteText),
+              ]),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  const SizedBox(
+                    width: 400,
+                    height: 400,
+                  ),
+                  Positioned(
+                    left: 0,
+                    top: 0,
+                    child: Container(
+                        width: 300,
+                        height: 300,
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                          color: Colors.black,
+                          width: 10,
+                        ))),
+                  ),
+                  Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                          color: Colors.black,
+                          width: 1,
+                        )),
+                        child: Image.asset(markFerrariNatureGifPath,
+                            width: 300, height: 300, fit: BoxFit.cover),
+                      )),
+                ],
+              ),
+            ],
           ),
-          Positioned(
-            left: 0,
-            top: 0,
-            child: Container(
-                width: 300,
-                height: 300,
-                decoration: BoxDecoration(
-                    border: Border.all(
-                  color: Colors.black,
-                  width: 10,
-                ))),
-          ),
-          Positioned(
-              bottom: 0,
-              right: 0,
-              child: Container(
-                decoration: BoxDecoration(
-                    border: Border.all(
-                  color: Colors.black,
-                  width: 1,
-                )),
-                child: Image.asset('assets/mark_ferrari_nature.gif',
-                    width: 300, height: 300, fit: BoxFit.cover),
-              )),
         ],
       ),
     );
@@ -255,8 +247,8 @@ class MainFerrariTab extends StatelessWidget {
 
 Widget getTab(Tab tab) {
   switch (tab) {
-    case Tab.main:
-      return MainFerrariTab();
+    case Tab.about:
+      return AboutTab();
     case Tab.work:
       return Text('work');
     case Tab.contact:
@@ -265,10 +257,12 @@ Widget getTab(Tab tab) {
       return Text('flutter');
     case Tab.game:
       return Text('game');
+    case Tab.coop:
+      return Text('Co-op');
   }
 }
 
-enum Tab { main, work, contact, flutter, game }
+enum Tab { about, work, contact, coop, flutter, game }
 
 class CoopTab extends StatelessWidget {
   const CoopTab({super.key});
@@ -276,7 +270,7 @@ class CoopTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: const EdgeInsets.all(10), child: const Text("Hello, Sailor!"));
+        padding: const EdgeInsets.all(10), child: const Text('Hello, Sailor!'));
   }
 }
 
