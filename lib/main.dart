@@ -1,8 +1,11 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_website/constants.dart';
 import 'package:my_website/tab_container.dart';
 import 'package:my_website/windows.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /*
   TODO:
@@ -42,7 +45,7 @@ class MainPageState extends State<MainPage>
 
   // Color currentColor = MyColors.backgroundColor;
   // void changeColor(Color color) => setState(() => currentColor = color);
-  Tab currentTab = Tab.about;
+  Tab currentTab = Tab.contact;
 
   @override
   void initState() {
@@ -97,57 +100,65 @@ class MainPageState extends State<MainPage>
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(myName,
+                          const SelectableText(myName,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 30)),
                           const SizedBox(height: 10),
-                          const Text(jobTitle),
+                          const SelectableText(jobTitle),
                           const SizedBox(height: 40),
                           Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                            for (var value in Tab.values)
-                              value ==
-                                      currentTab // draw the currently selected tab differently.
-                                  ? Padding(
-                                    padding: const EdgeInsets.only(bottom: 8),
-                                    child: Row(
-                                        children: [
-                                          TextButton(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                for (var value in Tab.values)
+                                  value ==
+                                          currentTab // draw the currently selected tab differently.
+                                      ? Padding(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 8),
+                                          child: Row(
+                                            children: [
+                                              TextButton(
+                                                  child: Text(value.name,
+                                                      style: const TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 18)),
+                                                  onPressed: () =>
+                                                      onTabChanged(value)),
+                                              Center(
+                                                child: AnimatedBuilder(
+                                                  animation:
+                                                      tabSelectorAnimation,
+                                                  builder:
+                                                      (BuildContext context,
+                                                          Widget? child) {
+                                                    return Transform.translate(
+                                                      offset: Offset(
+                                                          tabSelectorAnimation
+                                                              .value,
+                                                          0),
+                                                      child: child,
+                                                    );
+                                                  },
+                                                  child: const Icon(
+                                                      Icons.arrow_back_ios),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      : Padding(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 8),
+                                          child: TextButton(
                                               child: Text(value.name,
                                                   style: const TextStyle(
-                                                      fontWeight: FontWeight.bold,
                                                       fontSize: 18)),
                                               onPressed: () =>
                                                   onTabChanged(value)),
-                                          Center(
-                                            child: AnimatedBuilder(
-                                              animation: tabSelectorAnimation,
-                                              builder: (BuildContext context,
-                                                  Widget? child) {
-                                                return Transform.translate(
-                                                  offset: Offset(
-                                                      tabSelectorAnimation.value,
-                                                      0),
-                                                  child: child,
-                                                );
-                                              },
-                                              child: const Icon(
-                                                  Icons.arrow_back_ios),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                  )
-                                  : Padding(
-                                    padding: const EdgeInsets.only(bottom: 8),
-                                    child: TextButton(
-                                        child: Text(value.name,
-                                            style: const TextStyle(fontSize: 18)),
-                                        onPressed: () => onTabChanged(value)),
-                                  ),
+                                        ),
                                 const SizedBox(height: 10)
-                          ]),
+                              ]),
                         ],
                       ),
                     )),
@@ -168,13 +179,17 @@ class MainPageState extends State<MainPage>
 }
 
 class AboutTab extends StatelessWidget {
+  final about = '''About''';
   final String aboutText = '''
-Hello, and welcome to my website. This site is all about myself, so if you aren't interested in me, then feel free to close this window! 
-  
-I use this site to showcase my work, and write about what I'm up to.''';
+Hello, and welcome to my website. This site is all about me, so if you aren't interested in me, then feel free to close this window!
 
-  final String aboutThisWebsiteText = '''
-This site was implemented using Flutter (a UI software development kit created by Google) and is compiled to target the web, so it is unlike a traditional JS Framework + html website.''';
+I use this site to showcase my work and write about what I'm up to.
+
+I am currently pursuing an Honours Bachelor of Computer Science at the University of Guelph.''';
+
+  final String thisSite = '''This Site''';
+  final String aboutThisWebsiteText =
+      '''This site was implemented using Flutter (a UI software development kit created by Google) and is compiled to target the web.''';
 
   const AboutTab({
     super.key,
@@ -191,15 +206,18 @@ This site was implemented using Flutter (a UI software development kit created b
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const Text('About',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                const SizedBox(height: 20),
-                Text(aboutText),
-                const SizedBox(height: 30),
-                const Text('This Site',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                const SizedBox(height: 20),
-                Text(aboutThisWebsiteText),
+                SelectableText.rich(
+                  TextSpan(children: [
+                    TextSpan(
+                        text: '$about\n\n',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    TextSpan(text: '$aboutText\n\n\n'),
+                    TextSpan(
+                        text: '$thisSite\n\n',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    TextSpan(text: '$aboutThisWebsiteText\n'),
+                  ]),
+                ),
               ]),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -235,6 +253,11 @@ This site was implemented using Flutter (a UI software development kit created b
                         child: Image.asset(markFerrariNatureGifPath,
                             width: 300, height: 300, fit: BoxFit.cover),
                       )),
+                  Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: Text('Mark Ferrari',
+                          style: TextStyle(color: Colors.white)))
                 ],
               ),
             ],
@@ -252,21 +275,33 @@ Widget getTab(Tab tab) {
     case Tab.work:
       return Text('work');
     case Tab.contact:
-      return Text('contact');
+      return ContactTab();
     case Tab.flutter:
       return Text('flutter');
     case Tab.game:
       return Text('game');
     case Tab.coop:
-      return Text('Co-op');
+      return CoopTab();
   }
 }
 
 enum Tab { about, work, contact, coop, flutter, game }
 
-class CoopTab extends StatelessWidget {
+class Report {
+  final String reportName;
+  final String contents;
+
+  const Report({required this.reportName, required this.contents});
+}
+
+class CoopTab extends StatefulWidget {
   const CoopTab({super.key});
 
+  @override
+  State<CoopTab> createState() => _CoopTabState();
+}
+
+class _CoopTabState extends State<CoopTab> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -274,67 +309,89 @@ class CoopTab extends StatelessWidget {
   }
 }
 
-/* Theme data */
+class ContactTab extends StatelessWidget {
+  const ContactTab({super.key});
 
-ThemeData lightApplicationTheme = ThemeData(
-  // primarySwatch: MaterialColor(0xff6fb3b8, {}),
-  brightness: Brightness.light,
-  colorScheme: const ColorScheme(
-      brightness: Brightness.light,
-      primary: Color(0xff2b2b2b),
-      onPrimary: Colors.white,
-      secondary: Colors.yellow,
-      onSecondary: Colors.white,
-      error: Colors.red,
-      onError: Colors.white,
-      background: Color(0xffe6e6e6),
-      onBackground: Color(0xff2b2b2b),
-      surface: Color(0xffc2edce),
-      onSurface: Colors.white),
-  appBarTheme: AppBarTheme(
-      backgroundColor: Color(0xffe6e6e6),
-      titleTextStyle: TextStyle(
-          color: Color(0xff2b2b2b),
-          fontWeight: FontWeight.bold,
-          fontSize: 30,
-          fontFamily: GoogleFonts.inconsolata().fontFamily)),
-  iconTheme: const IconThemeData(),
-  fontFamily: GoogleFonts.inconsolata().fontFamily,
-  // textTheme: const TextTheme(
-  //   displayLarge: TextStyle(fontSize: 18, color: Color(0xff2b2b2b)),
-  //   displayMedium: TextStyle(fontSize: 16, color: Color(0xff2b2b2b)),
-  //   displaySmall: TextStyle(fontSize: 14, color: Color(0xff2b2b2b)),
-  //   headlineSmall: TextStyle(
-  //       fontSize: 14, fontWeight: FontWeight.bold, color: Color(0xff2b2b2b)),
-  //   headlineMedium: TextStyle(
-  //       fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xff2b2b2b)),
-  // ),
-  // tabBarTheme: const TabBarTheme(
-  //   labelColor: Color(0xff2b2b2b),
-  //   unselectedLabelColor: Colors.grey,
-  //   labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-  //   // unselectedLabelStyle: TextStyle(fontSize: 14),
-  // ),
-  tabBarTheme: TabBarTheme(
-    labelColor: const Color(0xff2b2b2b),
-    unselectedLabelColor: Colors.grey,
-    // labelStyle: TextStyle(
-    //     fontSize: 16,
-    //     fontWeight: FontWeight.bold,
-    //     fontFamily: GoogleFonts.inconsolata().fontFamily),
-    // unselectedLabelStyle: TextStyle(
-    //     fontSize: 16,
-    //     fontWeight: FontWeight.bold,
-    //     fontFamily: GoogleFonts.inconsolata().fontFamily),
-    indicator: const BoxDecoration(), // this make the indicator invisible
-    overlayColor:
-        MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
-      if (states.contains(MaterialState.hovered) ||
-          states.contains(MaterialState.pressed)) return Colors.transparent;
-      return Colors.red;
-    }),
-  ),
-  splashColor: Colors.transparent,
-  hoverColor: Colors.transparent,
-  scaffoldBackgroundColor: const Color(0xffe6e6e6),
-);
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+            SelectableText.rich(
+              TextSpan(
+                text: 'Email: ',
+                style: TextStyle(fontWeight: FontWeight.bold),
+                children: [
+                  TextSpan(
+                    text: myEmail,
+                    style: TextStyle(color: Colors.blue),
+                  ),
+                ],
+              ),
+            ),
+            IconButton(
+                icon: Icon(Icons.copy),
+                onPressed: () {
+                  Clipboard.setData(ClipboardData(text: myEmail));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Copied to clipboard')),
+                  );
+                }),
+            SizedBox(width: 20),
+            Icon(Icons.email, size: 40)
+          ]),
+          Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+            SelectableText.rich(
+              TextSpan(
+                text: 'Github: ',
+                style: TextStyle(fontWeight: FontWeight.bold),
+                children: [
+                  TextSpan(
+                      text: githubLink,
+                      style: TextStyle(color: Colors.blue),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () => launchMyUrl(githubLink)),
+                ],
+              ),
+            ),
+            SizedBox(width: 20),
+            Image.asset(githubIconPath, width: 40, height: 40)
+          ]),
+          Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+            SelectableText.rich(
+              TextSpan(
+                text: 'LinkedIn: ',
+                style: TextStyle(fontWeight: FontWeight.bold),
+                children: [
+                  TextSpan(
+                    text: linkedInLink,
+                    style: TextStyle(color: Colors.blue),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () => launchMyUrl(linkedInLink),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(width: 20),
+            Image.asset(linkedinIconPath, width: 40, height: 40)
+          ]),
+        ],
+      ),
+    );
+  }
+}
+
+Future<void> launchMyUrl(String link) async {
+  var url = Uri.parse(githubLink);
+  var canLaunch = await canLaunchUrl(url);
+  if (!canLaunch) {
+    print('Cannot launch url');
+    return;
+  }
+
+  print('launching url');
+  await launchUrl(url);
+}
