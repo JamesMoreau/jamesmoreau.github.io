@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,6 +8,7 @@ import 'package:my_website/constants.dart';
 import 'package:my_website/tab_container.dart';
 import 'package:my_website/windows.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:path/path.dart';
 
 /*
   TODO:
@@ -294,6 +297,30 @@ class Report {
   const Report({required this.reportName, required this.contents});
 }
 
+List<Report> readReportsFromDirectory(String directoryPath) {
+  List<Report> reports = [];
+
+  var directory = Directory(directoryPath);
+
+  if (!directory.existsSync()) {
+    print('Unable to get reports.');
+    return [];
+  }
+
+  var files = directory.listSync(followLinks: false, recursive: false);
+
+  for (var file in files) {
+    if (file is! File) continue;
+
+    var fileContents = file.readAsStringSync();
+    var name = basename(file.path);
+
+    reports.add(Report(reportName: name, contents: fileContents));
+  }
+
+  return reports;
+}
+
 class CoopTab extends StatefulWidget {
   const CoopTab({super.key});
 
@@ -302,10 +329,21 @@ class CoopTab extends StatefulWidget {
 }
 
 class _CoopTabState extends State<CoopTab> {
+  List<Report> reports = [];
+
+  @override
+  void initState() {
+    reports = readReportsFromDirectory(coopTermReportsDirectory);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: const EdgeInsets.all(10), child: const Text('Hello, Sailor!'));
+        padding: const EdgeInsets.all(10), child: Column(children: [
+          for (var report in reports)
+            Text(report.reportName),
+        ]));
   }
 }
 
