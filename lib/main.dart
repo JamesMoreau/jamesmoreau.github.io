@@ -1,8 +1,6 @@
-import 'dart:io';
-
+import 'package:flutter/services.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_website/constants.dart';
 import 'package:my_website/tab_container.dart';
@@ -13,7 +11,7 @@ import 'package:path/path.dart';
 /*
   TODO:
     make sizes relative to screen size.
-    add contact send email ui and other links
+    add something about Lost in Translation
     add resume, co-op, previous work, contact/links, game.
     figure how to name the tabs better
 */
@@ -48,7 +46,7 @@ class MainPageState extends State<MainPage>
 
   // Color currentColor = MyColors.backgroundColor;
   // void changeColor(Color color) => setState(() => currentColor = color);
-  Tab currentTab = Tab.contact;
+  Tab currentTab = Tab.coop;
 
   @override
   void initState() {
@@ -273,52 +271,23 @@ I am currently pursuing an Honours Bachelor of Computer Science at the Universit
 
 Widget getTab(Tab tab) {
   switch (tab) {
-    case Tab.about:
-      return AboutTab();
-    case Tab.work:
-      return Text('work');
-    case Tab.contact:
-      return ContactTab();
-    case Tab.flutter:
-      return Text('flutter');
-    case Tab.game:
-      return Text('game');
-    case Tab.coop:
-      return CoopTab();
+    case Tab.about:   return AboutTab();
+    case Tab.work:    return Text('work');
+    case Tab.contact: return ContactTab();
+    case Tab.flutter: return Text('flutter');
+    case Tab.game:    return Text('game');
+    case Tab.coop:    return CoopTab();
+    case Tab.resume:  return Text('Resume');
   }
 }
 
-enum Tab { about, work, contact, coop, flutter, game }
+enum Tab { about, work, resume, contact, coop, flutter, game }
 
 class Report {
   final String reportName;
   final String contents;
 
   const Report({required this.reportName, required this.contents});
-}
-
-List<Report> readReportsFromDirectory(String directoryPath) {
-  List<Report> reports = [];
-
-  var directory = Directory(directoryPath);
-
-  if (!directory.existsSync()) {
-    print('Unable to get reports.');
-    return [];
-  }
-
-  var files = directory.listSync(followLinks: false, recursive: false);
-
-  for (var file in files) {
-    if (file is! File) continue;
-
-    var fileContents = file.readAsStringSync();
-    var name = basename(file.path);
-
-    reports.add(Report(reportName: name, contents: fileContents));
-  }
-
-  return reports;
 }
 
 class CoopTab extends StatefulWidget {
@@ -333,17 +302,40 @@ class _CoopTabState extends State<CoopTab> {
 
   @override
   void initState() {
-    reports = readReportsFromDirectory(coopTermReportsDirectory);
+    readReports(coopTermReports);
     super.initState();
+  }
+
+  Future<void> readReports(List<String> reportPaths) async {
+    for (var path in reportPaths) {
+      var name = basename(path);
+      var fileContents = await rootBundle.loadString(path);
+
+      reports.add(Report(reportName: name, contents: fileContents));
+    }
+
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: const EdgeInsets.all(10), child: Column(children: [
-          for (var report in reports)
-            Text(report.reportName),
-        ]));
+        padding: const EdgeInsets.all(10),
+        child: ListView(
+            children: [
+              for (int i = 0; i < reports.length; i++)
+               Padding(
+                padding: const EdgeInsets.all(10),
+                child: ExpansionTile(
+                    controlAffinity: ListTileControlAffinity.leading,
+                    title: Text(reports[i].reportName),
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width * .6,
+                        child: Text(reports[i].contents)),
+                    ]),
+              )
+            ]));
   }
 }
 

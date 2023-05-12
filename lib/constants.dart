@@ -23,6 +23,7 @@ const markFerrariNatureGifPath = 'assets/mark_ferrari_nature.gif';
 const linkedinIconPath = 'assets/linkedin.png';
 const githubIconPath = 'assets/github.png';
 const coopTermReportsDirectory = 'coop_term_reports/';
+const List<String> coopTermReports = [ 'coop_term_reports/fall_2020_report.txt', 'coop_term_reports/summer_2021_report.txt', 'coop_term_reports/winter_summer_2022_report.txt'];
 
 /* Theme data */
 
@@ -83,6 +84,24 @@ ThemeData lightApplicationTheme = ThemeData(
           states.contains(MaterialState.pressed)) return Colors.transparent;
       return Colors.red;
     }),
+  ),
+  // listTileTheme: ListTileThemeData(
+  //   tileColor: const Color(0xff2b2b2b),
+  //   textColor: Colors.white,
+  //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+  // ),
+  expansionTileTheme: ExpansionTileThemeData(
+    // collapsed
+    collapsedBackgroundColor: const Color(0xff2b2b2b),
+    collapsedTextColor: Colors.white,
+    collapsedShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+    collapsedIconColor: Colors.white,
+    // open
+    backgroundColor: Colors.transparent,
+    textColor: const Color(0xff2b2b2b),
+    iconColor: const Color(0xff2b2b2b),
+    //other
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
   ),
   snackBarTheme: SnackBarThemeData(
     insetPadding: EdgeInsets.only(bottom: 20),
