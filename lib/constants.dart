@@ -28,7 +28,7 @@ const List<String> coopTermReports = [
   'coop_term_reports/summer_2021_report.txt',
   'coop_term_reports/winter_summer_2022_report.txt'
 ];
-const resumePngPath = 'assets/sample.png';
+const resumePngPath = 'assets/resume.png';
 
 /* Theme data */
 

@@ -423,18 +423,30 @@ class ResumeTab extends StatefulWidget {
 }
 
 class _ResumeTabState extends State<ResumeTab> {
+  PhotoViewScaleStateController scaleStateController = PhotoViewScaleStateController();
+
   @override
   void initState() {
     super.initState();
+    scaleStateController = PhotoViewScaleStateController();
+  }
+
+  void foo(){
+    // scaleStateController.
+  }
+
+  @override
+  void dispose() {
+    scaleStateController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // return PhotoView(imageProvider: AssetImage(resumePngPath), backgroundDecoration: BoxDecoration(color: Colors.transparent));
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Image.asset(resumePngPath),
+        Image.asset(resumePngPath, filterQuality: FilterQuality.high),
         Align(
             alignment: Alignment.topLeft,
             child: IconButton(
@@ -443,35 +455,36 @@ class _ResumeTabState extends State<ResumeTab> {
       ],
     );
   }
-}
 
-void showImageDialog(BuildContext context, String imagePath) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return Dialog.fullscreen(
-          child: Stack(
-            alignment: Alignment.center,
-        children: [
-          PhotoView(
-            imageProvider: AssetImage(imagePath),
-            enableRotation: false,
-          ),
-          Positioned(
-            bottom: 30,
-
-            child: Padding(
-              padding: const EdgeInsets.all(8),
-              child: ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text('Close')),
+  void showImageDialog(BuildContext context, String imagePath) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog.fullscreen(
+            child: Stack(
+              alignment: Alignment.center,
+          children: [
+            PhotoView(
+              imageProvider: AssetImage(imagePath),
+              filterQuality: FilterQuality.high,
+              enableRotation: false,
             ),
-          ),
-        ],
-      ));
-    },
-  );
+            Positioned(
+              bottom: 30,
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: ElevatedButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text('Close')),
+              ),
+            ),
+          ],
+        ));
+      },
+    );
+  }
 }
+
 
 Future<void> launchMyUrl(String link) async {
   var url = Uri.parse(githubLink);
