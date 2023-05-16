@@ -23,12 +23,18 @@ const markFerrariNatureGifPath = 'assets/mark_ferrari_nature.gif';
 const linkedinIconPath = 'assets/linkedin.png';
 const githubIconPath = 'assets/github.png';
 const coopTermReportsDirectory = 'coop_term_reports/';
-const List<String> coopTermReports = [ 'coop_term_reports/fall_2020_report.txt', 'coop_term_reports/summer_2021_report.txt', 'coop_term_reports/winter_summer_2022_report.txt'];
+const List<String> coopTermReports = [
+  'coop_term_reports/fall_2020_report.txt',
+  'coop_term_reports/summer_2021_report.txt',
+  'coop_term_reports/winter_summer_2022_report.txt'
+];
+const resumePngPath = 'assets/sample.png';
 
 /* Theme data */
 
 ThemeData lightApplicationTheme = ThemeData(
   // primarySwatch: MaterialColor(0xff6fb3b8, {}),
+  // useMaterial3: true,
   brightness: Brightness.light,
   colorScheme: const ColorScheme(
       brightness: Brightness.light,
@@ -94,7 +100,8 @@ ThemeData lightApplicationTheme = ThemeData(
     // collapsed
     collapsedBackgroundColor: const Color(0xff2b2b2b),
     collapsedTextColor: Colors.white,
-    collapsedShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+    collapsedShape:
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
     collapsedIconColor: Colors.white,
     // open
     backgroundColor: Colors.transparent,

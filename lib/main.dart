@@ -1,19 +1,20 @@
-import 'package:flutter/services.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/services.dart';
 import 'package:my_website/constants.dart';
-import 'package:my_website/tab_container.dart';
-import 'package:my_website/windows.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:path/path.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:photo_view/photo_view.dart';
 
 /*
   TODO:
     make sizes relative to screen size.
     add something about Lost in Translation
-    add resume, co-op, previous work, contact/links, game.
+    add resume, previous work, game.
     figure how to name the tabs better
+    add buttons to resume tab (view in dialog for closer look)
+    make layout work for mobile. possibly make menu drawer-like
+    migrate to material3 ?
 */
 
 void main() {
@@ -46,7 +47,7 @@ class MainPageState extends State<MainPage>
 
   // Color currentColor = MyColors.backgroundColor;
   // void changeColor(Color color) => setState(() => currentColor = color);
-  Tab currentTab = Tab.coop;
+  Tab currentTab = Tab.resume;
 
   @override
   void initState() {
@@ -186,11 +187,9 @@ Hello, and welcome to my website. This site is all about me, so if you aren't in
 
 I use this site to showcase my work and write about what I'm up to.
 
-I am currently pursuing an Honours Bachelor of Computer Science at the University of Guelph.''';
+I am currently pursuing an Honours Bachelor of Computer Science at the University of Guelph.
 
-  final String thisSite = '''This Site''';
-  final String aboutThisWebsiteText =
-      '''This site was implemented using Flutter (a UI software development kit created by Google) and is compiled to target the web.''';
+This site was implemented using Flutter (a UI software development kit created by Google) and is compiled to target the web.''';
 
   const AboutTab({
     super.key,
@@ -212,11 +211,7 @@ I am currently pursuing an Honours Bachelor of Computer Science at the Universit
                     TextSpan(
                         text: '$about\n\n',
                         style: TextStyle(fontWeight: FontWeight.bold)),
-                    TextSpan(text: '$aboutText\n\n\n'),
-                    TextSpan(
-                        text: '$thisSite\n\n',
-                        style: TextStyle(fontWeight: FontWeight.bold)),
-                    TextSpan(text: '$aboutThisWebsiteText\n'),
+                    TextSpan(text: '$aboutText'),
                   ]),
                 ),
               ]),
@@ -271,13 +266,20 @@ I am currently pursuing an Honours Bachelor of Computer Science at the Universit
 
 Widget getTab(Tab tab) {
   switch (tab) {
-    case Tab.about:   return AboutTab();
-    case Tab.work:    return Text('work');
-    case Tab.contact: return ContactTab();
-    case Tab.flutter: return Text('flutter');
-    case Tab.game:    return Text('game');
-    case Tab.coop:    return CoopTab();
-    case Tab.resume:  return Text('Resume');
+    case Tab.about:
+      return AboutTab();
+    case Tab.work:
+      return Text('work');
+    case Tab.contact:
+      return ContactTab();
+    case Tab.flutter:
+      return Text('flutter');
+    case Tab.game:
+      return Text('game');
+    case Tab.coop:
+      return CoopTab();
+    case Tab.resume:
+      return ResumeTab();
   }
 }
 
@@ -321,21 +323,20 @@ class _CoopTabState extends State<CoopTab> {
   Widget build(BuildContext context) {
     return Container(
         padding: const EdgeInsets.all(10),
-        child: ListView(
-            children: [
-              for (int i = 0; i < reports.length; i++)
-               Padding(
-                padding: const EdgeInsets.all(10),
-                child: ExpansionTile(
-                    controlAffinity: ListTileControlAffinity.leading,
-                    title: Text(reports[i].reportName),
-                    children: [
-                      Container(
+        child: ListView(children: [
+          for (int i = 0; i < reports.length; i++)
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: ExpansionTile(
+                  controlAffinity: ListTileControlAffinity.leading,
+                  title: Text(reports[i].reportName),
+                  children: [
+                    Container(
                         width: MediaQuery.of(context).size.width * .6,
                         child: Text(reports[i].contents)),
-                    ]),
-              )
-            ]));
+                  ]),
+            )
+        ]));
   }
 }
 
@@ -412,6 +413,64 @@ class ContactTab extends StatelessWidget {
       ),
     );
   }
+}
+
+class ResumeTab extends StatefulWidget {
+  const ResumeTab({super.key});
+
+  @override
+  State<ResumeTab> createState() => _ResumeTabState();
+}
+
+class _ResumeTabState extends State<ResumeTab> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // return PhotoView(imageProvider: AssetImage(resumePngPath), backgroundDecoration: BoxDecoration(color: Colors.transparent));
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image.asset(resumePngPath),
+        Align(
+            alignment: Alignment.topLeft,
+            child: IconButton(
+                onPressed: () => showImageDialog(context, resumePngPath),
+                icon: Icon(Icons.zoom_in)))
+      ],
+    );
+  }
+}
+
+void showImageDialog(BuildContext context, String imagePath) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Dialog.fullscreen(
+          child: Stack(
+            alignment: Alignment.center,
+        children: [
+          PhotoView(
+            imageProvider: AssetImage(imagePath),
+            enableRotation: false,
+          ),
+          Positioned(
+            bottom: 30,
+
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: ElevatedButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text('Close')),
+            ),
+          ),
+        ],
+      ));
+    },
+  );
 }
 
 Future<void> launchMyUrl(String link) async {
