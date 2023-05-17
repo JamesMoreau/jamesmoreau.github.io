@@ -37,12 +37,59 @@ class MainPage extends StatefulWidget {
   MainPageState createState() => MainPageState();
 }
 
-class MainPageState extends State<MainPage>
-    with SingleTickerProviderStateMixin {
+class MainPageState extends State<MainPage> {
+  Tab currentTab = Tab.resume;
+
+  void onTabChanged(Tab tab) {
+    setState(() {
+      currentTab = tab;
+      debugPrint('Changing tab to ${currentTab.name}');
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Theme.of(context).colorScheme.background,
+      padding: const EdgeInsets.all(50),
+      child: Scaffold(
+          body: Container(
+        decoration: BoxDecoration(
+            border: Border.all(
+          color: Theme.of(context).colorScheme.primary,
+        )),
+        alignment: Alignment.center,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Flexible(flex: 1, child: TabMenu(currentTab: currentTab, changeTab: onTabChanged)),
+            Flexible(
+              flex: 3,
+              child: Container(
+                  padding: const EdgeInsets.all(30),
+                  alignment: Alignment.center,
+                  child: getTab(currentTab)),
+            ),
+          ],
+        ),
+      )),
+    );
+  }
+}
+
+class TabMenu extends StatefulWidget {
+  final Tab currentTab;
+  final void Function(Tab t) changeTab;
+
+  const TabMenu({super.key, required this.currentTab, required this.changeTab});
+
+  @override
+  State<TabMenu> createState() => _TabMenuState();
+}
+
+class _TabMenuState extends State<TabMenu> with SingleTickerProviderStateMixin {
   late final AnimationController tabSelector;
   late final Animation<double> tabSelectorAnimation;
-
-  Tab currentTab = Tab.resume;
 
   @override
   void initState() {
@@ -58,118 +105,62 @@ class MainPageState extends State<MainPage>
         Tween<double>(begin: -5, end: 0).animate(tabSelector);
   }
 
-  @override
-  void dispose() {
-    tabSelector.dispose();
-    super.dispose();
-  }
-
-  void onTabChanged(Tab tab) {
-    setState(() {
-      currentTab = tab;
-      print('Changing tab to ' + currentTab.name);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
-    final Size screenSize = MediaQuery.of(context).size;
-    const double minWidth = 800.0;
-    const double minHeight = 500.0;
-
     return Container(
-      color: Theme.of(context).colorScheme.background,
-      constraints: BoxConstraints(minWidth: minWidth, minHeight: minHeight),
-      padding: const EdgeInsets.all(50),
-      child: Scaffold(
-          body: Container(
-        decoration: BoxDecoration(
-            border: Border.all(
-          color: Theme.of(context).colorScheme.primary,
-        )),
-        alignment: Alignment.center,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        alignment: Alignment.topLeft,
+        padding: const EdgeInsets.all(30),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Flexible(
-              flex: 1,
-              child: Container(
-                  alignment: Alignment.topLeft,
-                  padding: const EdgeInsets.all(30),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SelectableText(myName,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 30)),
-                      const SizedBox(height: 10),
-                      const SelectableText(jobTitle),
-                      const SizedBox(height: 40),
-                      Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+            const SelectableText(myName,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
+            const SizedBox(height: 10),
+            const SelectableText(jobTitle),
+            const SizedBox(height: 40),
+            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              for (var value in Tab.values)
+                value ==
+                        widget
+                            .currentTab // draw the currently selected tab differently.
+                    ? Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: Row(
                           children: [
-                            for (var value in Tab.values)
-                              value ==
-                                      currentTab // draw the currently selected tab differently.
-                                  ? Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 8),
-                                      child: Row(
-                                        children: [
-                                          TextButton(
-                                              child: Text(value.name,
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 18)),
-                                              onPressed: () =>
-                                                  onTabChanged(value)),
-                                          Center(
-                                            child: AnimatedBuilder(
-                                              animation: tabSelectorAnimation,
-                                              builder: (BuildContext context,
-                                                  Widget? child) {
-                                                return Transform.translate(
-                                                  offset: Offset(
-                                                      tabSelectorAnimation
-                                                          .value,
-                                                      0),
-                                                  child: child,
-                                                );
-                                              },
-                                              child: const Icon(
-                                                  Icons.arrow_back_ios),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  : Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 8),
-                                      child: TextButton(
-                                          child: Text(value.name,
-                                              style: const TextStyle(
-                                                  fontSize: 18)),
-                                          onPressed: () =>
-                                              onTabChanged(value)),
-                                    ),
-                            const SizedBox(height: 10)
-                          ]),
-                    ],
-                  )),
-            ),
-            Flexible(
-              flex: 3,
-              child: Container(
-                  padding: const EdgeInsets.all(30),
-                  alignment: Alignment.center,
-                  child: getTab(currentTab)),
-            ),
+                            TextButton(
+                                child: Text(value.name,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18)),
+                                onPressed: () => widget.changeTab(value)),
+                            Center(
+                              child: AnimatedBuilder(
+                                animation: tabSelectorAnimation,
+                                builder: (BuildContext context, Widget? child) {
+                                  return Transform.translate(
+                                    offset:
+                                        Offset(tabSelectorAnimation.value, 0),
+                                    child: child,
+                                  );
+                                },
+                                child: const Icon(Icons.arrow_back_ios),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: TextButton(
+                            child: Text(value.name,
+                                style: const TextStyle(fontSize: 18)),
+                            onPressed: () => widget.changeTab(value)),
+                      ),
+              const SizedBox(height: 10)
+            ]),
           ],
-        ),
-      )),
-    );
+        ));
   }
 }
 
@@ -325,7 +316,7 @@ class _CoopTabState extends State<CoopTab> {
                   controlAffinity: ListTileControlAffinity.leading,
                   title: Text(reports[i].reportName),
                   children: [
-                    Container(
+                    SizedBox(
                         width: MediaQuery.of(context).size.width * .6,
                         child: Text(reports[i].contents)),
                   ]),
@@ -426,7 +417,6 @@ class ResumeTab extends StatefulWidget {
 }
 
 class _ResumeTabState extends State<ResumeTab> {
-
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -475,10 +465,10 @@ Future<void> launchMyUrl(String link) async {
   var url = Uri.parse(githubLink);
   var canLaunch = await canLaunchUrl(url);
   if (!canLaunch) {
-    print('Cannot launch url');
+    debugPrint('Cannot launch url');
     return;
   }
 
-  print('launching url');
+  debugPrint('launching url');
   await launchUrl(url);
 }
