@@ -8,12 +8,9 @@ import 'package:photo_view/photo_view.dart';
 
 /*
   TODO:
-    make sizes relative to screen size.
     add something about Lost in Translation
-    add resume, previous work, game.
-    figure how to name the tabs better
-    add buttons to resume tab (view in dialog for closer look)
-    make layout work for mobile. possibly make menu drawer-like
+    add previous work, game.
+    make layout work for mobile. possibly make menu drawer-like if the screen is too small?
     migrate to material3 ?
 */
 
@@ -45,8 +42,6 @@ class MainPageState extends State<MainPage>
   late final AnimationController tabSelector;
   late final Animation<double> tabSelectorAnimation;
 
-  // Color currentColor = MyColors.backgroundColor;
-  // void changeColor(Color color) => setState(() => currentColor = color);
   Tab currentTab = Tab.resume;
 
   @override
@@ -78,104 +73,102 @@ class MainPageState extends State<MainPage>
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Container(
-        color: Theme.of(context).colorScheme.background,
-        padding: const EdgeInsets.all(50),
-        child: Scaffold(
-            body: Container(
-          decoration: BoxDecoration(
-              border: Border.all(
-            color: Theme.of(context).colorScheme.primary,
-          )),
-          alignment: Alignment.center,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Flexible(
-                flex: 1,
-                child: Container(
-                    alignment: Alignment.topLeft,
-                    padding: const EdgeInsets.all(30),
-                    child: Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SelectableText(myName,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 30)),
-                          const SizedBox(height: 10),
-                          const SelectableText(jobTitle),
-                          const SizedBox(height: 40),
-                          Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                for (var value in Tab.values)
-                                  value ==
-                                          currentTab // draw the currently selected tab differently.
-                                      ? Padding(
-                                          padding:
-                                              const EdgeInsets.only(bottom: 8),
-                                          child: Row(
-                                            children: [
-                                              TextButton(
-                                                  child: Text(value.name,
-                                                      style: const TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 18)),
-                                                  onPressed: () =>
-                                                      onTabChanged(value)),
-                                              Center(
-                                                child: AnimatedBuilder(
-                                                  animation:
-                                                      tabSelectorAnimation,
-                                                  builder:
-                                                      (BuildContext context,
-                                                          Widget? child) {
-                                                    return Transform.translate(
-                                                      offset: Offset(
-                                                          tabSelectorAnimation
-                                                              .value,
-                                                          0),
-                                                      child: child,
-                                                    );
-                                                  },
-                                                  child: const Icon(
-                                                      Icons.arrow_back_ios),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      : Padding(
-                                          padding:
-                                              const EdgeInsets.only(bottom: 8),
-                                          child: TextButton(
+    final Size screenSize = MediaQuery.of(context).size;
+    const double minWidth = 800.0;
+    const double minHeight = 500.0;
+
+    return Container(
+      color: Theme.of(context).colorScheme.background,
+      constraints: BoxConstraints(minWidth: minWidth, minHeight: minHeight),
+      padding: const EdgeInsets.all(50),
+      child: Scaffold(
+          body: Container(
+        decoration: BoxDecoration(
+            border: Border.all(
+          color: Theme.of(context).colorScheme.primary,
+        )),
+        alignment: Alignment.center,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Flexible(
+              flex: 1,
+              child: Container(
+                  alignment: Alignment.topLeft,
+                  padding: const EdgeInsets.all(30),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SelectableText(myName,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 30)),
+                      const SizedBox(height: 10),
+                      const SelectableText(jobTitle),
+                      const SizedBox(height: 40),
+                      Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            for (var value in Tab.values)
+                              value ==
+                                      currentTab // draw the currently selected tab differently.
+                                  ? Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 8),
+                                      child: Row(
+                                        children: [
+                                          TextButton(
                                               child: Text(value.name,
                                                   style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                       fontSize: 18)),
                                               onPressed: () =>
                                                   onTabChanged(value)),
-                                        ),
-                                const SizedBox(height: 10)
-                              ]),
-                        ],
-                      ),
-                    )),
-              ),
-              Flexible(
-                flex: 3,
-                child: Container(
-                    padding: const EdgeInsets.all(30),
-                    alignment: Alignment.center,
-                    child: getTab(currentTab)),
-              ),
-            ],
-          ),
-        )),
-      ),
+                                          Center(
+                                            child: AnimatedBuilder(
+                                              animation: tabSelectorAnimation,
+                                              builder: (BuildContext context,
+                                                  Widget? child) {
+                                                return Transform.translate(
+                                                  offset: Offset(
+                                                      tabSelectorAnimation
+                                                          .value,
+                                                      0),
+                                                  child: child,
+                                                );
+                                              },
+                                              child: const Icon(
+                                                  Icons.arrow_back_ios),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 8),
+                                      child: TextButton(
+                                          child: Text(value.name,
+                                              style: const TextStyle(
+                                                  fontSize: 18)),
+                                          onPressed: () =>
+                                              onTabChanged(value)),
+                                    ),
+                            const SizedBox(height: 10)
+                          ]),
+                    ],
+                  )),
+            ),
+            Flexible(
+              flex: 3,
+              child: Container(
+                  padding: const EdgeInsets.all(30),
+                  alignment: Alignment.center,
+                  child: getTab(currentTab)),
+            ),
+          ],
+        ),
+      )),
     );
   }
 }
@@ -198,67 +191,70 @@ This site was implemented using Flutter (a UI software development kit created b
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SelectableText.rich(
-                  TextSpan(children: [
-                    TextSpan(
-                        text: '$about\n\n',
-                        style: TextStyle(fontWeight: FontWeight.bold)),
-                    TextSpan(text: '$aboutText'),
-                  ]),
-                ),
-              ]),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Stack(
-                alignment: Alignment.center,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const SizedBox(
-                    width: 400,
-                    height: 400,
+                  SelectableText.rich(
+                    TextSpan(children: [
+                      TextSpan(
+                          text: '$about\n\n',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      TextSpan(text: '$aboutText'),
+                    ]),
                   ),
-                  Positioned(
-                    left: 0,
-                    top: 0,
-                    child: Container(
-                        width: 300,
-                        height: 300,
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                          color: Colors.black,
-                          width: 10,
-                        ))),
-                  ),
-                  Positioned(
-                      bottom: 0,
-                      right: 0,
+                ]),
+            SizedBox(height: 50),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    const SizedBox(
+                      width: 400,
+                      height: 400,
+                    ),
+                    Positioned(
+                      left: 0,
+                      top: 0,
                       child: Container(
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                          color: Colors.black,
-                          width: 1,
+                          width: 300,
+                          height: 300,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                            color: Colors.black,
+                            width: 10,
+                          ))),
+                    ),
+                    Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                            color: Colors.black,
+                            width: 1,
+                          )),
+                          child: Image.asset(markFerrariNatureGifPath,
+                              width: 300, height: 300, fit: BoxFit.cover),
                         )),
-                        child: Image.asset(markFerrariNatureGifPath,
-                            width: 300, height: 300, fit: BoxFit.cover),
-                      )),
-                  Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Text('Mark Ferrari',
-                          style: TextStyle(color: Colors.white)))
-                ],
-              ),
-            ],
-          ),
-        ],
+                    Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: Text('Mark Ferrari',
+                            style: TextStyle(color: Colors.white)))
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -269,21 +265,19 @@ Widget getTab(Tab tab) {
     case Tab.about:
       return AboutTab();
     case Tab.work:
-      return Text('work');
+      return WorkTab();
     case Tab.contact:
       return ContactTab();
-    case Tab.flutter:
-      return Text('flutter');
     case Tab.game:
       return Text('game');
-    case Tab.coop:
+    case Tab.co_op_reports:
       return CoopTab();
     case Tab.resume:
       return ResumeTab();
   }
 }
 
-enum Tab { about, work, resume, contact, coop, flutter, game }
+enum Tab { about, work, resume, contact, co_op_reports, game }
 
 class Report {
   final String reportName;
@@ -337,6 +331,15 @@ class _CoopTabState extends State<CoopTab> {
                   ]),
             )
         ]));
+  }
+}
+
+class WorkTab extends StatelessWidget {
+  const WorkTab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text('work');
   }
 }
 
@@ -423,23 +426,6 @@ class ResumeTab extends StatefulWidget {
 }
 
 class _ResumeTabState extends State<ResumeTab> {
-  PhotoViewScaleStateController scaleStateController = PhotoViewScaleStateController();
-
-  @override
-  void initState() {
-    super.initState();
-    scaleStateController = PhotoViewScaleStateController();
-  }
-
-  void foo(){
-    // scaleStateController.
-  }
-
-  @override
-  void dispose() {
-    scaleStateController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -462,7 +448,7 @@ class _ResumeTabState extends State<ResumeTab> {
       builder: (BuildContext context) {
         return Dialog.fullscreen(
             child: Stack(
-              alignment: Alignment.center,
+          alignment: Alignment.center,
           children: [
             PhotoView(
               imageProvider: AssetImage(imagePath),
@@ -484,7 +470,6 @@ class _ResumeTabState extends State<ResumeTab> {
     );
   }
 }
-
 
 Future<void> launchMyUrl(String link) async {
   var url = Uri.parse(githubLink);
