@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fps_widget/fps_widget.dart';
 import 'package:my_website/constants.dart';
 import 'package:path/path.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -9,13 +10,14 @@ import 'package:photo_view/photo_view.dart';
 /*
   TODO:
     add something about Lost in Translation
-    add previous work, game.
+    add previous work, game (snake, wordle).
     make layout work for mobile. possibly make menu drawer-like if the screen is too small?
     migrate to material3 ?
+    add fps widget control. maybe only make it available under game tab?
 */
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -24,11 +26,32 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: lightApplicationTheme,
-      home: const MainPage(),
-    );
+        debugShowCheckedModeBanner: false,
+        theme: lightApplicationTheme,
+        // home: Material(child: FPSWidget(child: const MainPage())),
+        home: const MainPage());
   }
 }
+
+class ResponsiveLayout extends StatelessWidget {
+  final Widget mobileLayout;
+  final Widget desktopLayout;
+
+  const ResponsiveLayout(
+      {super.key, required this.mobileLayout, required this.desktopLayout});
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(builder: (context, constraints) {
+      if (constraints.maxWidth < 500) {
+        return mobileLayout;
+      } else {
+        return desktopLayout;
+      }
+    });
+  }
+}
+
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -55,14 +78,18 @@ class MainPageState extends State<MainPage> {
       child: Scaffold(
           body: Container(
         decoration: BoxDecoration(
+            color: Colors.pink[100]!,
             border: Border.all(
-          color: Theme.of(context).colorScheme.primary,
-        )),
+              color: Theme.of(context).colorScheme.primary,
+            )),
         alignment: Alignment.center,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Flexible(flex: 1, child: TabMenu(currentTab: currentTab, changeTab: onTabChanged)),
+            Flexible(
+                flex: 1,
+                child:
+                    TabMenu(currentTab: currentTab, changeTab: onTabChanged)),
             Flexible(
               flex: 3,
               child: Container(
@@ -105,62 +132,72 @@ class _TabMenuState extends State<TabMenu> with SingleTickerProviderStateMixin {
         Tween<double>(begin: -5, end: 0).animate(tabSelector);
   }
 
+  @override
+  void dispose() {
+    tabSelector.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        alignment: Alignment.topLeft,
-        padding: const EdgeInsets.all(30),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SelectableText(myName,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
-            const SizedBox(height: 10),
-            const SelectableText(jobTitle),
-            const SizedBox(height: 40),
-            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              for (var value in Tab.values)
-                value ==
-                        widget
-                            .currentTab // draw the currently selected tab differently.
-                    ? Padding(
-                        padding: const EdgeInsets.only(bottom: 8),
-                        child: Row(
-                          children: [
-                            TextButton(
-                                child: Text(value.name,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18)),
-                                onPressed: () => widget.changeTab(value)),
-                            Center(
-                              child: AnimatedBuilder(
-                                animation: tabSelectorAnimation,
-                                builder: (BuildContext context, Widget? child) {
-                                  return Transform.translate(
-                                    offset:
-                                        Offset(tabSelectorAnimation.value, 0),
-                                    child: child,
-                                  );
-                                },
-                                child: const Icon(Icons.arrow_back_ios),
-                              ),
+    return LayoutBuilder(builder: (context, constraints) {
+        return Container(
+            color: Colors.greenAccent,
+            alignment: Alignment.topLeft,
+            padding: const EdgeInsets.all(30),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SelectableText(myName,
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
+                const SizedBox(height: 10),
+                const SelectableText(jobTitle),
+                const SizedBox(height: 40),
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  for (var value in Tab.values)
+                    value ==
+                            widget
+                                .currentTab // draw the currently selected tab differently.
+                        ? Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: Row(
+                              children: [
+                                TextButton(
+                                    child: Text(value.name,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18)),
+                                    onPressed: () => widget.changeTab(value)),
+                                Center(
+                                  child: AnimatedBuilder(
+                                    animation: tabSelectorAnimation,
+                                    builder:
+                                        (BuildContext context, Widget? child) {
+                                      return Transform.translate(
+                                        offset: Offset(
+                                            tabSelectorAnimation.value, 0),
+                                        child: child,
+                                      );
+                                    },
+                                    child: const Icon(Icons.arrow_back_ios),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      )
-                    : Padding(
-                        padding: const EdgeInsets.only(bottom: 8),
-                        child: TextButton(
-                            child: Text(value.name,
-                                style: const TextStyle(fontSize: 18)),
-                            onPressed: () => widget.changeTab(value)),
-                      ),
-              const SizedBox(height: 10)
-            ]),
-          ],
-        ));
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: TextButton(
+                                child: Text(value.name,
+                                    style: const TextStyle(fontSize: 18)),
+                                onPressed: () => widget.changeTab(value)),
+                          ),
+                  const SizedBox(height: 10)
+                ]),
+              ],
+            ));
+    });
   }
 }
 
@@ -196,7 +233,7 @@ This site was implemented using Flutter (a UI software development kit created b
                       TextSpan(
                           text: '$about\n\n',
                           style: TextStyle(fontWeight: FontWeight.bold)),
-                      TextSpan(text: '$aboutText'),
+                      TextSpan(text: aboutText),
                     ]),
                   ),
                 ]),
@@ -462,7 +499,7 @@ class _ResumeTabState extends State<ResumeTab> {
 }
 
 Future<void> launchMyUrl(String link) async {
-  var url = Uri.parse(githubLink);
+  var url = Uri.parse(link);
   var canLaunch = await canLaunchUrl(url);
   if (!canLaunch) {
     debugPrint('Cannot launch url');
