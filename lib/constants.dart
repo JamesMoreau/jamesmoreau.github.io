@@ -56,33 +56,10 @@ ThemeData lightApplicationTheme = ThemeData(
           fontSize: 30,
           fontFamily: GoogleFonts.inconsolata().fontFamily)),
   iconTheme: const IconThemeData(),
-  fontFamily: GoogleFonts.inconsolata().fontFamily,
-  // textTheme: const TextTheme(
-  //   displayLarge: TextStyle(fontSize: 18, color: Color(0xff2b2b2b)),
-  //   displayMedium: TextStyle(fontSize: 16, color: Color(0xff2b2b2b)),
-  //   displaySmall: TextStyle(fontSize: 14, color: Color(0xff2b2b2b)),
-  //   headlineSmall: TextStyle(
-  //       fontSize: 14, fontWeight: FontWeight.bold, color: Color(0xff2b2b2b)),
-  //   headlineMedium: TextStyle(
-  //       fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xff2b2b2b)),
-  // ),
-  // tabBarTheme: const TabBarTheme(
-  //   labelColor: Color(0xff2b2b2b),
-  //   unselectedLabelColor: Colors.grey,
-  //   labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-  //   // unselectedLabelStyle: TextStyle(fontSize: 14),
-  // ),
+  fontFamily: 'Inconsolata',
   tabBarTheme: TabBarTheme(
     labelColor: const Color(0xff2b2b2b),
     unselectedLabelColor: Colors.grey,
-    // labelStyle: TextStyle(
-    //     fontSize: 16,
-    //     fontWeight: FontWeight.bold,
-    //     fontFamily: GoogleFonts.inconsolata().fontFamily),
-    // unselectedLabelStyle: TextStyle(
-    //     fontSize: 16,
-    //     fontWeight: FontWeight.bold,
-    //     fontFamily: GoogleFonts.inconsolata().fontFamily),
     indicator: const BoxDecoration(), // this make the indicator invisible
     overlayColor:
         MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
@@ -91,11 +68,6 @@ ThemeData lightApplicationTheme = ThemeData(
       return Colors.red;
     }),
   ),
-  // listTileTheme: ListTileThemeData(
-  //   tileColor: const Color(0xff2b2b2b),
-  //   textColor: Colors.white,
-  //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-  // ),
   expansionTileTheme: ExpansionTileThemeData(
     // collapsed
     collapsedBackgroundColor: const Color(0xff2b2b2b),
@@ -122,7 +94,8 @@ ThemeData lightApplicationTheme = ThemeData(
         fontFamily: GoogleFonts.inconsolata().fontFamily, color: Colors.white),
     // elevation: 0,
   ),
-  // splashColor: Colors.transparent,
-  // hoverColor: Colors.transparent,
+  floatingActionButtonTheme: FloatingActionButtonThemeData(
+    backgroundColor: const Color(0xff2b2b2b),
+  ),
   scaffoldBackgroundColor: const Color(0xffe6e6e6),
 );

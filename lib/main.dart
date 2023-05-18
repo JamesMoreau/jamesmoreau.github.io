@@ -29,7 +29,10 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: lightApplicationTheme,
         // home: Material(child: FPSWidget(child: const MainPage())),
-        home: const MainPage());
+        home: ResponsiveLayout(
+          desktopLayout: DesktopScaffold(),
+          mobileLayout: MobileScaffold(),
+        ));
   }
 }
 
@@ -43,7 +46,7 @@ class ResponsiveLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
-      if (constraints.maxWidth < 500) {
+      if (constraints.maxWidth < 1000) {
         return mobileLayout;
       } else {
         return desktopLayout;
@@ -52,22 +55,17 @@ class ResponsiveLayout extends StatelessWidget {
   }
 }
 
-
-class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+class DesktopScaffold extends StatefulWidget {
+  const DesktopScaffold({super.key});
 
   @override
-  MainPageState createState() => MainPageState();
+  DesktopScaffoldState createState() => DesktopScaffoldState();
 }
 
-class MainPageState extends State<MainPage> {
-  Tab currentTab = Tab.resume;
-
-  void onTabChanged(Tab tab) {
-    setState(() {
-      currentTab = tab;
-      debugPrint('Changing tab to ${currentTab.name}');
-    });
+class DesktopScaffoldState extends State<DesktopScaffold> {
+  void onTabChanged() {
+    debugPrint('Changing tab to ${currentTab.name}');
+    setState(() {});
   }
 
   @override
@@ -86,10 +84,7 @@ class MainPageState extends State<MainPage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Flexible(
-                flex: 1,
-                child:
-                    TabMenu(currentTab: currentTab, changeTab: onTabChanged)),
+            Flexible(flex: 1, child: TabMenu(changeTab: onTabChanged)),
             Flexible(
               flex: 3,
               child: Container(
@@ -104,11 +99,62 @@ class MainPageState extends State<MainPage> {
   }
 }
 
-class TabMenu extends StatefulWidget {
-  final Tab currentTab;
-  final void Function(Tab t) changeTab;
+class MobileScaffold extends StatefulWidget {
+  const MobileScaffold({super.key});
 
-  const TabMenu({super.key, required this.currentTab, required this.changeTab});
+  @override
+  State<MobileScaffold> createState() => _MobileScaffoldState();
+}
+
+class _MobileScaffoldState extends State<MobileScaffold> {
+  void onTabChanged() {
+    debugPrint('Changing tab to ${currentTab.name}');
+    setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Theme.of(context).colorScheme.background,
+      padding: const EdgeInsets.all(50),
+      child: Scaffold(
+          drawer: Drawer(child: Container(color: Colors.deepPurple)),
+          floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
+          floatingActionButton: Builder(
+            builder: (BuildContext context) {
+              return FloatingActionButton(
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                child: Icon(Icons.menu),
+              );
+            },
+          ),
+          body: Container(
+            decoration: BoxDecoration(
+                color: Color.fromARGB(255, 125, 211, 189),
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.primary,
+                )),
+            alignment: Alignment.center,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                    padding: const EdgeInsets.all(30),
+                    alignment: Alignment.center,
+                    child: getTab(currentTab)),
+              ],
+            ),
+          )),
+    );
+  }
+}
+
+class TabMenu extends StatefulWidget {
+  final void Function() changeTab;
+
+  const TabMenu({super.key, required this.changeTab});
 
   @override
   State<TabMenu> createState() => _TabMenuState();
@@ -141,62 +187,66 @@ class _TabMenuState extends State<TabMenu> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
-        return Container(
-            color: Colors.greenAccent,
-            alignment: Alignment.topLeft,
-            padding: const EdgeInsets.all(30),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SelectableText(myName,
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
-                const SizedBox(height: 10),
-                const SelectableText(jobTitle),
-                const SizedBox(height: 40),
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  for (var value in Tab.values)
-                    value ==
-                            widget
-                                .currentTab // draw the currently selected tab differently.
-                        ? Padding(
-                            padding: const EdgeInsets.only(bottom: 8),
-                            child: Row(
-                              children: [
-                                TextButton(
-                                    child: Text(value.name,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18)),
-                                    onPressed: () => widget.changeTab(value)),
-                                Center(
-                                  child: AnimatedBuilder(
-                                    animation: tabSelectorAnimation,
-                                    builder:
-                                        (BuildContext context, Widget? child) {
-                                      return Transform.translate(
-                                        offset: Offset(
-                                            tabSelectorAnimation.value, 0),
-                                        child: child,
-                                      );
-                                    },
-                                    child: const Icon(Icons.arrow_back_ios),
-                                  ),
+      return Container(
+          color: Colors.greenAccent,
+          alignment: Alignment.topLeft,
+          padding: const EdgeInsets.all(30),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SelectableText(myName,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
+              const SizedBox(height: 10),
+              const SelectableText(jobTitle),
+              const SizedBox(height: 40),
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                for (var value in Tab.values)
+                  value ==
+                          currentTab // draw the currently selected tab differently.
+                      ? Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: Row(
+                            children: [
+                              TextButton(
+                                  child: Text(value.name,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18)),
+                                  onPressed: () {
+                                    widget.changeTab();
+                                    currentTab = value;
+                                  }),
+                              Center(
+                                child: AnimatedBuilder(
+                                  animation: tabSelectorAnimation,
+                                  builder:
+                                      (BuildContext context, Widget? child) {
+                                    return Transform.translate(
+                                      offset:
+                                          Offset(tabSelectorAnimation.value, 0),
+                                      child: child,
+                                    );
+                                  },
+                                  child: const Icon(Icons.arrow_back_ios),
                                 ),
-                              ],
-                            ),
-                          )
-                        : Padding(
-                            padding: const EdgeInsets.only(bottom: 8),
-                            child: TextButton(
-                                child: Text(value.name,
-                                    style: const TextStyle(fontSize: 18)),
-                                onPressed: () => widget.changeTab(value)),
+                              ),
+                            ],
                           ),
-                  const SizedBox(height: 10)
-                ]),
-              ],
-            ));
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: TextButton(
+                              child: Text(value.name,
+                                  style: const TextStyle(fontSize: 18)),
+                              onPressed: () {
+                                widget.changeTab();
+                                currentTab = value;
+                              }),
+                        ),
+                const SizedBox(height: 10)
+              ]),
+            ],
+          ));
     });
   }
 }
@@ -210,7 +260,7 @@ I use this site to showcase my work and write about what I'm up to.
 
 I am currently pursuing an Honours Bachelor of Computer Science at the University of Guelph.
 
-This site was implemented using Flutter (a UI software development kit created by Google) and is compiled to target the web.''';
+This site was implemented using Flutter, a UI software development kit created by Google, and is compiled to target the web.''';
 
   const AboutTab({
     super.key,
@@ -306,6 +356,9 @@ Widget getTab(Tab tab) {
 }
 
 enum Tab { about, work, resume, contact, co_op_reports, game }
+
+// Globals
+Tab currentTab = Tab.co_op_reports;
 
 class Report {
   final String reportName;
