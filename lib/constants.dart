@@ -53,7 +53,8 @@ ThemeData lightApplicationTheme = ThemeData(
           color: Color(0xffe6e6e6),
           fontWeight: FontWeight.bold,
           fontSize: 30,
-          fontFamily: 'Inconsolata')),
+          fontFamily: 'Inconsolata'),
+          elevation: 0),
   iconTheme: const IconThemeData(),
   fontFamily: 'Inconsolata',
   tabBarTheme: TabBarTheme(
