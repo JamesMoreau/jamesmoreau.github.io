@@ -68,17 +68,17 @@ class _HomeState extends State<Home> {
         // Wide Layout
         return Scaffold(
             body: Container(
-              color: Theme.of(context).colorScheme.background,
-              child: Padding(
-                padding: const EdgeInsets.all(50),
-                child: Container(
-                        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.background,
+          child: Padding(
+            padding: const EdgeInsets.all(50),
+            child: Container(
+              decoration: BoxDecoration(
                   border: Border.all(
                 color: Theme.of(context).colorScheme.primary,
                 width: 2,
-                        )),
-                        alignment: Alignment.center,
-                        child: Row(
+              )),
+              alignment: Alignment.center,
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Flexible(flex: 1, child: TabMenu(changeTab: onTabChanged)),
@@ -90,10 +90,10 @@ class _HomeState extends State<Home> {
                         child: getTab(currentTab)),
                   ),
                 ],
-                        ),
-                      ),
               ),
-            ));
+            ),
+          ),
+        ));
       }
     });
   }
