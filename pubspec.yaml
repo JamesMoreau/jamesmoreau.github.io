@@ -20,7 +20,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.18.0 <3.0.0'
+  sdk: '>=3.0.0 <4.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -39,7 +39,6 @@ dependencies:
   flutter_colorpicker: ^1.0.3
   url_launcher: ^6.1.11
   flutter_simple_calculator: ^2.2.2
-  google_fonts: ^3.0.1
   path: ^1.8.2
   photo_view: ^0.14.0
   fps_widget: ^1.0.1+2

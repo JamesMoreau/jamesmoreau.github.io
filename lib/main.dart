@@ -1,7 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fps_widget/fps_widget.dart';
 import 'package:my_website/constants.dart';
 import 'package:path/path.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -29,125 +28,67 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: lightApplicationTheme,
         // home: Material(child: FPSWidget(child: const MainPage())),
-        home: ResponsiveLayout(
-          desktopLayout: DesktopScaffold(),
-          mobileLayout: MobileScaffold(),
-        ));
+        home: Home());
   }
 }
 
-class ResponsiveLayout extends StatelessWidget {
-  final Widget mobileLayout;
-  final Widget desktopLayout;
+class Home extends StatefulWidget {
+  const Home({super.key});
 
-  const ResponsiveLayout(
-      {super.key, required this.mobileLayout, required this.desktopLayout});
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  void onTabChanged() {
+    debugPrint('Changing tab to ${currentTab.name}');
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       if (constraints.maxWidth < 1000) {
-        return mobileLayout;
-      } else {
-        return desktopLayout;
-      }
-    });
-  }
-}
-
-class DesktopScaffold extends StatefulWidget {
-  const DesktopScaffold({super.key});
-
-  @override
-  DesktopScaffoldState createState() => DesktopScaffoldState();
-}
-
-class DesktopScaffoldState extends State<DesktopScaffold> {
-  void onTabChanged() {
-    debugPrint('Changing tab to ${currentTab.name}');
-    setState(() {});
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Theme.of(context).colorScheme.background,
-      padding: const EdgeInsets.all(50),
-      child: Scaffold(
-          body: Container(
-        decoration: BoxDecoration(
-            color: Colors.pink[100]!,
-            border: Border.all(
-              color: Theme.of(context).colorScheme.primary,
-            )),
-        alignment: Alignment.center,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Flexible(flex: 1, child: TabMenu(changeTab: onTabChanged)),
-            Flexible(
-              flex: 3,
+        // Small Layout
+        return Scaffold(
+            appBar: AppBar(title: Text(myName)),
+            drawer: Drawer(child: TabMenu(changeTab: onTabChanged)),
+            body: Container(
+              decoration: BoxDecoration(
+                  border: Border.all(
+                color: Theme.of(context).colorScheme.primary,
+              )),
+              alignment: Alignment.center,
               child: Container(
                   padding: const EdgeInsets.all(30),
                   alignment: Alignment.center,
                   child: getTab(currentTab)),
-            ),
-          ],
-        ),
-      )),
-    );
-  }
-}
-
-class MobileScaffold extends StatefulWidget {
-  const MobileScaffold({super.key});
-
-  @override
-  State<MobileScaffold> createState() => _MobileScaffoldState();
-}
-
-class _MobileScaffoldState extends State<MobileScaffold> {
-  void onTabChanged() {
-    debugPrint('Changing tab to ${currentTab.name}');
-    setState(() {});
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Theme.of(context).colorScheme.background,
-      padding: const EdgeInsets.all(50),
-      child: Scaffold(
-          drawer: Drawer(child: Container(color: Colors.deepPurple)),
-          floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
-          floatingActionButton: Builder(
-            builder: (BuildContext context) {
-              return FloatingActionButton(
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
-                },
-                child: Icon(Icons.menu),
-              );
-            },
-          ),
-          body: Container(
-            decoration: BoxDecoration(
-                color: Color.fromARGB(255, 125, 211, 189),
-                border: Border.all(
-                  color: Theme.of(context).colorScheme.primary,
-                )),
-            alignment: Alignment.center,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
+            ));
+      } else {
+        // Wide Layout
+        return Scaffold(
+            body: Container(
+          decoration: BoxDecoration(
+              border: Border.all(
+            color: Theme.of(context).colorScheme.primary,
+          )),
+          alignment: Alignment.center,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Flexible(flex: 1, child: TabMenu(changeTab: onTabChanged)),
+              Flexible(
+                flex: 3,
+                child: Container(
                     padding: const EdgeInsets.all(30),
                     alignment: Alignment.center,
                     child: getTab(currentTab)),
-              ],
-            ),
-          )),
-    );
+              ),
+            ],
+          ),
+        ));
+      }
+    });
   }
 }
 
@@ -188,7 +129,6 @@ class _TabMenuState extends State<TabMenu> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       return Container(
-          color: Colors.greenAccent,
           alignment: Alignment.topLeft,
           padding: const EdgeInsets.all(30),
           child: Column(
@@ -376,6 +316,7 @@ class CoopTab extends StatefulWidget {
 
 class _CoopTabState extends State<CoopTab> {
   List<Report> reports = [];
+  List<int> expandedIndices = [];
 
   @override
   void initState() {
@@ -398,20 +339,26 @@ class _CoopTabState extends State<CoopTab> {
   Widget build(BuildContext context) {
     return Container(
         padding: const EdgeInsets.all(10),
-        child: ListView(children: [
-          for (int i = 0; i < reports.length; i++)
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: ExpansionTile(
-                  controlAffinity: ListTileControlAffinity.leading,
-                  title: Text(reports[i].reportName),
-                  children: [
-                    SizedBox(
-                        width: MediaQuery.of(context).size.width * .6,
-                        child: Text(reports[i].contents)),
-                  ]),
-            )
-        ]));
+        child: ListView.builder(
+            itemCount: reports.length,
+            itemBuilder: (context, index) => Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ExpansionTile(
+                      controlAffinity: ListTileControlAffinity.leading,
+                      initiallyExpanded: expandedIndices.contains(index),
+                      onExpansionChanged: (expanded) {
+                        if (expanded)
+                          expandedIndices.add(index);
+                        else
+                          expandedIndices.remove(index);
+                      },
+                      title: Text(reports[index].reportName),
+                      children: [
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width * .6,
+                            child: Text(reports[index].contents)),
+                      ]),
+                )));
   }
 }
 

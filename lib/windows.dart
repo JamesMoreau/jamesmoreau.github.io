@@ -2,9 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_simple_calculator/flutter_simple_calculator.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:my_website/constants.dart';
-import 'package:my_website/main.dart';
 import 'package:statsfl/statsfl.dart';
 
 // This is the widget that holds all the windows.
@@ -44,7 +42,7 @@ class WindowController {
   VoidCallback onUpdate;
 
   void addCalculatorWindow() {
-    createNewWindow(title: "Calculator", body: const SimpleCalculator());
+    createNewWindow(title: 'Calculator', body: const SimpleCalculator());
   }
 
   void createNewWindow({required String title, required Widget body, double width = -1, double height = -1, double x = -1, double y = -1}) {
@@ -95,13 +93,13 @@ This site was implemented using Flutter (a UI software development kit created b
 
 Try moving around some windows.''';
 
-    createNewWindow(title: "About This Site", width: 300, height: 340, x: 100, y: 20, body: 
+    createNewWindow(title: 'About This Site', width: 300, height: 340, x: 100, y: 20, body: 
       Container(
         color: MyColors.grey,
         padding: const EdgeInsets.all(10.0),
         child: Column(
           children: [
-            Text(bodyText, style: GoogleFonts.ptSerif(color: MyColors.white))
+            Text(bodyText)
           ],
         ),
       )
@@ -109,7 +107,7 @@ Try moving around some windows.''';
   }
 
   void addColorPickerWindow(Color c, void Function(Color c) colorChangeCallback) {
-    var title = "Try Changing the color!";
+    var title = 'Try Changing the color!';
 
     createNewWindow(title: title, width: 300, height: 220, x: 100, y: 390, body: 
       Container(
@@ -126,7 +124,7 @@ Try moving around some windows.''';
   }
 
   void addMetricsWindow() {
-    var title = "App Metrics";
+    var title = 'App Metrics';
 
     createNewWindow(title: title, width: 150, height: 120, body: 
       Container(

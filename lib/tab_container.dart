@@ -38,11 +38,11 @@ class _CustomTabContainerState extends State<CustomTabContainer> {
       children: [
         if (_currentTabIndex == 0) ...[
           // Page 1 content
-          Center(child: Text("Page 1")),
+          Center(child: Text('Page 1')),
         ],
         if (_currentTabIndex == 1) ...[
           // Page 2 content
-          Center(child: Text("Page 2")),
+          Center(child: Text('Page 2')),
         ],
         // Add more pages as needed
       ],

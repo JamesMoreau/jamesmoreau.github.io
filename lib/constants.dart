@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 // Common colors
 class MyColors {
@@ -12,9 +11,9 @@ class MyColors {
   static const transparent = Color.fromARGB(0, 0, 0, 0);
 }
 
-const myName = "James Rush";
-const jobTitle = "Programmer";
-const myEmail = "jmorea03@uoguelph.ca";
+const myName = 'James Rush';
+const jobTitle = 'Programmer';
+const myEmail = 'jmorea03@uoguelph.ca';
 const githubLink = 'https://github.com/JamesMoreau';
 const linkedInLink = 'https://www.linkedin.com/in/james-moreau/';
 const university = 'University of Guelph';
@@ -49,12 +48,12 @@ ThemeData lightApplicationTheme = ThemeData(
       surface: Color(0xffc2edce),
       onSurface: Colors.white),
   appBarTheme: AppBarTheme(
-      backgroundColor: Color(0xffe6e6e6),
+      backgroundColor: Color(0xff2b2b2b),
       titleTextStyle: TextStyle(
-          color: Color(0xff2b2b2b),
+          color: Color(0xffe6e6e6),
           fontWeight: FontWeight.bold,
           fontSize: 30,
-          fontFamily: GoogleFonts.inconsolata().fontFamily)),
+          fontFamily: 'Inconsolata')),
   iconTheme: const IconThemeData(),
   fontFamily: 'Inconsolata',
   tabBarTheme: TabBarTheme(
@@ -91,7 +90,7 @@ ThemeData lightApplicationTheme = ThemeData(
       borderRadius: BorderRadius.all(Radius.circular(8.0)),
     ),
     contentTextStyle: TextStyle(
-        fontFamily: GoogleFonts.inconsolata().fontFamily, color: Colors.white),
+        fontFamily: 'Inconsolata', color: Colors.white),
     // elevation: 0,
   ),
   floatingActionButtonTheme: FloatingActionButtonThemeData(
