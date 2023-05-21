@@ -13,6 +13,8 @@ import 'package:photo_view/photo_view.dart';
     make layout work for mobile. possibly make menu drawer-like if the screen is too small?
     migrate to material3 ?
     add fps widget control. maybe only make it available under game tab?
+    add resume route with pdf.
+    add fade in to tabs.
 */
 
 void main() {
@@ -48,7 +50,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
-      if (constraints.maxWidth < 1000) {
+      if (constraints.maxWidth < 1000 || constraints.maxHeight < 500) {
         // Small Layout
         return Scaffold(
             appBar: AppBar(title: Text(myName)),
@@ -134,67 +136,65 @@ class _TabMenuState extends State<TabMenu> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      return Container(
-          alignment: Alignment.topLeft,
-          padding: const EdgeInsets.all(30),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SelectableText(myName,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
-              const SizedBox(height: 10),
-              const SelectableText(jobTitle),
-              const SizedBox(height: 40),
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                for (var value in Tab.values)
-                  value ==
-                          currentTab // draw the currently selected tab differently.
-                      ? Padding(
-                          padding: const EdgeInsets.only(bottom: 8),
-                          child: Row(
-                            children: [
-                              TextButton(
-                                  child: Text(value.name,
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18)),
-                                  onPressed: () {
-                                    widget.changeTab();
-                                    currentTab = value;
-                                  }),
-                              Center(
-                                child: AnimatedBuilder(
-                                  animation: tabSelectorAnimation,
-                                  builder:
-                                      (BuildContext context, Widget? child) {
-                                    return Transform.translate(
-                                      offset:
-                                          Offset(tabSelectorAnimation.value, 0),
-                                      child: child,
-                                    );
-                                  },
-                                  child: const Icon(Icons.arrow_back_ios),
-                                ),
+    return Container(
+        alignment: Alignment.topLeft,
+        padding: const EdgeInsets.all(30),
+        child: ListView(
+          // crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SelectableText(myName,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
+            const SizedBox(height: 10),
+            const SelectableText(jobTitle),
+            const SizedBox(height: 40),
+            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              for (var value in Tab.values)
+                value ==
+                        currentTab // draw the currently selected tab differently.
+                    ? Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: Row(
+                          children: [
+                            TextButton(
+                                child: Text(value.name,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18)),
+                                onPressed: () {
+                                  widget.changeTab();
+                                  currentTab = value;
+                                }),
+                            Center(
+                              child: AnimatedBuilder(
+                                animation: tabSelectorAnimation,
+                                builder:
+                                    (BuildContext context, Widget? child) {
+                                  return Transform.translate(
+                                    offset:
+                                        Offset(tabSelectorAnimation.value, 0),
+                                    child: child,
+                                  );
+                                },
+                                child: const Icon(Icons.arrow_back_ios),
                               ),
-                            ],
-                          ),
-                        )
-                      : Padding(
-                          padding: const EdgeInsets.only(bottom: 8),
-                          child: TextButton(
-                              child: Text(value.name,
-                                  style: const TextStyle(fontSize: 18)),
-                              onPressed: () {
-                                widget.changeTab();
-                                currentTab = value;
-                              }),
+                            ),
+                          ],
                         ),
-                const SizedBox(height: 10)
-              ]),
-            ],
-          ));
-    });
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: TextButton(
+                            child: Text(value.name,
+                                style: const TextStyle(fontSize: 18)),
+                            onPressed: () {
+                              widget.changeTab();
+                              currentTab = value;
+                            }),
+                      ),
+              const SizedBox(height: 10)
+            ]),
+          ],
+        ));
   }
 }
 
@@ -374,7 +374,70 @@ class WorkTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text('work');
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: ListView(children: [
+        Wrap(
+          children: [
+            InkWell(
+                child: HoverText(
+                    text: 'Purolator Delivery Pro - Last Mile Delivery Service',
+                    bigTextSize: 40,
+                    smallTextSize: 25),
+                onTap: () => launchMyUrl(
+                    'https://apps.apple.com/ca/app/purolator-delivery-pro/id1622239326')),
+            SizedBox(width: 10),
+            Icon(Icons.open_in_new)
+          ],
+        )
+      ]),
+    );
+  }
+}
+
+class HoverText extends StatefulWidget {
+  final String text;
+  final double bigTextSize;
+  final double smallTextSize;
+
+  const HoverText(
+      {Key? key,
+      required this.text,
+      required this.bigTextSize,
+      required this.smallTextSize})
+      : super(key: key);
+
+  @override
+  State<HoverText> createState() => _HoverTextState();
+}
+
+class _HoverTextState extends State<HoverText> {
+  bool _isHovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) {
+        setState(() {
+          _isHovered = true;
+        });
+      },
+      onExit: (_) {
+        setState(() {
+          _isHovered = false;
+        });
+      },
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeInOut,
+        child: Text(
+          widget.text,
+          style: TextStyle(
+            fontSize: _isHovered ? widget.bigTextSize : widget.smallTextSize,
+          ),
+        ),
+      ),
+    );
   }
 }
 
@@ -463,16 +526,19 @@ class ResumeTab extends StatefulWidget {
 class _ResumeTabState extends State<ResumeTab> {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Image.asset(resumePngPath, filterQuality: FilterQuality.high),
-        Align(
-            alignment: Alignment.topLeft,
-            child: IconButton(
-                onPressed: () => showImageDialog(context, resumePngPath),
-                icon: Icon(Icons.zoom_in)))
-      ],
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(resumePngPath, filterQuality: FilterQuality.high),
+          Align(
+              alignment: Alignment.topLeft,
+              child: IconButton(
+                  onPressed: () => showImageDialog(context, resumePngPath),
+                  icon: Icon(Icons.zoom_in)))
+        ],
+      ),
     );
   }
 
