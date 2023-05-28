@@ -1,10 +1,17 @@
+import 'package:flame/flame.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:my_website/constants.dart';
+import 'package:my_website/snake.dart';
 import 'package:path/path.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:flame/components.dart';
+import 'package:flame/experimental.dart';
+import 'package:flame/game.dart';
+import 'package:flame/palette.dart';
+import 'package:flutter/material.dart';
 
 /*
   TODO:
@@ -66,43 +73,44 @@ class _HomeState extends State<Home> {
                   alignment: Alignment.center,
                   child: getTab(currentTab)),
             ));
-      } else {
-        // Wide Layout
-        return Scaffold(
-            body: Container(
-          color: Theme.of(context).colorScheme.background,
-          child: Padding(
-            padding: const EdgeInsets.all(50),
-            child: Container(
-              decoration: BoxDecoration(
-                  border: Border.all(
-                color: Theme.of(context).colorScheme.primary,
-                width: 2,
-              )),
-              alignment: Alignment.center,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Flexible(flex: 1, child: TabMenu(changeTab: onTabChanged)),
-                  Flexible(
-                    flex: 3,
-                    child: Container(
-                        padding: const EdgeInsets.all(30),
-                        alignment: Alignment.center,
-                        child: getTab(currentTab)),
-                  ),
-                ],
-              ),
+      }
+
+      // Wide Layout
+      return Scaffold(
+          body: Container(
+        color: Theme.of(context).colorScheme.background,
+        child: Padding(
+          padding: const EdgeInsets.all(50),
+          child: Container(
+            decoration: BoxDecoration(
+                border: Border.all(
+              color: Theme.of(context).colorScheme.primary,
+              width: 2,
+            )),
+            alignment: Alignment.center,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Flexible(flex: 1, child: TabMenu(changeTab: onTabChanged)),
+                Flexible(
+                  flex: 3,
+                  child: Container(
+                      padding: const EdgeInsets.all(30),
+                      alignment: Alignment.center,
+                      child: getTab(currentTab)),
+                ),
+              ],
             ),
           ),
-        ));
-      }
+        ),
+      ));
     });
   }
 }
 
 class TabMenu extends StatefulWidget {
-  final void Function() changeTab;
+  final void Function()
+      changeTab; // notifies the main page that the tab has changed
 
   const TabMenu({super.key, required this.changeTab});
 
@@ -167,8 +175,7 @@ class _TabMenuState extends State<TabMenu> with SingleTickerProviderStateMixin {
                             Center(
                               child: AnimatedBuilder(
                                 animation: tabSelectorAnimation,
-                                builder:
-                                    (BuildContext context, Widget? child) {
+                                builder: (BuildContext context, Widget? child) {
                                   return Transform.translate(
                                     offset:
                                         Offset(tabSelectorAnimation.value, 0),
@@ -294,7 +301,7 @@ Widget getTab(Tab tab) {
     case Tab.contact:
       return ContactTab();
     case Tab.game:
-      return Text('game');
+      return GameTab();
     case Tab.co_op_reports:
       return CoopTab();
     case Tab.resume:
@@ -305,7 +312,7 @@ Widget getTab(Tab tab) {
 enum Tab { about, work, resume, contact, co_op_reports, game }
 
 // Globals
-Tab currentTab = Tab.co_op_reports;
+Tab currentTab = Tab.game;
 
 class Report {
   final String reportName;
@@ -581,4 +588,45 @@ Future<void> launchMyUrl(String link) async {
 
   debugPrint('launching url');
   await launchUrl(url);
+}
+
+class GameTab extends StatefulWidget {
+  final double gameSize = 500;
+
+  const GameTab({Key? key}) : super(key: key);
+
+  @override
+  State<GameTab> createState() => _GameTabState();
+}
+
+class _GameTabState extends State<GameTab> {
+  FlameGame game = MyGame();
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(builder: (context, constraints) {
+      // if (constraints.maxWidth < 500 || constraints.maxHeight < 500) {
+      //   return Center(
+      //       child: Text('Unable to display game. Use a larger screen.'));
+      // }
+
+      // return Text('blah');
+
+      return Padding(
+          padding: const EdgeInsets.all(30),
+          child: Center(
+            child: AspectRatio(
+              aspectRatio: 1 / 1,
+              child: GameWidget(
+                // backgroundBuilder: (context) => Container(color: Colors.cyan),
+                game: game,
+                loadingBuilder: (context) =>
+                    Center(child: CircularProgressIndicator()),
+                errorBuilder: (context, error) =>
+                    Center(child: Text("Unable to start snake game! :'(")),
+              ),
+            ),
+          ));
+    });
+  }
 }
