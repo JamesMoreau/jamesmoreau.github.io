@@ -604,29 +604,28 @@ class _GameTabState extends State<GameTab> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      // if (constraints.maxWidth < 500 || constraints.maxHeight < 500) {
-      //   return Center(
-      //       child: Text('Unable to display game. Use a larger screen.'));
-      // }
-
-      // return Text('blah');
-
-      return Padding(
-          padding: const EdgeInsets.all(30),
-          child: Center(
-            child: AspectRatio(
-              aspectRatio: 1 / 1,
-              child: GameWidget(
-                // backgroundBuilder: (context) => Container(color: Colors.cyan),
-                game: game,
-                loadingBuilder: (context) =>
-                    Center(child: CircularProgressIndicator()),
-                errorBuilder: (context, error) =>
-                    Center(child: Text("Unable to start snake game! :'(")),
+    return Padding(
+        padding: const EdgeInsets.all(30),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                width: widget.gameSize,
+                height: widget.gameSize,
+                decoration: BoxDecoration(border: Border.all(width: 2, color: Theme.of(context).colorScheme.primary)),
+                child: GameWidget(
+                  backgroundBuilder: (context) => Container(color: Theme.of(context).colorScheme.background),
+                  game: game,
+                  loadingBuilder: (context) =>
+                      Center(child: CircularProgressIndicator()),
+                  errorBuilder: (context, error) =>
+                      Center(child: Text("Unable to start snake game! :'(")),
+                ),
               ),
-            ),
-          ));
-    });
+              SizedBox(height: 20),
+              ElevatedButton(onPressed: () => game.paused = !game.paused, child: Text('Pause / Play'))
+            ],
+          ),
+        ));
   }
 }
