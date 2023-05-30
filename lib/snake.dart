@@ -1,9 +1,9 @@
 import 'dart:math' as math;
 import 'package:flame/components.dart';
+import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-
-// enum CellType { SNAKE, EMPTY, FOOD }
+import 'package:flutter/services.dart';
 
 enum SnakeDirection { up, down, left, right }
 
@@ -17,12 +17,42 @@ class Position {
   String toString() {
     return '{x: $x, y: $y}';
   }
-
 }
 
-class MyGame extends FlameGame {
+class MyGame extends FlameGame with KeyboardEvents {
   late Main main;
-  // late GridComponent grid;
+
+  @override
+  KeyEventResult onKeyEvent(
+      RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
+    var isKeyDown = event is RawKeyDownEvent;
+    if (!isKeyDown) return KeyEventResult.ignored;
+
+    var isSpace = keysPressed.contains(LogicalKeyboardKey.space);
+    var isUp = keysPressed.contains(LogicalKeyboardKey.arrowUp);
+    var isRight = keysPressed.contains(LogicalKeyboardKey.arrowRight);
+    var isDown = keysPressed.contains(LogicalKeyboardKey.arrowDown);
+    var isLeft = keysPressed.contains(LogicalKeyboardKey.arrowLeft);
+
+    if (isSpace) {
+      print('got a space!');
+      return KeyEventResult.handled;
+    } else if (isUp) {
+      print('got a up arrow');
+      return KeyEventResult.handled;
+    } else if (isRight) {
+      print('got a right arrow');
+      return KeyEventResult.handled;
+    } else if (isDown) {
+      print('got a down arrow');
+      return KeyEventResult.handled;
+    } else if (isLeft) {
+      print('got a left arrow');
+      return KeyEventResult.handled;
+    }
+
+    return KeyEventResult.ignored;
+  }
 
   @override
   void onLoad() {
@@ -44,7 +74,7 @@ class MyGame extends FlameGame {
   // }
 }
 
-class Main extends Component with HasGameRef {
+class Main extends Component with HasGameRef, KeyboardHandler {
   double cellSize = 10;
   int gridSize = 10;
   int borderWidth = 2;
@@ -55,7 +85,7 @@ class Main extends Component with HasGameRef {
   List<Position> snake = [];
   SnakeDirection direction = SnakeDirection.down;
 
-  Timer? snakeUpdateTimer;
+  late Timer snakeUpdateTimer;
   double snakeUpdateInterval = 1;
 
   @override
@@ -153,7 +183,7 @@ class Main extends Component with HasGameRef {
       ///!!!
     }
 
-    snakeUpdateTimer?.update(dt);
+    snakeUpdateTimer.update(dt);
 
     // for (int index = snake.length - 1; index > 0; index--) {
     //   snake[index] = snake[index - 1];

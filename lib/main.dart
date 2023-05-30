@@ -602,6 +602,17 @@ class GameTab extends StatefulWidget {
 class _GameTabState extends State<GameTab> {
   FlameGame game = MyGame();
 
+  pauseOrUnpause() {
+    game.paused = !game.paused;
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    game.paused = true;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -612,9 +623,13 @@ class _GameTabState extends State<GameTab> {
               Container(
                 width: widget.gameSize,
                 height: widget.gameSize,
-                decoration: BoxDecoration(border: Border.all(width: 2, color: Theme.of(context).colorScheme.primary)),
+                decoration: BoxDecoration(
+                    border: Border.all(
+                        width: 2,
+                        color: Theme.of(context).colorScheme.primary)),
                 child: GameWidget(
-                  backgroundBuilder: (context) => Container(color: Theme.of(context).colorScheme.background),
+                  backgroundBuilder: (context) => Container(
+                      color: Theme.of(context).colorScheme.background),
                   game: game,
                   loadingBuilder: (context) =>
                       Center(child: CircularProgressIndicator()),
@@ -623,7 +638,9 @@ class _GameTabState extends State<GameTab> {
                 ),
               ),
               SizedBox(height: 20),
-              ElevatedButton(onPressed: () => game.paused = !game.paused, child: Text('Pause / Play'))
+              ElevatedButton(
+                  onPressed: () => pauseOrUnpause(),
+                  child: game.paused ? Text('Play') : Text('Pause'))
             ],
           ),
         ));
