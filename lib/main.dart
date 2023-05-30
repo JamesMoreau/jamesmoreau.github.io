@@ -600,7 +600,7 @@ class GameTab extends StatefulWidget {
 }
 
 class _GameTabState extends State<GameTab> {
-  FlameGame game = MyGame();
+  FlameGame game = SnakeGame();
 
   pauseOrUnpause() {
     game.paused = !game.paused;

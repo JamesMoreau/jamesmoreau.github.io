@@ -19,52 +19,34 @@ class Position {
   }
 }
 
-class MyGame extends FlameGame with KeyboardEvents {
+class SnakeGame extends FlameGame with HasKeyboardHandlerComponents {
   late Main main;
 
   @override
-  KeyEventResult onKeyEvent(
-      RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
-    var isKeyDown = event is RawKeyDownEvent;
-    if (!isKeyDown) return KeyEventResult.ignored;
-
-    var isSpace = keysPressed.contains(LogicalKeyboardKey.space);
-    var isUp = keysPressed.contains(LogicalKeyboardKey.arrowUp);
-    var isRight = keysPressed.contains(LogicalKeyboardKey.arrowRight);
-    var isDown = keysPressed.contains(LogicalKeyboardKey.arrowDown);
-    var isLeft = keysPressed.contains(LogicalKeyboardKey.arrowLeft);
-
-    if (isSpace) {
-      print('got a space!');
-      return KeyEventResult.handled;
-    } else if (isUp) {
-      print('got a up arrow');
-      return KeyEventResult.handled;
-    } else if (isRight) {
-      print('got a right arrow');
-      return KeyEventResult.handled;
-    } else if (isDown) {
-      print('got a down arrow');
-      return KeyEventResult.handled;
-    } else if (isLeft) {
-      print('got a left arrow');
-      return KeyEventResult.handled;
-    }
-
-    return KeyEventResult.ignored;
-  }
-
-  @override
   void onLoad() {
-    debugMode = true;
+    // debugMode = true;
     main = Main();
     add(main);
 
     // grid = GridComponent();
     // add(grid);
 
+    // camera.viewport = FixedResolutionViewport(Vector2(500, 500));
+
     super.onLoad();
   }
+
+  // @override
+  // @mustCallSuper
+  // KeyEventResult onKeyEvent(
+  //   RawKeyEvent event,
+  //   Set<LogicalKeyboardKey> keysPressed,
+  // ) {
+  //   super.onKeyEvent(event, keysPressed);
+
+  //   // Return handled to prevent macOS noises.
+  //   return KeyEventResult.handled;
+  // }
 
   // @override
   // void render(Canvas canvas) {
@@ -74,7 +56,8 @@ class MyGame extends FlameGame with KeyboardEvents {
   // }
 }
 
-class Main extends Component with HasGameRef, KeyboardHandler {
+class Main extends PositionComponent
+    with KeyboardHandler, HasGameRef<SnakeGame> {
   double cellSize = 10;
   int gridSize = 10;
   int borderWidth = 2;
@@ -178,6 +161,33 @@ class Main extends Component with HasGameRef, KeyboardHandler {
   }
 
   @override
+  bool onKeyEvent(RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
+    var isKeyDown = event is RawKeyDownEvent;
+    if (!isKeyDown) return false;
+
+    var isUp = keysPressed.contains(LogicalKeyboardKey.arrowUp);
+    var isRight = keysPressed.contains(LogicalKeyboardKey.arrowRight);
+    var isDown = keysPressed.contains(LogicalKeyboardKey.arrowDown);
+    var isLeft = keysPressed.contains(LogicalKeyboardKey.arrowLeft);
+
+    if (isUp) {
+      direction = SnakeDirection.up;
+      return true;
+    } else if (isRight) {
+      direction = SnakeDirection.right;
+      return true;
+    } else if (isDown) {
+      direction = SnakeDirection.down;
+      return true;
+    } else if (isLeft) {
+      direction = SnakeDirection.left;
+      return true;
+    }
+
+    return false;
+  }
+
+  @override
   void update(double dt) {
     if (gameOver) {
       ///!!!
@@ -192,86 +202,6 @@ class Main extends Component with HasGameRef, KeyboardHandler {
     super.update(dt);
   }
 }
-
-// class GridComponent extends Component with HasGameRef {
-//   static const gridSize = 10;
-//   double cellSize = 0;
-
-//   @override
-//   void render(Canvas canvas) {
-//     var size = gameRef.size;
-//     cellSize = size.x / gridSize;
-
-//     super.render(canvas);
-
-//     // Render the grid
-//     var paint = Paint();
-//     paint.color = Colors.blue;
-//     paint.style = PaintingStyle.stroke;
-//     paint.strokeWidth = 2;
-
-//     for (var i = 0; i <= gridSize; i++) {
-//       final x = i * cellSize;
-//       final y = i * cellSize;
-//       canvas.drawLine(Offset(x, 0), Offset(x, cellSize * gridSize), paint);
-//       canvas.drawLine(Offset(0, y), Offset(cellSize * gridSize, y), paint);
-//     }
-//   }
-// }
-
-// class Square extends RectangleComponent with TapCallbacks {
-//   static const speed = 3;
-//   static const squareSize = 128.0;
-//   static const indicatorSize = 6.0;
-
-//   static Paint red = BasicPalette.red.paint();
-//   static Paint blue = BasicPalette.blue.paint();
-
-//   Square(Vector2 position)
-//       : super(
-//           position: position,
-//           size: Vector2.all(squareSize),
-//           anchor: Anchor.center,
-//         );
-
-//   @override
-//   void update(double dt) {
-//     super.update(dt);
-//     angle += speed * dt;
-//     angle %= 2 * math.pi;
-//   }
-
-//   @override
-//   Future<void> onLoad() async {
-//     super.onLoad();
-//     add(
-//       RectangleComponent(
-//         size: Vector2.all(indicatorSize),
-//         paint: blue,
-//       ),
-//     );
-//     add(
-//       RectangleComponent(
-//         position: size / 2,
-//         size: Vector2.all(indicatorSize),
-//         anchor: Anchor.center,
-//         paint: red,
-//       ),
-//     );
-//   }
-
-//   @override
-//   void onTapDown(TapDownEvent event) {
-//     removeFromParent();
-//     event.handled = true;
-//   }
-// }
-
-// Color getCellColor(CellType cellType) => switch (cellType) {
-//       CellType.SNAKE => Colors.yellow,
-//       CellType.EMPTY => Colors.grey,
-//       CellType.FOOD => Colors.green
-//     };
 
 Color getRandomColor() {
   var random = math.Random();
