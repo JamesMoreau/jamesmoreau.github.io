@@ -28,32 +28,8 @@ class SnakeGame extends FlameGame with HasKeyboardHandlerComponents {
     main = Main();
     add(main);
 
-    // grid = GridComponent();
-    // add(grid);
-
-    // camera.viewport = FixedResolutionViewport(Vector2(500, 500));
-
     super.onLoad();
   }
-
-  // @override
-  // @mustCallSuper
-  // KeyEventResult onKeyEvent(
-  //   RawKeyEvent event,
-  //   Set<LogicalKeyboardKey> keysPressed,
-  // ) {
-  //   super.onKeyEvent(event, keysPressed);
-
-  //   // Return handled to prevent macOS noises.
-  //   return KeyEventResult.handled;
-  // }
-
-  // @override
-  // void render(Canvas canvas) {
-  //   // var circle = Rect.;
-  //   // canvas.drawCircle(canvas., radius, paint)
-
-  // }
 }
 
 class Main extends PositionComponent
@@ -165,23 +141,19 @@ class Main extends PositionComponent
     var isKeyDown = event is RawKeyDownEvent;
     if (!isKeyDown) return false;
 
-    var isUp = keysPressed.contains(LogicalKeyboardKey.arrowUp);
-    var isRight = keysPressed.contains(LogicalKeyboardKey.arrowRight);
-    var isDown = keysPressed.contains(LogicalKeyboardKey.arrowDown);
-    var isLeft = keysPressed.contains(LogicalKeyboardKey.arrowLeft);
-
-    if (isUp) {
-      direction = SnakeDirection.up;
-      return true;
-    } else if (isRight) {
-      direction = SnakeDirection.right;
-      return true;
-    } else if (isDown) {
-      direction = SnakeDirection.down;
-      return true;
-    } else if (isLeft) {
-      direction = SnakeDirection.left;
-      return true;
+    switch (event.logicalKey) {
+      case LogicalKeyboardKey.arrowUp:
+        direction = SnakeDirection.up;
+        return true;
+      case LogicalKeyboardKey.arrowRight:
+        direction = SnakeDirection.right;
+        return true;
+      case LogicalKeyboardKey.arrowDown:
+        direction = SnakeDirection.down;
+        return true;
+      case LogicalKeyboardKey.arrowLeft:
+        direction = SnakeDirection.left;
+        return true;
     }
 
     return false;
@@ -201,12 +173,4 @@ class Main extends PositionComponent
 
     super.update(dt);
   }
-}
-
-Color getRandomColor() {
-  var random = math.Random();
-  var r = random.nextInt(256);
-  var g = random.nextInt(256);
-  var b = random.nextInt(256);
-  return Color.fromRGBO(r, g, b, 1.0);
 }
