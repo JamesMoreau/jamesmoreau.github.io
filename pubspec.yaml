@@ -44,6 +44,7 @@ dependencies:
   fps_widget: ^1.0.1+2
   statsfl: ^2.3.0
   flame: ^1.7.3
+  flame_forge2d: ^0.14.0
 
 dev_dependencies:
   flutter_test:

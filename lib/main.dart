@@ -2,6 +2,7 @@ import 'package:flame/flame.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:my_website/brick_breaker.dart';
 import 'package:my_website/constants.dart';
 import 'package:my_website/snake.dart';
 import 'package:path/path.dart';
@@ -591,7 +592,8 @@ Future<void> launchMyUrl(String link) async {
 }
 
 class GameTab extends StatefulWidget {
-  final double gameSize = 500;
+  final double gameWidth = 700;
+  final double gameHeight = 500;
 
   const GameTab({Key? key}) : super(key: key);
 
@@ -600,7 +602,7 @@ class GameTab extends StatefulWidget {
 }
 
 class _GameTabState extends State<GameTab> {
-  FlameGame game = SnakeGame();
+  FlameGame game = BrickBreaker();
 
   pauseOrUnpause() {
     game.paused = !game.paused;
@@ -609,7 +611,7 @@ class _GameTabState extends State<GameTab> {
 
   @override
   void initState() {
-    game.paused = true;
+    // game.paused = true;
     super.initState();
   }
 
@@ -621,15 +623,15 @@ class _GameTabState extends State<GameTab> {
           child: Column(
             children: [
               Container(
-                width: widget.gameSize,
-                height: widget.gameSize,
+                width: widget.gameWidth,
+                height: widget.gameHeight,
                 decoration: BoxDecoration(
                     border: Border.all(
                         width: 2,
                         color: Theme.of(context).colorScheme.primary)),
                 child: GameWidget(
-                  backgroundBuilder: (context) => Container(
-                      color: Theme.of(context).colorScheme.background),
+                  // backgroundBuilder: (context) => Container(
+                  //     color: Theme.of(context).colorScheme.background),
                   game: game,
                   loadingBuilder: (context) =>
                       Center(child: CircularProgressIndicator()),
