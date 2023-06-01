@@ -5,7 +5,7 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-enum GameState { start, play, gameover, victory}
+enum GameState { setup, ready, play, gameover, victory }
 
 enum Direction { up, down, left, right }
 
@@ -34,13 +34,10 @@ class SnakeGame extends FlameGame with HasKeyboardHandlerComponents {
   }
 }
 
-class Main extends PositionComponent
-    with KeyboardHandler, HasGameRef<SnakeGame> {
+class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame> {
+  GameState state = GameState.setup;
   double cellSize = 10;
-  int gridSize = 30;
-  int borderWidth = 2;
-
-  bool gameOver = false;
+  int gridSize = 20;
 
   Position food = Position(0, 0);
   List<Position> snake = [];
@@ -50,17 +47,7 @@ class Main extends PositionComponent
   double snakeUpdateInterval = 1;
 
   @override
-  void onLoad() {
-    snakeUpdateTimer = Timer(0.1, onTick: () => updateSnake(), repeat: true);
-
-    snake = [
-      Position(0, 3),
-      Position(0, 2),
-      Position(0, 1),
-    ]; // set snake's initial position
-
-    placeNewFood();
-  }
+  void onLoad() {}
 
   @override
   void render(Canvas canvas) {
@@ -69,14 +56,12 @@ class Main extends PositionComponent
     // Draw snake
     for (int i = 0; i < snake.length; i++) {
       var cell = snake[i];
-      assert(
-          cell.x >= 0 && cell.x < gridSize && cell.y >= 0 && cell.y < gridSize,
-          'Snake is not inside the grid.');
 
       var x = cell.x.toDouble() * cellSize;
       var y = cell.y.toDouble() * cellSize;
       Paint paint = Paint();
-      paint.color = i == 0 ? Colors.yellow : Colors.blue; //draw the head a different color than the rest of the body.
+      // paint.color = i == 0 && game.debugMode ? Colors.yellow : Colors .blue; //draw the head a different color than the rest of the body.
+      paint.color = Colors.blue;
       Rect tileRect = Rect.fromLTRB(x, y, x + cellSize, y + cellSize);
       canvas.drawRect(tileRect, paint);
     }
@@ -121,10 +106,10 @@ class Main extends PositionComponent
         newHead = Position(snakeHead.x, snakeHead.y + 1);
         break;
       case Direction.left:
-        newHead = Position(snakeHead.x + 1, snakeHead.y);
+        newHead = Position(snakeHead.x - 1, snakeHead.y);
         break;
       case Direction.right:
-        newHead = Position(snakeHead.x - 1, snakeHead.y);
+        newHead = Position(snakeHead.x + 1, snakeHead.y);
         break;
     }
 
@@ -137,47 +122,108 @@ class Main extends PositionComponent
     var isKeyDown = event is RawKeyDownEvent;
     if (!isKeyDown) return false;
 
-    switch (event.logicalKey) {
-      case LogicalKeyboardKey.arrowUp:
-        if (direction != Direction.up) direction = Direction.up;
-        return true;
-      case LogicalKeyboardKey.arrowRight:
-        if (direction != Direction.right) direction = Direction.right;
-        return true;
-      case LogicalKeyboardKey.arrowDown:
-        if (direction != Direction.down) direction = Direction.down;
-        return true;
-      case LogicalKeyboardKey.arrowLeft:
-        if (direction != Direction.left) direction = Direction.left;
-        return true;
-      case LogicalKeyboardKey.keyR:
-        debugPrint('restarting game');
-        return true;
-      case LogicalKeyboardKey.space:
-        if (game.debugMode) game.paused = !game.paused;
-    }
+    // we have different keyboard behaviours depending on the current game's state.
+    switch (state) {
+      case GameState.setup:
+        // We don't take any input during setup phase.
+        return false;
 
-    return false;
+      case GameState.ready:
+        switch (event.logicalKey) {
+          case LogicalKeyboardKey.space:
+            state = GameState.play;
+            return true;
+        }
+        return false;
+
+      case GameState.play:
+        switch (event.logicalKey) {
+          case LogicalKeyboardKey.arrowUp:
+            if (direction != Direction.down) direction = Direction.up;
+            return true;
+          case LogicalKeyboardKey.arrowRight:
+            if (direction != Direction.left) direction = Direction.right;
+            return true;
+          case LogicalKeyboardKey.arrowDown:
+            if (direction != Direction.up) direction = Direction.down;
+            return true;
+          case LogicalKeyboardKey.arrowLeft:
+            if (direction != Direction.right) direction = Direction.left;
+            return true;
+          case LogicalKeyboardKey.keyR:
+            debugPrint('restarting game');
+            state = GameState.setup;
+            return true;
+          case LogicalKeyboardKey.space:
+            if (game.debugMode) game.paused = !game.paused;
+            return true;
+        }
+        return false;
+
+      case GameState.gameover:
+        switch (event.logicalKey) {
+          case LogicalKeyboardKey.keyR:
+            debugPrint('Restarting Game.');
+            state = GameState.setup;
+            return true;
+        }
+        return false;
+
+      case GameState.victory:
+        return false;
+    }
   }
 
   @override
   void update(double dt) {
-    if (gameOver) {
-      ///!!!
+    switch (state) {
+      case GameState.setup:
+
+        // set snake's initial position
+        snake = [Position(0, 2), Position(0, 1)];
+        direction = Direction.down;
+        snakeUpdateTimer = Timer(0.1, onTick: () => updateSnake(), repeat: true);
+
+        placeNewFood();
+
+        state = GameState.ready;
+
+      case GameState.ready:
+        debugPrint('press space to begin.');
+
+      case GameState.play:
+        assert(snake.length >= 2, 'snake should be at least two long');
+
+        snakeUpdateTimer.update(dt);
+
+        // check if snake eats food
+        var snakeHead = snake.first;
+        if (snakeHead.x == food.x && snakeHead.y == food.y) {
+          snake.add(Position(food.x, food.y));
+          placeNewFood();
+        }
+
+        // check if snake is eating itself or out of bounds.
+        var head = snake.first;
+
+        for (int i = 1; i < snake.length; i++) {
+          var body = snake[i];
+          if (body.x == head.x && body.y == head.y) {
+            debugPrint('snake ate itself!');
+            state = GameState.gameover;
+          }
+        }
+
+        if (head.x < 0 || head.y < 0 || head.x >= gridSize || head.y >= gridSize) {
+          debugPrint('Snake left the grid.');
+          state = GameState.gameover;
+        }
+
+      case GameState.gameover:
+      // display a game over text
+      case GameState.victory:
+      // display a victory text
     }
-
-    snakeUpdateTimer.update(dt);
-
-    // check if snake eats food
-    var snakeHead = snake.first;
-    if (snakeHead.x == food.x && snakeHead.y == food.y) {
-      snake.add(Position(food.x, food.y));
-      placeNewFood();
-    }
-
-    // for (int index = snake.length - 1; index > 0; index--) {
-    //   snake[index] = snake[index - 1];
-    // }
 
     super.update(dt);
   }
