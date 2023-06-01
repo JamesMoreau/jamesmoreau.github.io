@@ -6,57 +6,43 @@ import 'package:flame/camera.dart' as camera;
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 
+enum GameState { initializing, ready, running, paused, won, lost }
+
 class BrickBreaker extends Forge2DGame {
   final cameraWorld = camera.World();
   late final CameraComponent cameraComponent;
 
   @override
-  void onLoad() {
-    // debugMode = true;
+  Future<void> onLoad() async {
+    // Setup camera
+    cameraComponent = CameraComponent(world: cameraWorld);
+    cameraComponent.viewfinder.anchor = Anchor.topLeft;
+    addAll([cameraComponent, cameraWorld]);
 
-    // cameraComponent = CameraComponent(world: cameraWorld);
-    // cameraComponent.viewfinder.anchor = Anchor.topLeft;
-    // addAll([cameraComponent, cameraWorld]);
+    // Add ball
+    cameraWorld.add(Ball(position: size / 2, radius: 1));
 
-    // var main = Main();
-    // add(main);
+    // Add boundaries
+    final topLeft = Vector2.zero();
+    final bottomRight = screenToWorld(cameraComponent.viewport.size);
+    final topRight = Vector2(bottomRight.x, topLeft.y);
+    final bottomLeft = Vector2(topLeft.x, bottomRight.y);
 
-    super.onLoad();
+    var walls = [
+      Wall(topLeft, topRight),
+      Wall(topRight, bottomRight),
+      Wall(bottomLeft, bottomRight),
+      Wall(topLeft, bottomLeft)
+    ];
 
-    overlays.add('PreGame');
-  }
-}
-
-class Main extends PositionComponent
-    with KeyboardHandler, HasGameRef<BrickBreaker> {
-  List<Brick> bricks = [];
-  late Paddle paddle;
-  int numberOfBricksWidth = 10;
-  int numberOfBricksHeight = 4;
-
-  @override
-  void onLoad() async {
-    super.onLoad();
-
-    final ballPosition = Vector2(size.x / 2.0, size.y / 2.0 + 10.0);
-    var ball = Ball(
-      radius: 4.0,
-      position: ballPosition,
-    );
-    await add(ball);
-    // add(Brick());
-  }
-
-  void setupGame() {
-    for (int i = 0; i < numberOfBricksWidth; i++) {
-      for (int j = 0; j < numberOfBricksHeight; j++) {}
-    }
+    cameraWorld.addAll(walls);
   }
 }
 
 class Ball extends BodyComponent {
-  final Vector2 position;
-  final double radius;
+  Vector2 position;
+  double radius;
+  Color color = Colors.white;
 
   Ball({required this.position, required this.radius});
 
@@ -74,6 +60,14 @@ class Ball extends BodyComponent {
     ball.createFixture(fixtureDef);
     return ball;
   }
+
+  @override
+  void render(Canvas canvas) {
+    var circle = body.fixtures.first.shape as CircleShape;
+    var paint = Paint();
+    paint.color = color;
+    canvas.drawCircle(circle.position.toOffset(), radius, paint);
+  }
 }
 
 class Brick extends BodyComponent {
@@ -81,7 +75,7 @@ class Brick extends BodyComponent {
 
   @override
   Body createBody() {
-    var color = Colors.blue;
+    var color = Colors.white;
     var shape = CircleShape();
     shape.radius = 5;
 
@@ -89,12 +83,46 @@ class Brick extends BodyComponent {
     var bodyDef = BodyDef(position: Vector2(20, 5), type: BodyType.static);
 
     var body = world.createBody(bodyDef);
-    var f = body.createFixture(fixture);
+    body.createFixture(fixture);
 
     return body;
   }
 }
 
-class Paddle extends PositionComponent {
-  Color color = Colors.white;
+// class Paddle extends BodyComponent {
+//   Color color = Colors.white;
+
+//   @override
+//   // Body createBody() {
+//   //   var shape =
+//   // }
+
+// }
+
+class Wall extends BodyComponent {
+  Vector2 start;
+  Vector2 end;
+  Color color = Colors.transparent;
+
+  Wall(this.start, this.end);
+
+  @override
+  Body createBody() {
+    var shape = EdgeShape();
+    shape.set(start, end);
+    var fixtureDef = FixtureDef(shape, friction: 0.3);
+    var bodyDef = BodyDef(userData: this, position: Vector2.zero());
+    var body = world.createBody(bodyDef);
+    body.createFixture(fixtureDef);
+
+    return body;
+  }
+
+  @override
+  void render(Canvas canvas) { // Empty render method so that walls are invisible.
+    // final circle = body.fixtures.first.shape as CircleShape;
+    // final paint = Paint();
+    // paint.color = color;
+    // canvas.drawLine(circle.position.toOffset(), radius, paint);
+  }
 }

@@ -5,7 +5,9 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-enum SnakeDirection { up, down, left, right }
+enum GameState { start, play, gameover, victory}
+
+enum Direction { up, down, left, right }
 
 class Position {
   int x = 0;
@@ -24,7 +26,7 @@ class SnakeGame extends FlameGame with HasKeyboardHandlerComponents {
 
   @override
   void onLoad() {
-    // debugMode = true;
+    debugMode = true;
     main = Main();
     add(main);
 
@@ -35,21 +37,21 @@ class SnakeGame extends FlameGame with HasKeyboardHandlerComponents {
 class Main extends PositionComponent
     with KeyboardHandler, HasGameRef<SnakeGame> {
   double cellSize = 10;
-  int gridSize = 10;
+  int gridSize = 30;
   int borderWidth = 2;
 
   bool gameOver = false;
 
   Position food = Position(0, 0);
   List<Position> snake = [];
-  SnakeDirection direction = SnakeDirection.down;
+  Direction direction = Direction.down;
 
   late Timer snakeUpdateTimer;
   double snakeUpdateInterval = 1;
 
   @override
   void onLoad() {
-    snakeUpdateTimer = Timer(1, onTick: () => updateSnake(), repeat: true);
+    snakeUpdateTimer = Timer(0.1, onTick: () => updateSnake(), repeat: true);
 
     snake = [
       Position(0, 3),
@@ -65,7 +67,8 @@ class Main extends PositionComponent
     cellSize = gameRef.canvasSize.x / gridSize;
 
     // Draw snake
-    for (var cell in snake) {
+    for (int i = 0; i < snake.length; i++) {
+      var cell = snake[i];
       assert(
           cell.x >= 0 && cell.x < gridSize && cell.y >= 0 && cell.y < gridSize,
           'Snake is not inside the grid.');
@@ -73,7 +76,7 @@ class Main extends PositionComponent
       var x = cell.x.toDouble() * cellSize;
       var y = cell.y.toDouble() * cellSize;
       Paint paint = Paint();
-      paint.color = Colors.blue;
+      paint.color = i == 0 ? Colors.yellow : Colors.blue; //draw the head a different color than the rest of the body.
       Rect tileRect = Rect.fromLTRB(x, y, x + cellSize, y + cellSize);
       canvas.drawRect(tileRect, paint);
     }
@@ -104,36 +107,29 @@ class Main extends PositionComponent
   }
 
   void updateSnake() {
-    print('update snaek!');
-    print('current snake: ' + snake.toString());
+    debugPrint('current snake: $snake, length: ${snake.length}, direction: ${direction.name}.');
 
     var snakeHead = snake.first;
 
     // update the snake's position
     var newHead = Position(0, 0);
     switch (direction) {
-      case SnakeDirection.up:
+      case Direction.up:
         newHead = Position(snakeHead.x, snakeHead.y - 1);
         break;
-      case SnakeDirection.down:
+      case Direction.down:
         newHead = Position(snakeHead.x, snakeHead.y + 1);
         break;
-      case SnakeDirection.left:
+      case Direction.left:
         newHead = Position(snakeHead.x + 1, snakeHead.y);
         break;
-      case SnakeDirection.right:
+      case Direction.right:
         newHead = Position(snakeHead.x - 1, snakeHead.y);
         break;
     }
 
     snake.insert(0, newHead);
     snake.removeLast();
-
-    // check if snake eats food
-    if (snakeHead.x == food.x && snakeHead.y == food.y) {
-      snake.add(Position(food.x, food.y));
-      placeNewFood();
-    }
   }
 
   @override
@@ -143,17 +139,22 @@ class Main extends PositionComponent
 
     switch (event.logicalKey) {
       case LogicalKeyboardKey.arrowUp:
-        direction = SnakeDirection.up;
+        if (direction != Direction.up) direction = Direction.up;
         return true;
       case LogicalKeyboardKey.arrowRight:
-        direction = SnakeDirection.right;
+        if (direction != Direction.right) direction = Direction.right;
         return true;
       case LogicalKeyboardKey.arrowDown:
-        direction = SnakeDirection.down;
+        if (direction != Direction.down) direction = Direction.down;
         return true;
       case LogicalKeyboardKey.arrowLeft:
-        direction = SnakeDirection.left;
+        if (direction != Direction.left) direction = Direction.left;
         return true;
+      case LogicalKeyboardKey.keyR:
+        debugPrint('restarting game');
+        return true;
+      case LogicalKeyboardKey.space:
+        if (game.debugMode) game.paused = !game.paused;
     }
 
     return false;
@@ -166,6 +167,13 @@ class Main extends PositionComponent
     }
 
     snakeUpdateTimer.update(dt);
+
+    // check if snake eats food
+    var snakeHead = snake.first;
+    if (snakeHead.x == food.x && snakeHead.y == food.y) {
+      snake.add(Position(food.x, food.y));
+      placeNewFood();
+    }
 
     // for (int index = snake.length - 1; index > 0; index--) {
     //   snake[index] = snake[index - 1];

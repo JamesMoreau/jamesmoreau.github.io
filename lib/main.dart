@@ -1,4 +1,5 @@
 import 'package:flame/flame.dart';
+import 'package:flame_forge2d/forge2d_game.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -592,8 +593,7 @@ Future<void> launchMyUrl(String link) async {
 }
 
 class GameTab extends StatefulWidget {
-  final double gameWidth = 700;
-  final double gameHeight = 500;
+  final double gameSize = 500;
 
   const GameTab({Key? key}) : super(key: key);
 
@@ -602,7 +602,7 @@ class GameTab extends StatefulWidget {
 }
 
 class _GameTabState extends State<GameTab> {
-  FlameGame game = BrickBreaker();
+  FlameGame game = SnakeGame();
 
   pauseOrUnpause() {
     game.paused = !game.paused;
@@ -611,7 +611,7 @@ class _GameTabState extends State<GameTab> {
 
   @override
   void initState() {
-    // game.paused = true;
+    game.paused = true;
     super.initState();
   }
 
@@ -623,8 +623,8 @@ class _GameTabState extends State<GameTab> {
           child: Column(
             children: [
               Container(
-                width: widget.gameWidth,
-                height: widget.gameHeight,
+                width: widget.gameSize,
+                height: widget.gameSize,
                 decoration: BoxDecoration(
                     border: Border.all(
                         width: 2,
