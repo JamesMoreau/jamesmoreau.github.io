@@ -5,6 +5,12 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+// TODO:
+// make it so the snake leaving boundaries doesn't show. either use nextPosition or some sort of canvas clipping. Or make it so snake can travel accross
+// borders.
+// Make the snake cells look prettier.
+// Add menu, instructions (arrow keys). title and short explainer.
+
 enum GameState { setup, ready, play, gameover, victory }
 
 enum Direction { up, down, left, right }
