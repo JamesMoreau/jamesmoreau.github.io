@@ -94,25 +94,9 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
   void updateSnake() {
     debugPrint('current snake: $snake, length: ${snake.length}, direction: ${direction.name}.');
 
-    var snakeHead = snake.first;
-
     // update the snake's position
-    var newHead = Position(0, 0);
-    switch (direction) {
-      case Direction.up:
-        newHead = Position(snakeHead.x, snakeHead.y - 1);
-        break;
-      case Direction.down:
-        newHead = Position(snakeHead.x, snakeHead.y + 1);
-        break;
-      case Direction.left:
-        newHead = Position(snakeHead.x - 1, snakeHead.y);
-        break;
-      case Direction.right:
-        newHead = Position(snakeHead.x + 1, snakeHead.y);
-        break;
-    }
-
+    var snakeHead = snake.first;
+    var newHead = nextPosition(snakeHead, direction);
     snake.insert(0, newHead);
     snake.removeLast();
   }
@@ -155,7 +139,15 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
             state = GameState.setup;
             return true;
           case LogicalKeyboardKey.space:
-            if (game.debugMode) game.paused = !game.paused;
+            if (game.debugMode) {
+              if (game.paused) {
+                debugPrint('Unpausing the game.');
+                game.paused = false;
+              } else {
+                debugPrint('Resuming the game.');
+                game.paused = true;
+              }
+            }
             return true;
         }
         return false;
@@ -187,9 +179,11 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
         placeNewFood();
 
         state = GameState.ready;
+        break;
 
       case GameState.ready:
         debugPrint('press space to begin.');
+        break;
 
       case GameState.play:
         assert(snake.length >= 2, 'snake should be at least two long');
@@ -198,14 +192,14 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
 
         // check if snake eats food
         var snakeHead = snake.first;
-        if (snakeHead.x == food.x && snakeHead.y == food.y) {
+        var next = nextPosition(snakeHead, direction);
+        if (next.x == food.x && next.y == food.y) {
           snake.add(Position(food.x, food.y));
           placeNewFood();
         }
 
         // check if snake is eating itself or out of bounds.
         var head = snake.first;
-
         for (int i = 1; i < snake.length; i++) {
           var body = snake[i];
           if (body.x == head.x && body.y == head.y) {
@@ -219,12 +213,29 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
           state = GameState.gameover;
         }
 
+        break;
+
       case GameState.gameover:
-      // display a game over text
+        // display a game over text
+        break;
       case GameState.victory:
-      // display a victory text
+        // display a victory text
+        break;
     }
 
     super.update(dt);
+  }
+
+  Position nextPosition(Position current, Direction d) {
+    switch (direction) {
+      case Direction.up:
+        return Position(current.x, current.y - 1);
+      case Direction.down:
+        return Position(current.x, current.y + 1);
+      case Direction.left:
+        return Position(current.x - 1, current.y);
+      case Direction.right:
+        return Position(current.x + 1, current.y);
+    }
   }
 }
