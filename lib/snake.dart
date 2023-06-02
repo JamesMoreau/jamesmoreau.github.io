@@ -6,8 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 // TODO:
-// make it so the snake leaving boundaries doesn't show. either use nextPosition or some sort of canvas clipping. Or make it so snake can travel accross
-// borders.
+// Figure out why eating causes lag.
 // Make the snake cells look prettier.
 // Add menu, instructions (arrow keys). title and short explainer.
 
@@ -62,6 +61,10 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
     // Draw snake
     for (int i = 0; i < snake.length; i++) {
       var cell = snake[i];
+
+      // Don't draw a cell if it leaves the grid.
+      var outOfBounds = positionIsOutOfBounds(cell);
+      if (outOfBounds) continue;
 
       var x = cell.x.toDouble() * cellSize;
       var y = cell.y.toDouble() * cellSize;
@@ -196,16 +199,16 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
 
         snakeUpdateTimer.update(dt);
 
+        var head = snake.first;
+        var next = nextPosition(head, direction);
+
         // check if snake eats food
-        var snakeHead = snake.first;
-        var next = nextPosition(snakeHead, direction);
         if (next.x == food.x && next.y == food.y) {
           snake.add(Position(food.x, food.y));
           placeNewFood();
         }
 
         // check if snake is eating itself or out of bounds.
-        var head = snake.first;
         for (int i = 1; i < snake.length; i++) {
           var body = snake[i];
           if (body.x == head.x && body.y == head.y) {
@@ -214,7 +217,8 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
           }
         }
 
-        if (head.x < 0 || head.y < 0 || head.x >= gridSize || head.y >= gridSize) {
+        var outOfBounds = positionIsOutOfBounds(head);
+        if (outOfBounds) {
           debugPrint('Snake left the grid.');
           state = GameState.gameover;
         }
@@ -233,15 +237,15 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
   }
 
   Position nextPosition(Position current, Direction d) {
-    switch (direction) {
-      case Direction.up:
-        return Position(current.x, current.y - 1);
-      case Direction.down:
-        return Position(current.x, current.y + 1);
-      case Direction.left:
-        return Position(current.x - 1, current.y);
-      case Direction.right:
-        return Position(current.x + 1, current.y);
-    }
+    return switch (direction) {
+      Direction.up => Position(current.x, current.y - 1),
+      Direction.down => Position(current.x, current.y + 1),
+      Direction.left => Position(current.x - 1, current.y),
+      Direction.right => Position(current.x + 1, current.y)
+    };
+  }
+
+  bool positionIsOutOfBounds(Position p) {
+    return p.x < 0 || p.y < 0 || p.x >= gridSize || p.y >= gridSize;
   }
 }
