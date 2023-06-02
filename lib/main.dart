@@ -298,7 +298,7 @@ Widget getTab(Tab tab) {
   switch (tab) {
     case Tab.about:
       return AboutTab();
-    case Tab.work:
+    case Tab.work_and_projects:
       return WorkTab();
     case Tab.contact:
       return ContactTab();
@@ -311,7 +311,7 @@ Widget getTab(Tab tab) {
   }
 }
 
-enum Tab { about, work, resume, contact, co_op_reports, game }
+enum Tab { about, work_and_projects, resume, contact, co_op_reports, game }
 
 // Globals
 Tab currentTab = Tab.game;

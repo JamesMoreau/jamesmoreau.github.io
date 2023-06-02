@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 // TODO:
-// Figure out why eating causes lag.
+// bug where changing directions really quickly can cause the snake to eat itself
 // Make the snake cells look prettier.
 // Add menu, instructions (arrow keys). title and short explainer.
 
@@ -58,6 +58,15 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
   void render(Canvas canvas) {
     cellSize = gameRef.canvasSize.x / gridSize;
 
+    // Draw Food
+    var x = food.x.toDouble() * cellSize;
+    var y = food.y.toDouble() * cellSize;
+    var paint = Paint();
+    paint.color = Colors.green;
+
+    Rect tileRect = Rect.fromLTRB(x, y, x + cellSize, y + cellSize);
+    canvas.drawRect(tileRect, paint);
+
     // Draw snake
     for (int i = 0; i < snake.length; i++) {
       var cell = snake[i];
@@ -74,15 +83,6 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
       Rect tileRect = Rect.fromLTRB(x, y, x + cellSize, y + cellSize);
       canvas.drawRect(tileRect, paint);
     }
-
-    // Draw Food
-    var x = food.x.toDouble() * cellSize;
-    var y = food.y.toDouble() * cellSize;
-    var paint = Paint();
-    paint.color = Colors.green;
-
-    Rect tileRect = Rect.fromLTRB(x, y, x + cellSize, y + cellSize);
-    canvas.drawRect(tileRect, paint);
   }
 
   void placeNewFood() {
@@ -183,7 +183,7 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
         // set snake's initial position
         snake = [Position(0, 2), Position(0, 1)];
         direction = Direction.down;
-        snakeUpdateTimer = Timer(0.1, onTick: () => updateSnake(), repeat: true);
+        snakeUpdateTimer = Timer(0.15, onTick: () => updateSnake(), repeat: true);
 
         placeNewFood();
 
@@ -197,16 +197,16 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
       case GameState.play:
         assert(snake.length >= 2, 'snake should be at least two long');
 
-        snakeUpdateTimer.update(dt);
+        snakeUpdateTimer.update(dt); // runs the snake update code
 
         var head = snake.first;
         var next = nextPosition(head, direction);
 
         // check if snake eats food
-        if (next.x == food.x && next.y == food.y) {
-          snake.add(Position(food.x, food.y));
-          food = Position(-1, -1);
-          // placeNewFood();
+        if (head.x == food.x && head.y == food.y) {
+          snake.add(next);
+          // food = Position(-1, -1);
+          placeNewFood();
         }
 
         // check if snake is eating itself or out of bounds.
