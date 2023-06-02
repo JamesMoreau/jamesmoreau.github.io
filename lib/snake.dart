@@ -205,7 +205,8 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
         // check if snake eats food
         if (next.x == food.x && next.y == food.y) {
           snake.add(Position(food.x, food.y));
-          placeNewFood();
+          food = Position(-1, -1);
+          // placeNewFood();
         }
 
         // check if snake is eating itself or out of bounds.
