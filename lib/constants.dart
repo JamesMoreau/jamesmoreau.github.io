@@ -21,14 +21,13 @@ const degree = 'Honours Bachelors of Computer Science';
 const markFerrariNatureGifPath = 'assets/mark_ferrari_nature.gif';
 const linkedinIconPath = 'assets/linkedin.png';
 const githubIconPath = 'assets/github.png';
-const coopTermReportsDirectory = 'coop_term_reports/';
 const List<String> coopTermReports = [
-  'coop_term_reports/fall_2020_report.txt',
-  'coop_term_reports/summer_2021_report.txt',
-  'coop_term_reports/winter_summer_2022_report.txt'
+  'assets/coop_term_reports/fall_2020_report.txt',
+  'assets/coop_term_reports/summer_2021_report.txt',
+  'assets/coop_term_reports/winter_summer_2022_report.txt'
 ];
-
 const resumePngPath = 'assets/resume.png';
+const lostInTranslationGifPath = 'assets/lit.gif';
 
 /* Theme data */
 

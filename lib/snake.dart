@@ -47,6 +47,7 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
   Position food = Position(0, 0);
   List<Position> snake = [];
   Direction direction = Direction.down;
+  bool changedDirectionThisTurn = false;
 
   late Timer snakeUpdateTimer;
   double snakeUpdateInterval = 1;
@@ -108,6 +109,8 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
     var newHead = nextPosition(snakeHead, direction);
     snake.insert(0, newHead);
     snake.removeLast();
+
+    changedDirectionThisTurn = false;
   }
 
   @override
@@ -132,17 +135,29 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
       case GameState.play:
         switch (event.logicalKey) {
           case LogicalKeyboardKey.arrowUp:
-            if (direction != Direction.down) direction = Direction.up;
-            return true;
+            if (direction != Direction.down && !changedDirectionThisTurn) {
+              direction = Direction.up;
+              changedDirectionThisTurn = true;
+              return true;
+            }
           case LogicalKeyboardKey.arrowRight:
-            if (direction != Direction.left) direction = Direction.right;
-            return true;
+            if (direction != Direction.left && !changedDirectionThisTurn) {
+              direction = Direction.right;
+              changedDirectionThisTurn = true;
+              return true;
+            }
           case LogicalKeyboardKey.arrowDown:
-            if (direction != Direction.up) direction = Direction.down;
-            return true;
+            if (direction != Direction.up && !changedDirectionThisTurn) {
+              direction = Direction.down;
+              changedDirectionThisTurn = true;
+              return true;
+            }
           case LogicalKeyboardKey.arrowLeft:
-            if (direction != Direction.right) direction = Direction.left;
-            return true;
+            if (direction != Direction.right && !changedDirectionThisTurn) {
+              direction = Direction.left;
+              changedDirectionThisTurn = true;
+              return true;
+            }
           case LogicalKeyboardKey.keyR:
             debugPrint('restarting game');
             state = GameState.setup;

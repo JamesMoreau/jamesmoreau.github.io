@@ -1,19 +1,12 @@
-import 'package:flame/flame.dart';
-import 'package:flame_forge2d/forge2d_game.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:my_website/brick_breaker.dart';
 import 'package:my_website/constants.dart';
 import 'package:my_website/snake.dart';
 import 'package:path/path.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:photo_view/photo_view.dart';
-import 'package:flame/components.dart';
-import 'package:flame/experimental.dart';
 import 'package:flame/game.dart';
-import 'package:flame/palette.dart';
-import 'package:flutter/material.dart';
 
 /*
   TODO:
@@ -70,10 +63,7 @@ class _HomeState extends State<Home> {
                 color: Theme.of(context).colorScheme.primary,
               )),
               alignment: Alignment.center,
-              child: Container(
-                  padding: const EdgeInsets.all(30),
-                  alignment: Alignment.center,
-                  child: getTab(currentTab)),
+              child: Container(padding: const EdgeInsets.all(30), alignment: Alignment.center, child: getTab(currentTab)),
             ));
       }
 
@@ -96,10 +86,7 @@ class _HomeState extends State<Home> {
                 Flexible(flex: 1, child: TabMenu(changeTab: onTabChanged)),
                 Flexible(
                   flex: 3,
-                  child: Container(
-                      padding: const EdgeInsets.all(30),
-                      alignment: Alignment.center,
-                      child: getTab(currentTab)),
+                  child: Container(padding: const EdgeInsets.all(30), alignment: Alignment.center, child: getTab(currentTab)),
                 ),
               ],
             ),
@@ -111,8 +98,7 @@ class _HomeState extends State<Home> {
 }
 
 class TabMenu extends StatefulWidget {
-  final void Function()
-      changeTab; // notifies the main page that the tab has changed
+  final void Function() changeTab; // notifies the main page that the tab has changed
 
   const TabMenu({super.key, required this.changeTab});
 
@@ -134,8 +120,7 @@ class _TabMenuState extends State<TabMenu> with SingleTickerProviderStateMixin {
     );
     tabSelector.repeat(reverse: true);
 
-    tabSelectorAnimation =
-        Tween<double>(begin: -5, end: 0).animate(tabSelector);
+    tabSelectorAnimation = Tween<double>(begin: -5, end: 0).animate(tabSelector);
   }
 
   @override
@@ -152,24 +137,19 @@ class _TabMenuState extends State<TabMenu> with SingleTickerProviderStateMixin {
         child: ListView(
           // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SelectableText(myName,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
+            const SelectableText(myName, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
             const SizedBox(height: 10),
             const SelectableText(jobTitle),
             const SizedBox(height: 40),
             Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               for (var value in Tab.values)
-                value ==
-                        currentTab // draw the currently selected tab differently.
+                value == currentTab // draw the currently selected tab differently.
                     ? Padding(
                         padding: const EdgeInsets.only(bottom: 8),
                         child: Row(
                           children: [
                             TextButton(
-                                child: Text(value.name,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18)),
+                                child: Text(value.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
                                 onPressed: () {
                                   widget.changeTab();
                                   currentTab = value;
@@ -179,8 +159,7 @@ class _TabMenuState extends State<TabMenu> with SingleTickerProviderStateMixin {
                                 animation: tabSelectorAnimation,
                                 builder: (BuildContext context, Widget? child) {
                                   return Transform.translate(
-                                    offset:
-                                        Offset(tabSelectorAnimation.value, 0),
+                                    offset: Offset(tabSelectorAnimation.value, 0),
                                     child: child,
                                   );
                                 },
@@ -193,8 +172,7 @@ class _TabMenuState extends State<TabMenu> with SingleTickerProviderStateMixin {
                     : Padding(
                         padding: const EdgeInsets.only(bottom: 8),
                         child: TextButton(
-                            child: Text(value.name,
-                                style: const TextStyle(fontSize: 18)),
+                            child: Text(value.name, style: const TextStyle(fontSize: 18)),
                             onPressed: () {
                               widget.changeTab();
                               currentTab = value;
@@ -230,19 +208,14 @@ This site was implemented using Flutter, a UI software development kit created b
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SelectableText.rich(
-                    TextSpan(children: [
-                      TextSpan(
-                          text: '$about\n\n',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                      TextSpan(text: aboutText),
-                    ]),
-                  ),
+            Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.start, children: [
+              SelectableText.rich(
+                TextSpan(children: [
+                  TextSpan(text: '$about\n\n', style: TextStyle(fontWeight: FontWeight.bold)),
+                  TextSpan(text: aboutText),
                 ]),
+              ),
+            ]),
             SizedBox(height: 50),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -275,14 +248,9 @@ This site was implemented using Flutter, a UI software development kit created b
                             color: Colors.black,
                             width: 1,
                           )),
-                          child: Image.asset(markFerrariNatureGifPath,
-                              width: 300, height: 300, fit: BoxFit.cover),
+                          child: Image.asset(markFerrariNatureGifPath, width: 300, height: 300, fit: BoxFit.cover),
                         )),
-                    Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: Text('Mark Ferrari',
-                            style: TextStyle(color: Colors.white)))
+                    Positioned(bottom: 0, right: 0, child: Text('Mark Ferrari', style: TextStyle(color: Colors.white)))
                   ],
                 ),
               ],
@@ -370,9 +338,7 @@ class _CoopTabState extends State<CoopTab> {
                       },
                       title: Text(reports[index].reportName),
                       children: [
-                        SizedBox(
-                            width: MediaQuery.of(context).size.width * .6,
-                            child: Text(reports[index].contents)),
+                        SizedBox(width: MediaQuery.of(context).size.width * .6, child: Text(reports[index].contents)),
                       ]),
                 )));
   }
@@ -383,22 +349,22 @@ class WorkTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var gif = Image.asset(lostInTranslationGifPath, width: 499, height: 266, fit: BoxFit.contain);
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: ListView(children: [
         Wrap(
           children: [
             InkWell(
-                child: HoverText(
-                    text: 'Purolator Delivery Pro - Last Mile Delivery Service',
-                    bigTextSize: 40,
-                    smallTextSize: 25),
-                onTap: () => launchMyUrl(
-                    'https://apps.apple.com/ca/app/purolator-delivery-pro/id1622239326')),
+                child: HoverText(text: 'Purolator Delivery Pro - Last Mile Delivery Service', bigTextSize: 40, smallTextSize: 25),
+                onTap: () => launchMyUrl('https://apps.apple.com/ca/app/purolator-delivery-pro/id1622239326')),
             SizedBox(width: 10),
             Icon(Icons.open_in_new)
           ],
-        )
+        ),
+        SizedBox(height: 30),
+        gif
       ]),
     );
   }
@@ -409,12 +375,7 @@ class HoverText extends StatefulWidget {
   final double bigTextSize;
   final double smallTextSize;
 
-  const HoverText(
-      {Key? key,
-      required this.text,
-      required this.bigTextSize,
-      required this.smallTextSize})
-      : super(key: key);
+  const HoverText({Key? key, required this.text, required this.bigTextSize, required this.smallTextSize}) : super(key: key);
 
   @override
   State<HoverText> createState() => _HoverTextState();
@@ -493,8 +454,7 @@ class ContactTab extends StatelessWidget {
                   TextSpan(
                       text: githubLink,
                       style: TextStyle(color: Colors.blue),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () => launchMyUrl(githubLink)),
+                      recognizer: TapGestureRecognizer()..onTap = () => launchMyUrl(githubLink)),
                 ],
               ),
             ),
@@ -510,8 +470,7 @@ class ContactTab extends StatelessWidget {
                   TextSpan(
                     text: linkedInLink,
                     style: TextStyle(color: Colors.blue),
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () => launchMyUrl(linkedInLink),
+                    recognizer: TapGestureRecognizer()..onTap = () => launchMyUrl(linkedInLink),
                   ),
                 ],
               ),
@@ -541,11 +500,7 @@ class _ResumeTabState extends State<ResumeTab> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset(resumePngPath, filterQuality: FilterQuality.high),
-          Align(
-              alignment: Alignment.topLeft,
-              child: IconButton(
-                  onPressed: () => showImageDialog(context, resumePngPath),
-                  icon: Icon(Icons.zoom_in)))
+          Align(alignment: Alignment.topLeft, child: IconButton(onPressed: () => showImageDialog(context, resumePngPath), icon: Icon(Icons.zoom_in)))
         ],
       ),
     );
@@ -568,9 +523,7 @@ class _ResumeTabState extends State<ResumeTab> {
               bottom: 30,
               child: Padding(
                 padding: const EdgeInsets.all(8),
-                child: ElevatedButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: Text('Close')),
+                child: ElevatedButton(onPressed: () => Navigator.pop(context), child: Text('Close')),
               ),
             ),
           ],
@@ -625,24 +578,17 @@ class _GameTabState extends State<GameTab> {
               Container(
                 width: widget.gameSize,
                 height: widget.gameSize,
-                decoration: BoxDecoration(
-                    border: Border.all(
-                        width: 2,
-                        color: Theme.of(context).colorScheme.primary)),
+                decoration: BoxDecoration(border: Border.all(width: 2, color: Theme.of(context).colorScheme.primary)),
                 child: GameWidget(
                   // backgroundBuilder: (context) => Container(
                   //     color: Theme.of(context).colorScheme.background),
                   game: game,
-                  loadingBuilder: (context) =>
-                      Center(child: CircularProgressIndicator()),
-                  errorBuilder: (context, error) =>
-                      Center(child: Text("Unable to start snake game! :'(")),
+                  loadingBuilder: (context) => Center(child: CircularProgressIndicator()),
+                  errorBuilder: (context, error) => Center(child: Text("Unable to start snake game! :'(")),
                 ),
               ),
               SizedBox(height: 20),
-              ElevatedButton(
-                  onPressed: () => pauseOrUnpause(),
-                  child: game.paused ? Text('Play') : Text('Pause'))
+              ElevatedButton(onPressed: () => pauseOrUnpause(), child: game.paused ? Text('Play') : Text('Pause'))
             ],
           ),
         ));

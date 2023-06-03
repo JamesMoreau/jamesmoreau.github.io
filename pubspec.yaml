@@ -72,7 +72,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/
-    - coop_term_reports/
+    - assets/coop_term_reports/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -90,7 +90,7 @@ flutter:
     - family: Inconsolata
       fonts:
         # - asset: fonts/Inconsolata-Regular.ttf
-        - asset: fonts/Inconsolata-VariableFont_wdth,wght.ttf
+        - asset: assets/fonts/Inconsolata-VariableFont_wdth,wght.ttf
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf
