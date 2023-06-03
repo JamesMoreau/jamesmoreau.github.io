@@ -83,9 +83,33 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
       Rect tileRect = Rect.fromLTRB(x, y, x + cellSize, y + cellSize);
       canvas.drawRect(tileRect, paint);
     }
+
+    // Draw UI.
+    var textPaint = TextPaint(style: TextStyle(fontSize: 35.0, fontFamily: 'Inconsolata'));
+    var centerPosition = Vector2(gameRef.canvasSize.x / 2, gameRef.canvasSize.y / 2);
+    var restartPosition = Vector2(gameRef.canvasSize.x / 2, gameRef.canvasSize.y);
+    var restartAnchor = Anchor.bottomCenter;
+
+    if (state == GameState.victory) {
+      textPaint.render(canvas, 'You Win!', centerPosition, anchor: Anchor.center);
+      textPaint.render(canvas, "Press to 'R' Restart", restartPosition, anchor: restartAnchor);
+    } else if (state == GameState.gameover) {
+      textPaint.render(canvas, 'Game Over.', centerPosition, anchor: Anchor.center);
+      textPaint.render(canvas, "Press to 'R' Restart", restartPosition, anchor: restartAnchor);
+    } else if (state == GameState.ready) {
+      textPaint.render(canvas, "Press 'Space' to Start.", centerPosition, anchor: Anchor.center);
+    }
   }
 
   void placeNewFood() {
+    // Check if there are no places to place the food. This is the victory condition, ie, the snake occupies the entire grid.
+    var totalGridCells = gridSize * gridSize;
+    var totalSnakeCells = snake.length;
+    if (totalSnakeCells == totalGridCells) {
+      //game is won
+      state = GameState.victory;
+    }
+
     while (true) {
       var random = math.Random();
       food.x = random.nextInt(gridSize);
@@ -170,8 +194,17 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
                 debugPrint('Resuming the game.');
                 game.paused = true;
               }
+              return true;
             }
-            return true;
+            return false;
+
+          case LogicalKeyboardKey.keyV:
+            if (game.debugMode) {
+              state = GameState.victory;
+              debugPrint('Setting Victory.');
+              return true;
+            }
+            return false;
         }
         return false;
 
@@ -185,6 +218,12 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
         return false;
 
       case GameState.victory:
+        switch (event.logicalKey) {
+          case LogicalKeyboardKey.keyR:
+            debugPrint('Restarting Game.');
+            state = GameState.setup;
+            return true;
+        }
         return false;
     }
   }
