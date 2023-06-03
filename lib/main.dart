@@ -564,7 +564,7 @@ class _GameTabState extends State<GameTab> {
 
   @override
   void initState() {
-    game.paused = true;
+    // game.paused = true;
     super.initState();
   }
 

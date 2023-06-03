@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 // TODO:
-// bug where changing directions really quickly can cause the snake to eat itself
 // Make the snake cells look prettier.
 // Add menu, instructions (arrow keys). title and short explainer.
 
@@ -63,7 +62,7 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
     var x = food.x.toDouble() * cellSize;
     var y = food.y.toDouble() * cellSize;
     var paint = Paint();
-    paint.color = Colors.green;
+    paint.color = Color.fromARGB(255, 76, 206, 137);
 
     Rect tileRect = Rect.fromLTRB(x, y, x + cellSize, y + cellSize);
     canvas.drawRect(tileRect, paint);
@@ -80,7 +79,7 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
       var y = cell.y.toDouble() * cellSize;
       Paint paint = Paint();
       // paint.color = i == 0 && game.debugMode ? Colors.yellow : Colors .blue; //draw the head a different color than the rest of the body.
-      paint.color = Colors.blue;
+      paint.color = Color(0xff7f7fff);
       Rect tileRect = Rect.fromLTRB(x, y, x + cellSize, y + cellSize);
       canvas.drawRect(tileRect, paint);
     }
@@ -93,11 +92,11 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
       food.y = random.nextInt(gridSize);
 
       // check food is not in the same position as the snake.
-      var notInSnake = false;
+      var inSnake = false;
       for (var position in snake) {
-        if (food.x != position.x && food.y != position.y) notInSnake = true;
+        if (food.x == position.x && food.y == position.y) inSnake = true;
       }
-      if (notInSnake) break;
+      if (!inSnake) break;
     }
   }
 
