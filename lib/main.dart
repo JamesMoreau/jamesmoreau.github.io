@@ -10,9 +10,7 @@ import 'package:flame/game.dart';
 
 /*
   TODO:
-    add something about Lost in Translation
-    add previous work, game (snake, wordle).
-    make layout work for mobile. possibly make menu drawer-like if the screen is too small?
+    figure out how to host on github pages.
     migrate to material3 ?
     add fps widget control. maybe only make it available under game tab?
     add resume route with pdf.
