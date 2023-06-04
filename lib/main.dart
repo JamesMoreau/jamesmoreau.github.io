@@ -363,7 +363,7 @@ class WorkTab extends StatelessWidget {
             Icon(Icons.open_in_new)
           ],
         ),
-        SizedBox(height: 30),
+        SizedBox(height: 50),
         gif
       ]),
     );
@@ -572,10 +572,8 @@ class _GameTabState extends State<GameTab> {
               Container(
                 width: widget.gameSize,
                 height: widget.gameSize,
-                decoration: BoxDecoration(border: Border.all(width: 2, color: Theme.of(context).colorScheme.primary)),
+                decoration: BoxDecoration(border: Border.all(width: 5, color: Colors.black), borderRadius: BorderRadius.all(Radius.circular(3))),
                 child: GameWidget(
-                  // backgroundBuilder: (context) => Container(
-                  //     color: Theme.of(context).colorScheme.background),
                   game: game,
                   loadingBuilder: (context) => Center(child: CircularProgressIndicator()),
                   errorBuilder: (context, error) => Center(child: Text("Unable to start snake game! :'(")),

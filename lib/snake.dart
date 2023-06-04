@@ -40,7 +40,7 @@ class SnakeGame extends FlameGame with HasKeyboardHandlerComponents {
 
 class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame> {
   GameState state = GameState.setup;
-  double cellSize = 10;
+  // double cellSize = 10;
   int gridSize = 20;
 
   Position food = Position(0, 0);
@@ -56,7 +56,8 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
 
   @override
   void render(Canvas canvas) {
-    cellSize = gameRef.canvasSize.x / gridSize;
+    var cellSize = gameRef.canvasSize.x / gridSize;
+    var epsilon = 0.1;
 
     // Draw Food
     var x = food.x.toDouble() * cellSize;
@@ -64,8 +65,9 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
     var paint = Paint();
     paint.color = Color.fromARGB(255, 76, 206, 137);
 
-    Rect tileRect = Rect.fromLTRB(x, y, x + cellSize, y + cellSize);
-    canvas.drawRect(tileRect, paint);
+    // Rect tileRect = Rect.fromLTRB(x, y, x + cellSize, y + cellSize);
+    var r = RRect.fromLTRBR(x, y, x + cellSize, y + cellSize, Radius.circular(2));
+    canvas.drawRRect(r, paint);
 
     // Draw snake
     for (int i = 0; i < snake.length; i++) {
@@ -80,8 +82,10 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
       Paint paint = Paint();
       // paint.color = i == 0 && game.debugMode ? Colors.yellow : Colors .blue; //draw the head a different color than the rest of the body.
       paint.color = Color(0xff7f7fff);
-      Rect tileRect = Rect.fromLTRB(x, y, x + cellSize, y + cellSize);
-      canvas.drawRect(tileRect, paint);
+
+      // Epsilon is a small amount that is subtracted from the cell size so that multiple cells do not overlap and keeps them from z fighting.
+      var r = RRect.fromLTRBR(x, y, x + cellSize - epsilon, y + cellSize - epsilon, Radius.circular(2));
+      canvas.drawRRect(r, paint);
     }
 
     // Draw UI.
