@@ -87,17 +87,19 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
     // Draw UI.
     var textPaint = TextPaint(style: TextStyle(fontSize: 35.0, fontFamily: 'Inconsolata'));
     var centerPosition = Vector2(gameRef.canvasSize.x / 2, gameRef.canvasSize.y / 2);
-    var restartPosition = Vector2(gameRef.canvasSize.x / 2, gameRef.canvasSize.y);
-    var restartAnchor = Anchor.bottomCenter;
+    var bottomCenterPosition = Vector2(gameRef.canvasSize.x / 2, gameRef.canvasSize.y);
+    var topCenterPosition = Vector2(gameRef.canvasSize.x / 2, 0);
 
     if (state == GameState.victory) {
       textPaint.render(canvas, 'You Win!', centerPosition, anchor: Anchor.center);
-      textPaint.render(canvas, "Press to 'R' Restart", restartPosition, anchor: restartAnchor);
+      textPaint.render(canvas, "Press 'R' to restart", bottomCenterPosition, anchor: Anchor.bottomCenter);
     } else if (state == GameState.gameover) {
       textPaint.render(canvas, 'Game Over.', centerPosition, anchor: Anchor.center);
-      textPaint.render(canvas, "Press to 'R' Restart", restartPosition, anchor: restartAnchor);
+      textPaint.render(canvas, "Press 'R' to restart", bottomCenterPosition, anchor: Anchor.bottomCenter);
     } else if (state == GameState.ready) {
-      textPaint.render(canvas, "Press 'Space' to Start.", centerPosition, anchor: Anchor.center);
+      textPaint.render(canvas, 'SNAKE GAME', topCenterPosition, anchor: Anchor.topCenter);
+      textPaint.render(canvas, "Press 'Space' to start.", bottomCenterPosition, anchor: Anchor.bottomCenter);
+      textPaint.render(canvas, 'Use arrow keys to play.', centerPosition, anchor: Anchor.center);
     }
   }
 

@@ -557,14 +557,8 @@ class GameTab extends StatefulWidget {
 class _GameTabState extends State<GameTab> {
   FlameGame game = SnakeGame();
 
-  pauseOrUnpause() {
-    game.paused = !game.paused;
-    setState(() {});
-  }
-
   @override
   void initState() {
-    // game.paused = true;
     super.initState();
   }
 
@@ -588,7 +582,6 @@ class _GameTabState extends State<GameTab> {
                 ),
               ),
               SizedBox(height: 20),
-              ElevatedButton(onPressed: () => pauseOrUnpause(), child: game.paused ? Text('Play') : Text('Pause'))
             ],
           ),
         ));
