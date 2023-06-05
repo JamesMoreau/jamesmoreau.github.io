@@ -33,8 +33,7 @@ const lostInTranslationGifPath = 'assets/lit.gif';
 
 ThemeData lightApplicationTheme = ThemeData(
   // primarySwatch: MaterialColor(0xff6fb3b8, {}),
-  // useMaterial3: true,
-  brightness: Brightness.light,
+  useMaterial3: true,
   colorScheme: const ColorScheme(
       brightness: Brightness.light,
       primary: Color(0xff2b2b2b),
@@ -46,35 +45,17 @@ ThemeData lightApplicationTheme = ThemeData(
       background: Color(0xffe6e6e6),
       onBackground: Color(0xff2b2b2b),
       surface: Color(0xffc2edce),
-      onSurface: Colors.white),
-  textTheme: TextTheme(),
+      onSurface: Color(0xff2b2b2b)),
+  fontFamily: 'Inconsolata',
   appBarTheme: AppBarTheme(
       backgroundColor: Color(0xff2b2b2b),
-      titleTextStyle: TextStyle(
-          color: Color(0xffe6e6e6),
-          fontWeight: FontWeight.bold,
-          fontSize: 30,
-          fontFamily: 'Inconsolata'),
-          elevation: 0),
-  iconTheme: const IconThemeData(),
-  fontFamily: 'Inconsolata',
-  tabBarTheme: TabBarTheme(
-    labelColor: const Color(0xff2b2b2b),
-    unselectedLabelColor: Colors.grey,
-    indicator: const BoxDecoration(), // this make the indicator invisible
-    overlayColor:
-        MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
-      if (states.contains(MaterialState.hovered) ||
-          states.contains(MaterialState.pressed)) return Colors.transparent;
-      return Colors.red;
-    }),
-  ),
+      titleTextStyle: TextStyle(color: Color(0xffe6e6e6), fontWeight: FontWeight.bold, fontSize: 30, fontFamily: 'Inconsolata'),
+      elevation: 0),
   expansionTileTheme: ExpansionTileThemeData(
     // collapsed
     collapsedBackgroundColor: const Color(0xff2b2b2b),
     collapsedTextColor: Colors.white,
-    collapsedShape:
-        RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+    collapsedShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
     collapsedIconColor: Colors.white,
     // open
     backgroundColor: Colors.transparent,
@@ -91,12 +72,6 @@ ThemeData lightApplicationTheme = ThemeData(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(8.0)),
     ),
-    contentTextStyle: TextStyle(
-        fontFamily: 'Inconsolata', color: Colors.white),
-    // elevation: 0,
+    contentTextStyle: TextStyle(fontFamily: 'Inconsolata', color: Colors.white),
   ),
-  floatingActionButtonTheme: FloatingActionButtonThemeData(
-    backgroundColor: const Color(0xff2b2b2b),
-  ),
-  scaffoldBackgroundColor: const Color(0xffe6e6e6),
 );
