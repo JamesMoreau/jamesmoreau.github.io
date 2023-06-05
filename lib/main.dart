@@ -261,20 +261,14 @@ This site was implemented using Flutter, a UI software development kit created b
 }
 
 Widget getTab(Tab tab) {
-  switch (tab) {
-    case Tab.about:
-      return AboutTab();
-    case Tab.work_and_projects:
-      return WorkTab();
-    case Tab.contact:
-      return ContactTab();
-    case Tab.game:
-      return GameTab();
-    case Tab.co_op_reports:
-      return CoopTab();
-    case Tab.resume:
-      return ResumeTab();
-  }
+  return switch (tab) {
+    Tab.about => AboutTab(),
+    Tab.work_and_projects => WorkTab(),
+    Tab.contact => ContactTab(),
+    Tab.game => GameTab(),
+    Tab.co_op_reports => CoopTab(),
+    Tab.resume => ResumeTab()
+  };
 }
 
 enum Tab { about, work_and_projects, resume, contact, co_op_reports, game }

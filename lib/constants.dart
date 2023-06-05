@@ -47,6 +47,7 @@ ThemeData lightApplicationTheme = ThemeData(
       onBackground: Color(0xff2b2b2b),
       surface: Color(0xffc2edce),
       onSurface: Colors.white),
+  textTheme: TextTheme(),
   appBarTheme: AppBarTheme(
       backgroundColor: Color(0xff2b2b2b),
       titleTextStyle: TextStyle(

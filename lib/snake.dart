@@ -5,10 +5,6 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-// TODO:
-// Make the snake cells look prettier.
-// Add menu, instructions (arrow keys). title and short explainer.
-
 enum GameState { setup, ready, play, gameover, victory }
 
 enum Direction { up, down, left, right }
@@ -40,8 +36,7 @@ class SnakeGame extends FlameGame with HasKeyboardHandlerComponents {
 
 class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame> {
   GameState state = GameState.setup;
-  // double cellSize = 10;
-  int gridSize = 20;
+  int gridSize = 16;
 
   Position food = Position(0, 0);
   List<Position> snake = [];
@@ -50,9 +45,6 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
 
   late Timer snakeUpdateTimer;
   double snakeUpdateInterval = 1;
-
-  @override
-  void onLoad() {}
 
   @override
   void render(Canvas canvas) {
