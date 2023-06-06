@@ -26,7 +26,7 @@ class SnakeGame extends FlameGame with HasKeyboardHandlerComponents {
 
   @override
   void onLoad() {
-    debugMode = true;
+    // debugMode = true;
     main = Main();
     add(main);
 

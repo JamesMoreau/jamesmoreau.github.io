@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -135,7 +136,7 @@ class _TabMenuState extends State<TabMenu> with SingleTickerProviderStateMixin {
         child: ListView(
           // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SelectableText(myName, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
+            const Text(myName, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
             const SizedBox(height: 10),
             const SelectableText(jobTitle),
             const SizedBox(height: 40),
@@ -274,7 +275,7 @@ Widget getTab(Tab tab) {
 enum Tab { about, work_and_projects, resume, contact, co_op_reports, game }
 
 // Globals
-Tab currentTab = Tab.game;
+Tab currentTab = Tab.resume;
 
 class Report {
   final String reportName;
@@ -492,37 +493,40 @@ class _ResumeTabState extends State<ResumeTab> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset(resumePngPath, filterQuality: FilterQuality.high),
-          Align(alignment: Alignment.topLeft, child: IconButton(onPressed: () => showImageDialog(context, resumePngPath), icon: Icon(Icons.zoom_in)))
+          Align(alignment: Alignment.topLeft, child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: ElevatedButton.icon(onPressed: () => null, icon: Icon(Icons.open_in_new), label: Text('Download')),
+          ))
         ],
       ),
     );
   }
 
-  void showImageDialog(BuildContext context, String imagePath) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog.fullscreen(
-            child: Stack(
-          alignment: Alignment.center,
-          children: [
-            PhotoView(
-              imageProvider: AssetImage(imagePath),
-              filterQuality: FilterQuality.high,
-              enableRotation: false,
-            ),
-            Positioned(
-              bottom: 30,
-              child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: ElevatedButton(onPressed: () => Navigator.pop(context), child: Text('Close')),
-              ),
-            ),
-          ],
-        ));
-      },
-    );
-  }
+  // void showImageDialog(BuildContext context, String imagePath) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return Dialog.fullscreen(
+  //           child: Stack(
+  //         alignment: Alignment.center,
+  //         children: [
+  //           PhotoView(
+  //             imageProvider: AssetImage(imagePath),
+  //             filterQuality: FilterQuality.high,
+  //             enableRotation: false,
+  //           ),
+  //           Positioned(
+  //             bottom: 30,
+  //             child: Padding(
+  //               padding: const EdgeInsets.all(8),
+  //               child: ElevatedButton(onPressed: () => Navigator.pop(context), child: Text('Close'), style: ElevatedButton.styleFrom(backgroundColor: Color(0xff2b2b2b), textStyle: TextStyle(color: Colors.white)))
+  //             ),
+  //           ),
+  //         ],
+  //       ));
+  //     },
+  //   );
+  // }
 }
 
 Future<void> launchMyUrl(String link) async {
@@ -551,6 +555,7 @@ class _GameTabState extends State<GameTab> {
 
   @override
   void initState() {
+    if (kDebugMode) game.debugMode = true;
     super.initState();
   }
 

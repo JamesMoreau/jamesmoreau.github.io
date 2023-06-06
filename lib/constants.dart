@@ -38,19 +38,20 @@ ThemeData lightApplicationTheme = ThemeData(
       brightness: Brightness.light,
       primary: Color(0xff2b2b2b),
       onPrimary: Colors.white,
-      secondary: Colors.yellow,
+      secondary: Color(0xff2b2b2b),
       onSecondary: Colors.white,
       error: Colors.red,
       onError: Colors.white,
       background: Color(0xffe6e6e6),
       onBackground: Color(0xff2b2b2b),
-      surface: Color(0xffc2edce),
+      surface: Color(0xffe6e6e6),
       onSurface: Color(0xff2b2b2b)),
   fontFamily: 'Inconsolata',
   appBarTheme: AppBarTheme(
       backgroundColor: Color(0xff2b2b2b),
       titleTextStyle: TextStyle(color: Color(0xffe6e6e6), fontWeight: FontWeight.bold, fontSize: 30, fontFamily: 'Inconsolata'),
       elevation: 0),
+  elevatedButtonTheme: ElevatedButtonThemeData(style: ElevatedButton.styleFrom(backgroundColor: Color(0xff2b2b2b), foregroundColor: Colors.white, padding: EdgeInsets.all(15))),
   expansionTileTheme: ExpansionTileThemeData(
     // collapsed
     collapsedBackgroundColor: const Color(0xff2b2b2b),
