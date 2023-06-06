@@ -24,10 +24,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: lightApplicationTheme,
-        // home: Material(child: FPSWidget(child: const MainPage())),
-        home: Home());
+      title: myName,
+      debugShowCheckedModeBanner: false,
+      theme: lightApplicationTheme,
+      home: Home());
   }
 }
 
@@ -49,7 +49,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   void onTabChanged() {
-    debugPrint('Changing tab to ${currentTab.name}');
+    if (kDebugMode) print('Changing tab to ${currentTab.name}');
     tabFadeInController.reset();
     tabFadeInController.forward();
     setState(() {});
@@ -560,11 +560,11 @@ Future<void> launchMyUrl(String link) async {
   var url = Uri.parse(link);
   var canLaunch = await canLaunchUrl(url);
   if (!canLaunch) {
-    debugPrint('Cannot launch url');
+    if (kDebugMode) print('Cannot launch url');
     return;
   }
 
-  debugPrint('launching url');
+  if (kDebugMode) print('launching url');
   await launchUrl(url);
 }
 
