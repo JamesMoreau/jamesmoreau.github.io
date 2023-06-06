@@ -40,7 +40,6 @@ dependencies:
   url_launcher: ^6.1.11
   flutter_simple_calculator: ^2.2.2
   path: ^1.8.2
-  photo_view: ^0.14.0
   fps_widget: ^1.0.1+2
   statsfl: ^2.3.0
   flame: ^1.7.3

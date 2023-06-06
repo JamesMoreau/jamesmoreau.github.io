@@ -1,13 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:my_website/constants.dart';
 import 'package:my_website/snake.dart';
 import 'package:path/path.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:photo_view/photo_view.dart';
 import 'package:flame/game.dart';
 
 /*
