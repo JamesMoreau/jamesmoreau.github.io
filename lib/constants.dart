@@ -47,7 +47,11 @@ ThemeData lightApplicationTheme = ThemeData(
       surface: Color(0xffe6e6e6),
       onSurface: Color(0xff2b2b2b)),
   fontFamily: 'Inconsolata',
+  textTheme: TextTheme(
+    bodyMedium: TextStyle(fontSize: 16)
+  ),
   appBarTheme: AppBarTheme(
+    iconTheme: IconThemeData(color: Colors.white),
       backgroundColor: Color(0xff2b2b2b),
       titleTextStyle: TextStyle(color: Color(0xffe6e6e6), fontWeight: FontWeight.bold, fontSize: 30, fontFamily: 'Inconsolata'),
       elevation: 0),

@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:my_website/constants.dart';
 import 'package:my_website/snake.dart';
@@ -12,10 +13,7 @@ import 'package:flame/game.dart';
 /*
   TODO:
     figure out how to host on github pages.
-    migrate to material3 ?
-    add fps widget control. maybe only make it available under game tab?
     add resume route with pdf.
-    add fade in to tabs.
 */
 
 void main() {
@@ -42,10 +40,37 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends State<Home> with TickerProviderStateMixin {
+  late AnimationController tabFadeInController;
+  late Animation<double> tabFadeInAnimation;
+
+  @override
+  void dispose() {
+    tabFadeInController.dispose();
+    super.dispose();
+  }
+
   void onTabChanged() {
     debugPrint('Changing tab to ${currentTab.name}');
+    tabFadeInController.reset();
+    tabFadeInController.forward();
     setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    tabFadeInController = AnimationController(
+      duration: const Duration(milliseconds: 750),
+      vsync: this,
+    );
+    tabFadeInController.forward();
+
+    tabFadeInAnimation = CurvedAnimation(
+      parent: tabFadeInController,
+      curve: Curves.easeIn,
+    );
   }
 
   @override
@@ -62,7 +87,7 @@ class _HomeState extends State<Home> {
                 color: Theme.of(context).colorScheme.primary,
               )),
               alignment: Alignment.center,
-              child: Container(padding: const EdgeInsets.all(30), alignment: Alignment.center, child: getTab(currentTab)),
+              child: FadeTransition(opacity: tabFadeInAnimation, child: Container(padding: const EdgeInsets.all(30), alignment: Alignment.center, child: getTab(currentTab))),
             ));
       }
 
@@ -85,7 +110,9 @@ class _HomeState extends State<Home> {
                 Flexible(flex: 1, child: TabMenu(changeTab: onTabChanged)),
                 Flexible(
                   flex: 3,
-                  child: Container(padding: const EdgeInsets.all(30), alignment: Alignment.center, child: getTab(currentTab)),
+                  child: FadeTransition(
+                      opacity: tabFadeInAnimation,
+                      child: Container(padding: const EdgeInsets.all(30), alignment: Alignment.center, child: getTab(currentTab))),
                 ),
               ],
             ),
@@ -265,14 +292,14 @@ Widget getTab(Tab tab) {
   return switch (tab) {
     Tab.about => AboutTab(),
     Tab.work_and_projects => WorkTab(),
-    Tab.contact => ContactTab(),
+    Tab.contact_and_links => ContactTab(),
     Tab.game => GameTab(),
     Tab.co_op_reports => CoopTab(),
     Tab.resume => ResumeTab()
   };
 }
 
-enum Tab { about, work_and_projects, resume, contact, co_op_reports, game }
+enum Tab { about, work_and_projects, resume, contact_and_links, co_op_reports, game }
 
 // Globals
 Tab currentTab = Tab.resume;
@@ -493,10 +520,12 @@ class _ResumeTabState extends State<ResumeTab> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset(resumePngPath, filterQuality: FilterQuality.high),
-          Align(alignment: Alignment.topLeft, child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: ElevatedButton.icon(onPressed: () => null, icon: Icon(Icons.open_in_new), label: Text('Download')),
-          ))
+          Align(
+              alignment: Alignment.topLeft,
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: ElevatedButton.icon(onPressed: () => null, icon: Icon(Icons.open_in_new), label: Text('Download')),
+              ))
         ],
       ),
     );
