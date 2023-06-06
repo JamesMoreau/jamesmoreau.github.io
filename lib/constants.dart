@@ -27,6 +27,7 @@ const List<String> coopTermReports = [
   'assets/coop_term_reports/winter_summer_2022_report.txt'
 ];
 const resumePngPath = 'assets/resume.png';
+const resumePdfPath = 'https://github.com/JamesMoreau/MyWebsite/blob/main/assets/JamesRush.pdf';
 const lostInTranslationGifPath = 'assets/lit.gif';
 
 /* Theme data */
@@ -47,15 +48,14 @@ ThemeData lightApplicationTheme = ThemeData(
       surface: Color(0xffe6e6e6),
       onSurface: Color(0xff2b2b2b)),
   fontFamily: 'Inconsolata',
-  textTheme: TextTheme(
-    bodyMedium: TextStyle(fontSize: 16)
-  ),
+  textTheme: TextTheme(bodyMedium: TextStyle(fontSize: 16)),
   appBarTheme: AppBarTheme(
-    iconTheme: IconThemeData(color: Colors.white),
+      iconTheme: IconThemeData(color: Colors.white),
       backgroundColor: Color(0xff2b2b2b),
       titleTextStyle: TextStyle(color: Color(0xffe6e6e6), fontWeight: FontWeight.bold, fontSize: 30, fontFamily: 'Inconsolata'),
       elevation: 0),
-  elevatedButtonTheme: ElevatedButtonThemeData(style: ElevatedButton.styleFrom(backgroundColor: Color(0xff2b2b2b), foregroundColor: Colors.white, padding: EdgeInsets.all(15))),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(backgroundColor: Color(0xff2b2b2b), foregroundColor: Colors.white, padding: EdgeInsets.all(15))),
   expansionTileTheme: ExpansionTileThemeData(
     // collapsed
     collapsedBackgroundColor: const Color(0xff2b2b2b),

@@ -1,3 +1,4 @@
+import 'package:file_saver/file_saver.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +11,6 @@ import 'package:flame/game.dart';
 
 /*
   TODO:
-    figure out how to host on github pages.
-    add resume route with pdf.
 */
 
 void main() {
@@ -522,7 +521,7 @@ class _ResumeTabState extends State<ResumeTab> {
               alignment: Alignment.topLeft,
               child: Padding(
                 padding: const EdgeInsets.all(10),
-                child: ElevatedButton.icon(onPressed: () => null, icon: Icon(Icons.open_in_new), label: Text('Download')),
+                child: ElevatedButton.icon(onPressed: () => launchMyUrl(''), icon: Icon(Icons.open_in_new), label: Text('Download')),
               ))
         ],
       ),

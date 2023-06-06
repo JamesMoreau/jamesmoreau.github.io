@@ -44,6 +44,7 @@ dependencies:
   statsfl: ^2.3.0
   flame: ^1.7.3
   flame_forge2d: ^0.14.0
+  file_saver: ^0.2.4
 
 dev_dependencies:
   flutter_test:
