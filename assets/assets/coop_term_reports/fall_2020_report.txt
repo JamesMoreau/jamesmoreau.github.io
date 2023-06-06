@@ -1,0 +1,46 @@
+This fall I have had the fortune of having been invited to work remotely for the Co-operators as a test automation 
+developer.This blog will serve as a journal to myself and others about my experience as a Co-op student. Hopefully, 
+this blog will act as a time capsule to observe my progression in terms of knowledge and skills, as well as the 
+development of my professional career.My employer, The Co-operators Group Limited is a leading Canadian multi-line 
+insurance and financial services co-operative with $47.3 billion in assets under management. I worked at a local Guelph 
+branch in the Quality Assurance team under the Information Technology department. Since it's founding in 1945, the 
+co-operators now offers home, business, life, farm, and travel insurance to many Canadians.
+
+This was my first co-op, which also happened to be completely remote, so my expectations as far as what I was going to 
+be learning -- that is, technologies, insurance practices, etc. -- were modest. I created a list earlier on my work 
+term outlining the goals/learning outcomes I had in mind.
+
+1. I would like to improve my oral communication in team meetings and in one-on-one.
+2. I want to become more familiar with git. Specifically the advanced branching features.
+3. I want to maintain a daily agenda to record my ideas, tasks, notes, etc. to have a more organized and efficient 
+workday.
+
+When I applied for this job, though previous classes had prepared me to the best of their ability, I have had little 
+practice working in a professional environment on a development team. My hopes were to gain hands-on experience working 
+with a pre-existing codebase composed of multiple coupled technologies to acquire a holistic experience of software 
+development. I was fortunate to work on the QA team where I obtained skills that will benefit me in future work 
+experiences.
+
+Looking back at the goals I outlined, I would say that for the most part, they have been successfully accomplished. For 
+oral communication I frequently asked questions when confused; I even got to lead a scrum meeting one time. For 
+becoming more familiar with and using advanced functionality of git source control, I worked with multiple repositories 
+and created product features using branches and merging. With maintaining a daily agenda, I kept one next to me every 
+day; It is pretty full now. While I can say that I have been taking notes when I feel the need to, I don't do it every 
+day.
+
+I worked on the quality assurance team and our job was to ensure that changes made to the backend of Policy Center 
+(this is where insurance underwriters go to create an insurance policy for a client) by other development teams did not 
+create problems for production users. To accomplish my daily tasks, I worked with a variety of technologies including 
+Guidewire PolicyCenter, QTP (Micro Focus Unified Functional Testing), Selenium, and Java programming. Most of the 
+programming practice I had already come from schooling. This served as a good basis, however, I learned a lot of what I 
+ended up working on while on the job, with the help of co-workers. One example task I would be assigned to is called 
+"regression testing". For this task, which we would do every few weeks, I would run our suite of test cases that we had 
+for the auto insurance product, then report on any errors and ensure that the policies created matched in different 
+environments. This task called on a number of my skills such as teamwork, defect (bug) analysis, reporting.
+
+I really enjoyed my time at The Co-operators. I wish I could spend more time working here but school is calling me 
+back! Hopefully, I will have a chance in the future to come back and do another work term. Maybe next time I could 
+actually join the team in the office.
+
+I would like to thank Emil Sathiya and the rest of my team for having patience and helping me learn so much in such 
+little time under these circumstances.
