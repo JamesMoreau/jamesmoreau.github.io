@@ -2,6 +2,7 @@ import 'dart:math' as math;
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -81,7 +82,7 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
     }
 
     // Draw UI.
-    var textPaint = TextPaint(style: TextStyle(fontSize: 35.0, fontFamily: 'Inconsolata'));
+    var textPaint = TextPaint(style: TextStyle(fontSize: 35.0, fontFamily: 'Inconsolata', color: Colors.white));
     var centerPosition = Vector2(gameRef.canvasSize.x / 2, gameRef.canvasSize.y / 2);
     var bottomCenterPosition = Vector2(gameRef.canvasSize.x / 2, gameRef.canvasSize.y);
     var topCenterPosition = Vector2(gameRef.canvasSize.x / 2, 0);
@@ -123,7 +124,7 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
   }
 
   void updateSnake() {
-    debugPrint('current snake: $snake, length: ${snake.length}, direction: ${direction.name}.');
+    if (kDebugMode) print('current snake: $snake, length: ${snake.length}, direction: ${direction.name}.');
 
     // update the snake's position
     var snakeHead = snake.first;
@@ -180,16 +181,16 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
               return true;
             }
           case LogicalKeyboardKey.keyR:
-            debugPrint('restarting game');
+            if (kDebugMode) print('restarting game');
             state = GameState.setup;
             return true;
           case LogicalKeyboardKey.space:
             if (game.debugMode) {
               if (game.paused) {
-                debugPrint('Unpausing the game.');
+                if (kDebugMode) print('Unpausing the game.');
                 game.paused = false;
               } else {
-                debugPrint('Resuming the game.');
+                if (kDebugMode) print('Resuming the game.');
                 game.paused = true;
               }
               return true;
@@ -199,7 +200,7 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
           case LogicalKeyboardKey.keyV:
             if (game.debugMode) {
               state = GameState.victory;
-              debugPrint('Setting Victory.');
+              if (kDebugMode) print('Setting Victory.');
               return true;
             }
             return false;
@@ -209,7 +210,7 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
       case GameState.gameover:
         switch (event.logicalKey) {
           case LogicalKeyboardKey.keyR:
-            debugPrint('Restarting Game.');
+            if (kDebugMode) print('Restarting Game.');
             state = GameState.setup;
             return true;
         }
@@ -218,7 +219,7 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
       case GameState.victory:
         switch (event.logicalKey) {
           case LogicalKeyboardKey.keyR:
-            debugPrint('Restarting Game.');
+            if (kDebugMode) print('Restarting Game.');
             state = GameState.setup;
             return true;
         }
@@ -242,7 +243,7 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
         break;
 
       case GameState.ready:
-        debugPrint('press space to begin.');
+        if (kDebugMode) print('press space to begin.');
         break;
 
       case GameState.play:
@@ -264,14 +265,14 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
         for (int i = 1; i < snake.length; i++) {
           var body = snake[i];
           if (body.x == head.x && body.y == head.y) {
-            debugPrint('snake ate itself!');
+            if (kDebugMode) print('snake ate itself!');
             state = GameState.gameover;
           }
         }
 
         var outOfBounds = positionIsOutOfBounds(head);
         if (outOfBounds) {
-          debugPrint('Snake left the grid.');
+          if (kDebugMode) print('Snake left the grid.');
           state = GameState.gameover;
         }
 
