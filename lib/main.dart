@@ -210,9 +210,7 @@ class _TabMenuState extends State<TabMenu> with SingleTickerProviderStateMixin {
 class AboutTab extends StatelessWidget {
   final about = '''About''';
   final String aboutText = '''
-Hello, and welcome to my website. This site is all about me, so if you aren't interested in me, then feel free to close this window!
-
-I use this site to showcase my work and write about what I'm up to.
+Hello, and welcome to my website. This site is all about me, so if you aren't interested in me, then feel free to close this window! I use this site to showcase my work and write about what I'm up to.
 
 I am currently pursuing an Honours Bachelor of Computer Science at the University of Guelph.
 
