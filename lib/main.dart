@@ -1,4 +1,3 @@
-import 'package:file_saver/file_saver.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -11,9 +10,11 @@ import 'package:flame/game.dart';
 
 /*
   TODO:
+    Figure out a better hosting solution for my resume.
 */
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 
@@ -22,11 +23,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: myName,
-      debugShowCheckedModeBanner: false,
-      theme: lightApplicationTheme,
-      home: Home());
+    return MaterialApp(title: myName, debugShowCheckedModeBanner: false, theme: lightApplicationTheme, home: Home());
   }
 }
 
@@ -84,7 +81,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                 color: Theme.of(context).colorScheme.primary,
               )),
               alignment: Alignment.center,
-              child: FadeTransition(opacity: tabFadeInAnimation, child: Container(padding: const EdgeInsets.all(30), alignment: Alignment.center, child: getTab(currentTab))),
+              child: FadeTransition(
+                  opacity: tabFadeInAnimation,
+                  child: Container(padding: const EdgeInsets.all(30), alignment: Alignment.center, child: getTab(currentTab))),
             ));
       }
 
@@ -521,7 +520,10 @@ class _ResumeTabState extends State<ResumeTab> {
               alignment: Alignment.topLeft,
               child: Padding(
                 padding: const EdgeInsets.all(10),
-                child: ElevatedButton.icon(onPressed: () => launchMyUrl(''), icon: Icon(Icons.open_in_new), label: Text('Download')),
+                child: ElevatedButton.icon(
+                    onPressed: () => launchMyUrl(resumePdfLink),
+                    icon: Icon(Icons.open_in_new),
+                    label: Text('Download')),
               ))
         ],
       ),

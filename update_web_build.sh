@@ -5,4 +5,4 @@ cd build/web
 
 git add .
 git commit -m "website build update"
-git push origin master
+git push origin main
