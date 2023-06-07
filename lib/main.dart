@@ -296,7 +296,7 @@ Widget getTab(Tab tab) {
 enum Tab { about, work_and_projects, resume, contact_and_links, co_op_reports, game }
 
 // Globals
-Tab currentTab = Tab.resume;
+Tab currentTab = Tab.about;
 
 class Report {
   final String reportName;
