@@ -11,6 +11,8 @@ import 'package:flame/game.dart';
 /*
   TODO:
     Figure out a better hosting solution for my resume.
+    Add svg images for logos instead of using pngs
+    add makefile to replace run.txt and update_web_build.sh
 */
 
 void main() async {
