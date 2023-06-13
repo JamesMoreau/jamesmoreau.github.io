@@ -7,7 +7,7 @@ run:
 #	flutter run -d macos
 
 # Update the github pages repository with the latest web build of the app.
-update_server:
+update_github_pages:
 	flutter build web --release
 	cd build/web
 
