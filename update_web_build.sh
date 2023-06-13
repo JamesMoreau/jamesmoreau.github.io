@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Use this bash script to github pages repository with the latest web build of the app.
+# Use this bash script to update the github pages repository with the latest web build of the app.
 
 flutter build web --release
 cd build/web
