@@ -10,7 +10,7 @@ import 'package:flame/game.dart';
 
 /*
   TODO:
-    Figure out a better hosting solution for my resume.
+    Figure out a better hosting solution for my resume. use repo of static html + pdf + github page?
     Add svg images for logos instead of using pngs
     add makefile to replace run.txt and update_web_build.sh
 */
@@ -375,6 +375,16 @@ class WorkTab extends StatelessWidget {
             InkWell(
                 child: HoverText(text: 'Purolator Delivery Pro - Last Mile Delivery Service', bigTextSize: 40, smallTextSize: 25),
                 onTap: () => launchMyUrl('https://apps.apple.com/ca/app/purolator-delivery-pro/id1622239326')),
+            SizedBox(width: 10),
+            Icon(Icons.open_in_new)
+          ],
+        ),
+        SizedBox(height: 20),
+        Wrap(
+          children: [
+            InkWell(
+                child: HoverText(text: 'Keyed - A Simple Password Generator with WASM', bigTextSize: 40, smallTextSize: 25),
+                onTap: () => launchMyUrl('https://jamesmoreau.github.io/keyed/')),
             SizedBox(width: 10),
             Icon(Icons.open_in_new)
           ],
