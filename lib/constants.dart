@@ -19,15 +19,15 @@ const linkedInLink = 'https://www.linkedin.com/in/james-moreau/';
 const university = 'University of Guelph';
 const degree = 'Honours Bachelors of Computer Science';
 const markFerrariNatureGifPath = 'assets/mark_ferrari_nature.gif';
-const linkedinIconPath = 'assets/linkedin.png';
-const githubIconPath = 'assets/github.png';
+const linkedinIconPath = 'assets/linkedin.svg';
+const githubIconPath = 'assets/github-mark.svg';
 const List<String> coopTermReports = [
   'assets/coop_term_reports/fall_2020_report.txt',
   'assets/coop_term_reports/summer_2021_report.txt',
   'assets/coop_term_reports/winter_summer_2022_report.txt'
 ];
 const resumePngPath = 'assets/resume.png';
-const resumePdfLink = 'https://github.com/JamesMoreau/MyWebsite/blob/main/assets/JamesRush.pdf';
+const resumePdfLink = 'https://jamesmoreau.github.io/Resume/JamesRush.pdf';
 const lostInTranslationGifPath = 'assets/lit.gif';
 
 /* Theme data */

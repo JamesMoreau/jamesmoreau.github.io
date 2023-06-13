@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:my_website/constants.dart';
 import 'package:my_website/snake.dart';
 import 'package:path/path.dart';
@@ -11,8 +12,6 @@ import 'package:flame/game.dart';
 /*
   TODO:
     Figure out a better hosting solution for my resume. use repo of static html + pdf + github page?
-    Add svg images for logos instead of using pngs
-    add makefile to replace run.txt and update_web_build.sh
 */
 
 void main() async {
@@ -246,15 +245,15 @@ This site was implemented using Flutter, a UI software development kit created b
                   alignment: Alignment.center,
                   children: [
                     const SizedBox(
-                      width: 400,
-                      height: 400,
+                      width: 320,
+                      height: 320,
                     ),
                     Positioned(
                       left: 0,
                       top: 0,
                       child: Container(
-                          width: 300,
-                          height: 300,
+                          width: 250,
+                          height: 250,
                           decoration: BoxDecoration(
                               border: Border.all(
                             color: Colors.black,
@@ -270,7 +269,7 @@ This site was implemented using Flutter, a UI software development kit created b
                             color: Colors.black,
                             width: 1,
                           )),
-                          child: Image.asset(markFerrariNatureGifPath, width: 300, height: 300, fit: BoxFit.cover),
+                          child: Image.asset(markFerrariNatureGifPath, width: 250, height: 250, fit: BoxFit.cover),
                         )),
                     Positioned(bottom: 0, right: 0, child: Text('Mark Ferrari', style: TextStyle(color: Colors.white)))
                   ],
@@ -485,7 +484,7 @@ class ContactTab extends StatelessWidget {
               ),
             ),
             SizedBox(width: 20),
-            Image.asset(githubIconPath, width: 40, height: 40)
+            SvgPicture.asset(githubIconPath, width: 40, height: 40)
           ]),
           Row(mainAxisAlignment: MainAxisAlignment.start, children: [
             SelectableText.rich(
@@ -502,7 +501,7 @@ class ContactTab extends StatelessWidget {
               ),
             ),
             SizedBox(width: 20),
-            Image.asset(linkedinIconPath, width: 40, height: 40)
+            SvgPicture.asset(linkedinIconPath, width: 40, height: 40)
           ]),
         ],
       ),

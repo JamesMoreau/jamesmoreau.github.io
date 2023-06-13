@@ -6,6 +6,9 @@ import 'package:flame/camera.dart' as camera;
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 
+
+// THIS FILE IS NOT BEING USED.
+
 enum GameState { initializing, ready, running, paused, won, lost }
 
 class BrickBreaker extends Forge2DGame {
