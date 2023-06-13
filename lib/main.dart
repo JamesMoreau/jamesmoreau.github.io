@@ -9,11 +9,6 @@ import 'package:path/path.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flame/game.dart';
 
-/*
-  TODO:
-    Figure out a better hosting solution for my resume. use repo of static html + pdf + github page?
-*/
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
