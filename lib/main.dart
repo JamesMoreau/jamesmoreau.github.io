@@ -9,6 +9,11 @@ import 'package:path/path.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flame/game.dart';
 
+/*
+  TODO:
+  Retrive resume pdf from url instead of storing it locally as an image
+*/
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
@@ -519,7 +524,7 @@ class _ResumeTabState extends State<ResumeTab> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(resumePngPath, filterQuality: FilterQuality.high),
+          Image.asset(resumePngPath, filterQuality: FilterQuality.high, errorBuilder: (context, exception, trace) => Text('😢'),),
           Align(
               alignment: Alignment.topLeft,
               child: Padding(
@@ -558,6 +563,28 @@ class _ResumeTabState extends State<ResumeTab> {
   //       ));
   //     },
   //   );
+  // }
+
+  // Future<void> loadResumePdf() async {
+  //   try {
+  //     // Create a temporary directory to store the PDF file
+  //     final tempDir = await getTemporaryDirectory();
+  //     final pdfFile = File('${tempDir.path}/temp.pdf');
+
+  //     // Download the PDF from the given URL
+  //     final response = await Dio().get(widget.resumePdfUrl, options: Options(responseType: ResponseType.bytes));
+  //     await pdfFile.writeAsBytes(response.data, flush: true);
+
+  //     setState(() {
+  //       _pdfPath = pdfFile.path;
+  //     });
+  //   } catch (e) {
+  //     print('Error: $e');
+  //   } finally {
+  //     setState(() {
+  //       _isLoading = false;
+  //     });
+  //   }
   // }
 }
 

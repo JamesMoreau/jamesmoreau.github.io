@@ -27,7 +27,7 @@ const List<String> coopTermReports = [
   'assets/coop_term_reports/winter_summer_2022_report.txt'
 ];
 const resumePngPath = 'assets/resume.png';
-const resumePdfLink = 'https://jamesmoreau.github.io/Resume/JamesRush.pdf';
+const resumePdfLink = 'https://jamesmoreau.github.io/Resume/JamesMoreau.pdf';
 const lostInTranslationGifPath = 'assets/lit.gif';
 
 /* Theme data */
