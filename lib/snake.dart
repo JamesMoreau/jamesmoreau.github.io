@@ -17,9 +17,7 @@ class Position {
   Position(this.x, this.y);
 
   @override
-  String toString() {
-    return '{x: $x, y: $y}';
-  }
+  String toString() => 'x: $x, y: $y';
 }
 
 class SnakeGame extends FlameGame with HasKeyboardHandlerComponents {

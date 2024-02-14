@@ -11,7 +11,7 @@ class MyColors {
   static const transparent = Color.fromARGB(0, 0, 0, 0);
 }
 
-const myName = 'James Rush';
+const myName = 'James Moreau';
 const jobTitle = 'Programmer';
 const myEmail = 'jmorea03@uoguelph.ca';
 const githubLink = 'https://github.com/JamesMoreau';
