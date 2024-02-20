@@ -134,10 +134,7 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
   }
 
   @override
-  bool onKeyEvent(RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
-    var isKeyDown = event is RawKeyDownEvent;
-    if (!isKeyDown) return false;
-
+  bool onKeyEvent(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
     // we have different keyboard behaviours depending on the current game's state.
     switch (state) {
       case GameState.setup:
