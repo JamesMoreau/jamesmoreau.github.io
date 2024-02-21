@@ -33,7 +33,11 @@ class WorkTab extends StatelessWidget {
           ],
         ),
         SizedBox(height: 100),
-        Image.asset(lostInTranslationGifPath, width: 499, height: 266, fit: BoxFit.contain),
+        Center(
+            child: Stack(children: [
+          Image.asset(lostInTranslationGifPath, width: 499, height: 266, fit: BoxFit.contain),
+          Positioned(bottom: 0, right: 0, child: Text('Lost in Translation', style: TextStyle(color: Colors.white)))
+        ])),
       ]),
     );
   }
