@@ -40,12 +40,9 @@ dependencies:
   url_launcher: ^6.1.11
   flutter_simple_calculator: ^2.2.2
   path: ^1.8.2
-  fps_widget: ^1.0.1+2
   statsfl: ^2.3.0
   flame: ^1.7.3
   flutter_svg: ^2.0.7
-  path_provider: ^2.1.2
-  http: ^0.13.6
   syncfusion_flutter_pdfviewer: ^20.4.54
 
 dev_dependencies:

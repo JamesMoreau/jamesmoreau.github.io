@@ -15,6 +15,7 @@ import 'package:url_launcher/url_launcher.dart';
 	Remove unused packages
 	Convert state to state management.
 	add french / english resume
+	do something with the color picker / calculator or something else cool.
 */
 
 void main() async {
