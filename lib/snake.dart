@@ -25,7 +25,6 @@ class SnakeGame extends FlameGame with HasKeyboardHandlerComponents {
 
   @override
   void onLoad() {
-    // debugMode = true;
     main = Main();
     add(main);
 
@@ -135,6 +134,8 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
 
   @override
   bool onKeyEvent(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
+		if (event is! KeyDownEvent) return false; // we only care about key down events.
+
     // we have different keyboard behaviours depending on the current game's state.
     switch (state) {
       case GameState.setup:
@@ -145,6 +146,7 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
         switch (event.logicalKey) {
           case LogicalKeyboardKey.space:
             state = GameState.play;
+						game.paused = false;
             return true;
         }
         return false;
