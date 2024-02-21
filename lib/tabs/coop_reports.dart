@@ -36,6 +36,7 @@ class _CoopTabState extends State<CoopTab> {
     }
 
     setState(() {});
+    super.initState();
   }
 
   @override

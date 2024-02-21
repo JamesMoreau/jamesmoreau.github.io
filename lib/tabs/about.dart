@@ -40,20 +40,21 @@ This site was implemented using Flutter, a UI software development kit created b
                   alignment: Alignment.center,
                   children: [
                     SizedBox(
-                      width: screenSize.width * 0.2,
-                      height: screenSize.width * 0.2,
+                      width: 500,
+                      height: 500,
                     ),
                     Positioned(
                       left: 0,
                       top: 0,
                       child: Container(
-                          width: screenSize.width * 0.13,
-                          height: screenSize.width * 0.13,
+													width: 300,
+                          height: 300,
                           decoration: BoxDecoration(
                               border: Border.all(
                             color: Colors.black,
                             width: 10,
-                          ))),
+                          )),
+													child: Image.asset(myFace, fit: BoxFit.cover)),
                     ),
                     Positioned(
                         bottom: 0,
@@ -64,7 +65,7 @@ This site was implemented using Flutter, a UI software development kit created b
                             color: Colors.black,
                             width: 1,
                           )),
-                          child: Image.asset(markFerrariNatureGifPath, width: screenSize.width * 0.13, height: screenSize.width * 0.13, fit: BoxFit.cover),
+                          child: Image.asset(markFerrariNatureGifPath, width: 300, height: 300, fit: BoxFit.cover),
                         )),
                     Positioned(bottom: 0, right: 0, child: Text('Mark Ferrari', style: TextStyle(color: Colors.white)))
                   ],
