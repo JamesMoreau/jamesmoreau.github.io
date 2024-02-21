@@ -16,8 +16,6 @@ This site was implemented using Flutter, a UI software development kit created b
 
   @override
   Widget build(BuildContext context) {
-		var screenSize = MediaQuery.of(context).size;
-
     return Container(
       child: SingleChildScrollView(
         child: Column(
