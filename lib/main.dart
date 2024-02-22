@@ -16,6 +16,8 @@ import 'package:url_launcher/url_launcher.dart';
 	add french / english resume
 	do something with the color picker / calculator or something else cool.
 	fix tab menu overflow when window is shrunk.
+	fix assets/ images
+	convert spaces to tabs
 */
 
 void main() async {
@@ -112,14 +114,13 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             )),
             alignment: Alignment.center,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Flexible(flex: 1, child: TabMenu(changeTab: onTabChanged)),
                 Flexible(
                   flex: 3,
                   child: FadeTransition(
-                      opacity: tabFadeInAnimation,
-                      child: Container(padding: const EdgeInsets.all(30), alignment: Alignment.center, child: getTab(currentTab, isMobileView: false))),
+                  		opacity: tabFadeInAnimation,
+                  		child: Container(padding: const EdgeInsets.all(30), alignment: Alignment.center, child: getTab(currentTab, isMobileView: false))),
                 ),
               ],
             ),
@@ -164,53 +165,58 @@ class _TabMenuState extends State<TabMenu> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        const Text(myName, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
-        const SizedBox(height: 10),
-        const SelectableText(jobTitle),
-        const SizedBox(height: 40),
-        Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          for (var value in Tab.values)
-            value == currentTab // draw the currently selected tab differently.
-                ? Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: Row(
-                      children: [
-                        TextButton(
-                            child: Text(value.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-                            onPressed: () {
-                              widget.changeTab();
-                              currentTab = value;
-                            }),
-                        Center(
-                          child: AnimatedBuilder(
-                            animation: tabSelectorAnimation,
-                            builder: (BuildContext context, Widget? child) {
-                              return Transform.translate(
-                                offset: Offset(tabSelectorAnimation.value, 0),
-                                child: child,
-                              );
-                            },
-                            child: const Icon(Icons.arrow_back_ios),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                : Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: TextButton(
-                        child: Text(value.name, style: const TextStyle(fontSize: 18)),
-                        onPressed: () {
-                          widget.changeTab();
-                          currentTab = value;
-                        }),
-                  ),
-          const SizedBox(height: 10)
-        ]),
-        if (kDebugMode) StatsFl(maxFps: 300)
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+      	crossAxisAlignment: CrossAxisAlignment.start,
+      	children: [
+      		const Text(myName, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
+      		const SizedBox(height: 10),
+      		const SelectableText(jobTitle),
+      		const SizedBox(height: 40),
+      		for (var value in Tab.values)
+      			if (value == currentTab) ...[
+      				// draw the currently selected tab differently.
+      				ClipRect(
+      					child: Row(
+      						mainAxisAlignment: MainAxisAlignment.start,
+      						children: [
+      							TextButton(
+      									child: Text(value.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+      									onPressed: () {
+      										widget.changeTab();
+      										currentTab = value;
+      									}),
+      							AnimatedBuilder(
+      								animation: tabSelectorAnimation,
+      								builder: (BuildContext context, Widget? child) {
+      									return Transform.translate(
+      										offset: Offset(tabSelectorAnimation.value, 0),
+      										child: child,
+      									);
+      								},
+      								child: const Icon(Icons.arrow_back_ios),
+      							),
+      						],
+      					),
+      				)
+      			] else ...[
+      				Row(
+      					mainAxisAlignment: MainAxisAlignment.start,
+      					children: [
+      						TextButton(
+      								child: Text(value.name, style: const TextStyle(fontSize: 18)),
+      								onPressed: () {
+      									widget.changeTab();
+      									currentTab = value;
+      								}),
+      					],
+      				),
+      			],
+      		const SizedBox(height: 10),
+      		if (kDebugMode) StatsFl(maxFps: 300)
+      	],
+      ),
     );
   }
 }
