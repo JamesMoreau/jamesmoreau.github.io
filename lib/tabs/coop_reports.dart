@@ -18,48 +18,64 @@ class CoopTab extends StatefulWidget {
 }
 
 class _CoopTabState extends State<CoopTab> {
-	List<Report> reports = [];
 	List<int> expandedIndices = [];
 
-	@override
-	void initState() {
-		readReports(coopTermReports);
-		super.initState();
-	}
+	Future<List<Report>> readReports(List<String> reportPaths) async {
+		var reports = <Report>[];
 
-	Future<void> readReports(List<String> reportPaths) async {
 		for (var path in reportPaths) {
-			var name = basename(path);
+			var name = path.split('/').last; // Extracting the file name
 			var fileContents = await rootBundle.loadString(path);
 
 			reports.add(Report(reportName: name, contents: fileContents));
 		}
 
-		setState(() {});
-		super.initState();
+		return reports;
 	}
 
 	@override
 	Widget build(BuildContext context) {
-		return Container(
-				padding: const EdgeInsets.all(10),
-				child: ListView.builder(
-						itemCount: reports.length,
-						itemBuilder: (context, index) => Padding(
+		return FutureBuilder(
+			future: readReports(coopTermReports),
+			builder: (context, snapshot) {
+				if (snapshot.connectionState == ConnectionState.waiting) {
+					return const Center(child: CircularProgressIndicator());
+				} else if (snapshot.hasError) {
+					return Center(child: Text('Error: ${snapshot.error}'));
+				
+				} else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+					return const Center(child: Text('No reports found'));
+
+				} else {
+					return Container(
+						padding: const EdgeInsets.all(10),
+						child: ListView.builder(
+							itemCount: snapshot.data!.length,
+							itemBuilder: (context, index) {
+								var report = snapshot.data![index];
+
+								return Padding(
 									padding: const EdgeInsets.all(10),
 									child: ExpansionTile(
-											controlAffinity: ListTileControlAffinity.leading,
-											initiallyExpanded: expandedIndices.contains(index),
-											onExpansionChanged: (expanded) {
-												if (expanded)
-													expandedIndices.add(index);
-												else
-													expandedIndices.remove(index);
-											},
-											title: Text(reports[index].reportName),
-											children: [
-												SizedBox(width: MediaQuery.of(context).size.width * .6, child: Text(reports[index].contents)),
-											],),
-								),),);
+										controlAffinity: ListTileControlAffinity.leading,
+										initiallyExpanded: expandedIndices.contains(index),
+										onExpansionChanged: (expanded) {
+											if (expanded)
+												expandedIndices.add(index);
+											else
+												expandedIndices.remove(index);
+										},
+										title: Text(report.reportName),
+										children: [
+											SizedBox(width: MediaQuery.of(context).size.width * .6, child: Text(report.contents)),
+										],
+									),
+								);
+							},
+						),
+					);
+				}
+			},
+		);
 	}
 }
