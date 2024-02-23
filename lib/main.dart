@@ -116,11 +116,10 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 						child: Row(
 							children: [
 								TabMenu(changeTab: onTabChanged),
-								Flexible(
-									flex: 3,
+								Expanded(
 									child: FadeTransition(
 											opacity: tabFadeInAnimation,
-											child: Container(padding: const EdgeInsets.all(30), alignment: Alignment.center, child: getTab(currentTab, isMobileView: false))),
+											child: Container(padding: const EdgeInsets.all(30), child: getTab(currentTab, isMobileView: false))),
 								),
 							],
 						),
@@ -227,7 +226,7 @@ Widget getTab(Tab tab, {required bool isMobileView}) {
 	return switch (tab) {
 		Tab.about             => AboutTab(),
 		Tab.work_and_projects => WorkTab(),
-		Tab.contact_and_links => ContactTab(),
+		Tab.contact_and_links => ContactTab(isMobileView: isMobileView),
 		Tab.game              => GameTab(),
 		Tab.co_op_reports     => CoopTab(),
 		Tab.resume            => ResumeTab(isMobileView: isMobileView),

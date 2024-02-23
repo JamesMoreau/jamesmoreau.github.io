@@ -29,6 +29,7 @@ const List<String> coopTermReports = [
 ];
 const resumePdfLink = 'https://jamesmoreau.github.io/Resume/JamesMoreau.pdf';
 const lostInTranslationGifPath = 'assets/lit.gif';
+const gapOfDunloe = 'assets/gap_of_dunloe.jpeg';
 
 /* Theme data */
 

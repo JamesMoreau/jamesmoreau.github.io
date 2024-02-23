@@ -42,6 +42,18 @@ This site was implemented using Flutter, a UI software development kit created b
 											height: 500,
 										),
 										Positioned(
+												bottom: 0,
+												right: 0,
+												child: Container(
+													decoration: BoxDecoration(
+															border: Border.all(
+														color: Colors.black,
+														width: 2,
+													)),
+													child: Image.asset(markFerrariNatureGifPath, width: 300, height: 300, fit: BoxFit.cover),
+												)),
+										Positioned(bottom: 0, right: 0, child: Text('Mark Ferrari', style: TextStyle(color: Colors.white))),
+										Positioned(
 											left: 0,
 											top: 0,
 											child: Container(
@@ -50,22 +62,10 @@ This site was implemented using Flutter, a UI software development kit created b
 													decoration: BoxDecoration(
 															border: Border.all(
 														color: Colors.black,
-														width: 10,
+														width: 2,
 													)),
 													child: Image.asset(myFace, fit: BoxFit.cover)),
 										),
-										Positioned(
-												bottom: 0,
-												right: 0,
-												child: Container(
-													decoration: BoxDecoration(
-															border: Border.all(
-														color: Colors.black,
-														width: 1,
-													)),
-													child: Image.asset(markFerrariNatureGifPath, width: 300, height: 300, fit: BoxFit.cover),
-												)),
-										Positioned(bottom: 0, right: 0, child: Text('Mark Ferrari', style: TextStyle(color: Colors.white)))
 									],
 								),
 							],
