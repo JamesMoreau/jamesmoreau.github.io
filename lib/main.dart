@@ -115,7 +115,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             alignment: Alignment.center,
             child: Row(
               children: [
-                Flexible(flex: 1, child: TabMenu(changeTab: onTabChanged)),
+                TabMenu(changeTab: onTabChanged),
                 Flexible(
                   flex: 3,
                   child: FadeTransition(
@@ -167,56 +167,58 @@ class _TabMenuState extends State<TabMenu> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20),
-      child: Column(
-      	crossAxisAlignment: CrossAxisAlignment.start,
-      	children: [
-      		const Text(myName, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
-      		const SizedBox(height: 10),
-      		const SelectableText(jobTitle),
-      		const SizedBox(height: 40),
-      		for (var value in Tab.values)
-      			if (value == currentTab) ...[
-      				// draw the currently selected tab differently.
-      				ClipRect(
-      					child: Row(
-      						mainAxisAlignment: MainAxisAlignment.start,
-      						children: [
-      							TextButton(
-      									child: Text(value.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-      									onPressed: () {
-      										widget.changeTab();
-      										currentTab = value;
-      									}),
-      							AnimatedBuilder(
-      								animation: tabSelectorAnimation,
-      								builder: (BuildContext context, Widget? child) {
-      									return Transform.translate(
-      										offset: Offset(tabSelectorAnimation.value, 0),
-      										child: child,
-      									);
-      								},
-      								child: const Icon(Icons.arrow_back_ios),
-      							),
-      						],
-      					),
-      				)
-      			] else ...[
-      				Row(
-      					mainAxisAlignment: MainAxisAlignment.start,
-      					children: [
-      						TextButton(
-      								child: Text(value.name, style: const TextStyle(fontSize: 18)),
-      								onPressed: () {
-      									widget.changeTab();
-      									currentTab = value;
-      								}),
-      					],
-      				),
-      			],
-      		const SizedBox(height: 10),
-      		if (kDebugMode) StatsFl(maxFps: 300)
-      	],
-      ),
+      child: Container(
+				width: 230,
+				child: Column(
+					crossAxisAlignment: CrossAxisAlignment.start,
+					children: [
+						const Text(myName, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
+						const SizedBox(height: 10),
+						const SelectableText(jobTitle),
+						const SizedBox(height: 40),
+						for (var value in Tab.values)
+							if (value == currentTab) ...[
+								// draw the currently selected tab differently.
+								Row(
+									mainAxisAlignment: MainAxisAlignment.start,
+									children: [
+										TextButton(
+												child: Text(value.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+												onPressed: () {
+													widget.changeTab();
+													currentTab = value;
+												}),
+										AnimatedBuilder(
+											animation: tabSelectorAnimation,
+											builder: (BuildContext context, Widget? child) {
+												return Transform.translate(
+													offset: Offset(tabSelectorAnimation.value, 0),
+													child: child,
+												);
+											},
+											child: const Icon(Icons.arrow_back_ios),
+										),
+									],
+								),
+								const SizedBox(height: 10),
+							] else ...[
+								Row(
+									mainAxisAlignment: MainAxisAlignment.start,
+									children: [
+										TextButton(
+												child: Text(value.name, style: const TextStyle(fontSize: 18)),
+												onPressed: () {
+													widget.changeTab();
+													currentTab = value;
+												}),
+									],
+								),
+								const SizedBox(height: 10),
+							],
+						if (kDebugMode) ...[ StatsFl(maxFps: 300), const SizedBox(height: 20), ]
+					],
+				),
+			),
     );
   }
 }
