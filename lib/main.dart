@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:june/june.dart';
 import 'package:my_website/tabs/about.dart';
 import 'package:my_website/constants.dart';
 import 'package:my_website/tabs/contact.dart';
@@ -16,6 +17,11 @@ import 'package:url_launcher/url_launcher.dart';
 	add french / english resume
 	do something with the color picker / calculator or something else cool.
 */
+
+class SiteState extends JuneState {
+  int count = 0;
+	Tab currentTab = Tab.about;
+}
 
 void main() async {
 	WidgetsFlutterBinding.ensureInitialized();
@@ -49,7 +55,10 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 	}
 
 	void onTabChanged() {
-		if (kDebugMode) print('Changing tab to ${currentTab.name}');
+		if (kDebugMode) {
+			var state = June.getState(SiteState());
+			print('Changing tab to ${state.currentTab.name}');
+		}
 		tabFadeInController.reset();
 		tabFadeInController.forward();
 		setState(() {});
@@ -73,57 +82,62 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
 	@override
 	Widget build(BuildContext context) {
-		return LayoutBuilder(builder: (context, constraints) {
-
-			// Too small
-			if (constraints.maxWidth < 700 || constraints.maxHeight < 500) {
-				return Scaffold(body: Center(child: Text('Please resize your window to be larger.')));
-			}
-
-			// Small Layout
-			if (constraints.maxWidth < 1000 || constraints.maxHeight < 600) {
-				return Scaffold(
-						appBar: AppBar(title: Text(myName)),
-						drawer: Drawer(child: TabMenu(changeTab: onTabChanged)),
-						body: Container(
-							decoration: BoxDecoration(
-									border: Border.all(
-								color: Theme.of(context).colorScheme.primary,
-							)),
-							alignment: Alignment.center,
-							child: FadeTransition(
-									opacity: tabFadeInAnimation,
-									child: Container(padding: const EdgeInsets.all(30), alignment: Alignment.center, child: getTab(currentTab, isMobileView: true))),
-						));
-			}
-
-			// Wide Layout
-			return Scaffold(
-					body: Container(
-				color: Theme.of(context).colorScheme.background,
-				child: Padding(
-					padding: const EdgeInsets.all(50),
-					child: Container(
-						decoration: BoxDecoration(
-								border: Border.all(
-							color: Theme.of(context).colorScheme.primary,
-							width: 2,
-						)),
-						alignment: Alignment.center,
-						child: Row(
-							children: [
-								TabMenu(changeTab: onTabChanged),
-								Expanded(
-									child: FadeTransition(
-											opacity: tabFadeInAnimation,
-											child: Container(padding: const EdgeInsets.all(30), child: getTab(currentTab, isMobileView: false))),
-								),
-							],
-						),
-					),
-				),
-			));
-		});
+		return JuneBuilder(
+			() => SiteState(),
+		  builder: (state) {
+		    return LayoutBuilder(builder: (context, constraints) {
+		    
+		    	// Too small
+		    	if (constraints.maxWidth < 700 || constraints.maxHeight < 500) {
+		    		return Scaffold(body: Center(child: Text('Please resize your window to be larger.')));
+		    	}
+		    
+		    	// Small Layout
+		    	if (constraints.maxWidth < 1000 || constraints.maxHeight < 600) {
+		    		return Scaffold(
+		    				appBar: AppBar(title: Text(myName)),
+		    				drawer: Drawer(child: TabMenu(changeTab: onTabChanged)),
+		    				body: Container(
+		    					decoration: BoxDecoration(
+		    							border: Border.all(
+		    						color: Theme.of(context).colorScheme.primary,
+		    					)),
+		    					alignment: Alignment.center,
+		    					child: FadeTransition(
+		    							opacity: tabFadeInAnimation,
+		    							child: Container(padding: const EdgeInsets.all(30), alignment: Alignment.center, child: getTab(state.currentTab, isMobileView: true))),
+		    				));
+		    	}
+		    
+		    	// Wide Layout
+		    	return Scaffold(
+		    			body: Container(
+		    		color: Theme.of(context).colorScheme.background,
+		    		child: Padding(
+		    			padding: const EdgeInsets.all(50),
+		    			child: Container(
+		    				decoration: BoxDecoration(
+		    						border: Border.all(
+		    					color: Theme.of(context).colorScheme.primary,
+		    					width: 2,
+		    				)),
+		    				alignment: Alignment.center,
+		    				child: Row(
+		    					children: [
+		    						TabMenu(changeTab: onTabChanged),
+		    						Expanded(
+		    							child: FadeTransition(
+		    									opacity: tabFadeInAnimation,
+		    									child: Container(padding: const EdgeInsets.all(30), child: getTab(state.currentTab, isMobileView: false))),
+		    						),
+		    					],
+		    				),
+		    			),
+		    		),
+		    	));
+		    });
+		  }
+		);
 	}
 }
 
@@ -161,60 +175,67 @@ class _TabMenuState extends State<TabMenu> with SingleTickerProviderStateMixin {
 
 	@override
 	Widget build(BuildContext context) {
-		return Padding(
-			padding: const EdgeInsets.all(20),
-			child: Container(
-				width: 230,
-				child: Column(
-					crossAxisAlignment: CrossAxisAlignment.start,
-					children: [
-						const Text(myName, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
-						const SizedBox(height: 10),
-						const SelectableText(jobTitle),
-						const SizedBox(height: 40),
-						for (var value in Tab.values)
-							if (value == currentTab) ...[
-								// draw the currently selected tab differently.
-								Row(
-									mainAxisAlignment: MainAxisAlignment.start,
-									children: [
-										TextButton(
-												child: Text(value.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-												onPressed: () {
-													widget.changeTab();
-													currentTab = value;
-												}),
-										AnimatedBuilder(
-											animation: tabSelectorAnimation,
-											builder: (BuildContext context, Widget? child) {
-												return Transform.translate(
-													offset: Offset(tabSelectorAnimation.value, 0),
-													child: child,
-												);
-											},
-											child: const Icon(Icons.arrow_back_ios),
-										),
-									],
-								),
-								const SizedBox(height: 10),
-							] else ...[
-								Row(
-									mainAxisAlignment: MainAxisAlignment.start,
-									children: [
-										TextButton(
-												child: Text(value.name, style: const TextStyle(fontSize: 18)),
-												onPressed: () {
-													widget.changeTab();
-													currentTab = value;
-												}),
-									],
-								),
-								const SizedBox(height: 10),
-							],
-						if (kDebugMode) ...[ StatsFl(maxFps: 300), const SizedBox(height: 20), ]
-					],
-				),
-			),
+		return JuneBuilder(
+			() => SiteState(),
+		  builder: (state) {
+		    return Padding(
+		    	padding: const EdgeInsets.all(20),
+		    	child: Container(
+		    		width: 230,
+		    		child: Column(
+		    			crossAxisAlignment: CrossAxisAlignment.start,
+		    			children: [
+		    				const Text(myName, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
+		    				const SizedBox(height: 10),
+		    				const SelectableText(jobTitle),
+		    				const SizedBox(height: 40),
+		    				for (var value in Tab.values)
+		    					if (value == state.currentTab) ...[
+		    						// draw the currently selected tab differently.
+		    						Row(
+		    							mainAxisAlignment: MainAxisAlignment.start,
+		    							children: [
+		    								TextButton(
+		    										child: Text(value.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+		    										onPressed: () {
+		    											widget.changeTab();
+		    											state.currentTab = value;
+															state.setState();
+		    										}),
+		    								AnimatedBuilder(
+		    									animation: tabSelectorAnimation,
+		    									builder: (BuildContext context, Widget? child) {
+		    										return Transform.translate(
+		    											offset: Offset(tabSelectorAnimation.value, 0),
+		    											child: child,
+		    										);
+		    									},
+		    									child: const Icon(Icons.arrow_back_ios),
+		    								),
+		    							],
+		    						),
+		    						const SizedBox(height: 10),
+		    					] else ...[
+		    						Row(
+		    							mainAxisAlignment: MainAxisAlignment.start,
+		    							children: [
+		    								TextButton(
+		    										child: Text(value.name, style: const TextStyle(fontSize: 18)),
+		    										onPressed: () {
+		    											widget.changeTab();
+		    											state.currentTab = value;
+															state.setState();
+		    										}),
+		    							],
+		    						),
+		    						const SizedBox(height: 10),
+		    					],
+		    				if (kDebugMode) ...[ StatsFl(maxFps: 300), const SizedBox(height: 20), ]
+		    			],
+		    		),
+		    	),
+		    );
+		  }
 		);
 	}
 }
@@ -231,9 +252,6 @@ Widget getTab(Tab tab, {required bool isMobileView}) {
 }
 
 enum Tab { about, work_and_projects, resume, contact_and_links, co_op_reports, game }
-
-// Globals
-Tab currentTab = Tab.about;
 
 Future<void> launchMyUrl(String link) async {
 	var url = Uri.parse(link);

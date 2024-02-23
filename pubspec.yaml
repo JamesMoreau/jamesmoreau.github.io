@@ -44,6 +44,7 @@ dependencies:
   flame: ^1.7.3
   flutter_svg: ^2.0.7
   syncfusion_flutter_pdfviewer: ^20.4.54
+  june: ^0.8.4
 
 dev_dependencies:
   flutter_test:
