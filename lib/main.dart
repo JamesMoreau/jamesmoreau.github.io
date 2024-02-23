@@ -15,9 +15,6 @@ import 'package:url_launcher/url_launcher.dart';
 	Convert state to state management.
 	add french / english resume
 	do something with the color picker / calculator or something else cool.
-	fix tab menu overflow when window is shrunk.
-	fix assets/ images
-	convert spaces to tabs
 */
 
 void main() async {

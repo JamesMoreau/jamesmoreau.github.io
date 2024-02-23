@@ -20,23 +20,24 @@ class _ResumeTabState extends State<ResumeTab> {
 			return Center(child: ElevatedButton.icon(onPressed: () => launchMyUrl(resumePdfLink), icon: Icon(Icons.open_in_new), label: Text('Link to Resume')));
 		}
 
-		return SingleChildScrollView(
-			scrollDirection: Axis.horizontal,
-			child: Row(
-				mainAxisAlignment: MainAxisAlignment.center,
-				children: [
-					SizedBox(
-							width: MediaQuery.of(context).size.width * 0.4,
-							height: MediaQuery.of(context).size.width * 0.707,
-							child: SfPdfViewer.network(resumePdfLink, initialZoomLevel: 1.1)),
-					Align(
-							alignment: Alignment.topLeft,
-							child: Padding(
-								padding: const EdgeInsets.all(10),
-								child: ElevatedButton.icon(onPressed: () => launchMyUrl(resumePdfLink), icon: Icon(Icons.open_in_new), label: Text('Download')),
-							))
-				],
-			),
-		);
+		return Center(
+					child: SingleChildScrollView(
+						scrollDirection: Axis.horizontal,
+						child: Row(
+							children: [
+								SizedBox(
+										width: MediaQuery.of(context).size.width * 0.4,
+										height: MediaQuery.of(context).size.width * 0.707,
+										child: SfPdfViewer.network(resumePdfLink, initialZoomLevel: 1.1)),
+								Align(
+										alignment: Alignment.topLeft,
+										child: Padding(
+											padding: const EdgeInsets.all(10),
+											child: ElevatedButton.icon(onPressed: () => launchMyUrl(resumePdfLink), icon: Icon(Icons.open_in_new), label: Text('Download')),
+										))
+							],
+						),
+					),
+				);
 	}
 }

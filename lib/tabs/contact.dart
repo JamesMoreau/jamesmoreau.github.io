@@ -44,7 +44,7 @@ class ContactTab extends StatelessWidget {
                 SizedBox(width: 20),
                 Icon(Icons.email, size: 40)
               ]),
-							SizedBox(height: 20),
+              SizedBox(height: 20),
               Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                 SelectableText.rich(
                   TextSpan(
@@ -58,7 +58,7 @@ class ContactTab extends StatelessWidget {
                 SizedBox(width: 20),
                 SvgPicture.asset(githubIconPath, width: 40, height: 40)
               ]),
-							SizedBox(height: 20),
+              SizedBox(height: 20),
               Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                 SelectableText.rich(
                   TextSpan(
@@ -76,20 +76,23 @@ class ContactTab extends StatelessWidget {
                 SizedBox(width: 20),
                 SvgPicture.asset(linkedinIconPath, width: 40, height: 40)
               ]),
-							SizedBox(height: 20),
+              SizedBox(height: 20),
             ],
           ),
           if (!isMobileView) ...[
             SizedBox(width: 75),
-            Container(
-                width: 500,
-                height: 600,
-                decoration: BoxDecoration(
-                    border: Border.all(
-                  color: Colors.black,
-                  width: 2,
-                )),
-                child: Image.asset(gapOfDunloe, fit: BoxFit.cover))
+            Stack(children: [
+              Container(
+                  width: 500,
+                  height: 600,
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                    color: Colors.black,
+                    width: 2,
+                  )),
+                  child: Image.asset(gapOfDunloe, fit: BoxFit.cover)),
+                  Positioned(bottom: 0, right: 0, child: Text('Gap of Dunloe, Ireland ', style: TextStyle(color: Colors.white)))
+            ])
           ]
         ],
       ),
