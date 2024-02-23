@@ -8,7 +8,7 @@ import 'package:my_website/main.dart';
 class ContactTab extends StatelessWidget {
   final bool isMobileView;
 
-  const ContactTab({super.key, required this.isMobileView});
+  const ContactTab({required this.isMobileView, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class ContactTab extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+              Row(children: [
                 SelectableText.rich(
                   TextSpan(
                     text: 'Email: ',
@@ -40,12 +40,12 @@ class ContactTab extends StatelessWidget {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Copied to clipboard')),
                       );
-                    }),
+                    },),
                 SizedBox(width: 20),
-                Icon(Icons.email, size: 40)
-              ]),
+                Icon(Icons.email, size: 40),
+              ],),
               SizedBox(height: 20),
-              Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+              Row(children: [
                 SelectableText.rich(
                   TextSpan(
                     text: 'Github: ',
@@ -56,10 +56,10 @@ class ContactTab extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: 20),
-                SvgPicture.asset(githubIconPath, width: 40, height: 40)
-              ]),
+                SvgPicture.asset(githubIconPath, width: 40, height: 40),
+              ],),
               SizedBox(height: 20),
-              Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+              Row(children: [
                 SelectableText.rich(
                   TextSpan(
                     text: 'LinkedIn: ',
@@ -74,8 +74,8 @@ class ContactTab extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: 20),
-                SvgPicture.asset(linkedinIconPath, width: 40, height: 40)
-              ]),
+                SvgPicture.asset(linkedinIconPath, width: 40, height: 40),
+              ],),
               SizedBox(height: 20),
             ],
           ),
@@ -87,13 +87,12 @@ class ContactTab extends StatelessWidget {
                   height: 600,
                   decoration: BoxDecoration(
                       border: Border.all(
-                    color: Colors.black,
                     width: 2,
-                  )),
-                  child: Image.asset(gapOfDunloe, fit: BoxFit.cover)),
-                  Positioned(bottom: 0, right: 0, child: Text('Gap of Dunloe, Ireland ', style: TextStyle(color: Colors.white)))
-            ])
-          ]
+                  ),),
+                  child: Image.asset(gapOfDunloe, fit: BoxFit.cover),),
+                  Positioned(bottom: 0, right: 0, child: Text('Gap of Dunloe, Ireland ', style: TextStyle(color: Colors.white))),
+            ],),
+          ],
         ],
       ),
     );

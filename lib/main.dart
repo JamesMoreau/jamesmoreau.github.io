@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:june/june.dart';
-import 'package:my_website/tabs/about.dart';
 import 'package:my_website/constants.dart';
+import 'package:my_website/tabs/about.dart';
 import 'package:my_website/tabs/contact.dart';
 import 'package:my_website/tabs/coop_reports.dart';
 import 'package:my_website/tabs/game.dart';
@@ -19,7 +19,6 @@ import 'package:url_launcher/url_launcher.dart';
 */
 
 class SiteState extends JuneState {
-  int count = 0;
 	Tab currentTab = Tab.about;
 }
 
@@ -86,12 +85,12 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 			() => SiteState(),
 		  builder: (state) {
 		    return LayoutBuilder(builder: (context, constraints) {
-		    
+
 		    	// Too small
 		    	if (constraints.maxWidth < 700 || constraints.maxHeight < 500) {
 		    		return Scaffold(body: Center(child: Text('Please resize your window to be larger.')));
 		    	}
-		    
+
 		    	// Small Layout
 		    	if (constraints.maxWidth < 1000 || constraints.maxHeight < 600) {
 		    		return Scaffold(
@@ -101,17 +100,17 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 		    					decoration: BoxDecoration(
 		    							border: Border.all(
 		    						color: Theme.of(context).colorScheme.primary,
-		    					)),
+		    					),),
 		    					alignment: Alignment.center,
 		    					child: FadeTransition(
 		    							opacity: tabFadeInAnimation,
-		    							child: Container(padding: const EdgeInsets.all(30), alignment: Alignment.center, child: getTab(state.currentTab, isMobileView: true))),
-		    				));
+		    							child: Container(padding: const EdgeInsets.all(30), alignment: Alignment.center, child: getTab(state.currentTab, isMobileView: true)),),
+		    				),);
 		    	}
-		    
+
 		    	// Wide Layout
 		    	return Scaffold(
-		    			body: Container(
+		    			body: ColoredBox(
 		    		color: Theme.of(context).colorScheme.background,
 		    		child: Padding(
 		    			padding: const EdgeInsets.all(50),
@@ -120,7 +119,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 		    						border: Border.all(
 		    					color: Theme.of(context).colorScheme.primary,
 		    					width: 2,
-		    				)),
+		    				),),
 		    				alignment: Alignment.center,
 		    				child: Row(
 		    					children: [
@@ -128,15 +127,15 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 		    						Expanded(
 		    							child: FadeTransition(
 		    									opacity: tabFadeInAnimation,
-		    									child: Container(padding: const EdgeInsets.all(30), child: getTab(state.currentTab, isMobileView: false))),
+		    									child: Container(padding: const EdgeInsets.all(30), child: getTab(state.currentTab, isMobileView: false)),),
 		    						),
 		    					],
 		    				),
 		    			),
 		    		),
-		    	));
-		    });
-		  }
+		    	),);
+		    },);
+		  },
 		);
 	}
 }
@@ -144,7 +143,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 class TabMenu extends StatefulWidget {
 	final void Function() changeTab; // notifies the main page that the tab has changed
 
-	const TabMenu({super.key, required this.changeTab});
+	const TabMenu({required this.changeTab, super.key});
 
 	@override
 	State<TabMenu> createState() => _TabMenuState();
@@ -180,7 +179,7 @@ class _TabMenuState extends State<TabMenu> with SingleTickerProviderStateMixin {
 		  builder: (state) {
 		    return Padding(
 		    	padding: const EdgeInsets.all(20),
-		    	child: Container(
+		    	child: SizedBox(
 		    		width: 230,
 		    		child: Column(
 		    			crossAxisAlignment: CrossAxisAlignment.start,
@@ -193,7 +192,6 @@ class _TabMenuState extends State<TabMenu> with SingleTickerProviderStateMixin {
 		    					if (value == state.currentTab) ...[
 		    						// draw the currently selected tab differently.
 		    						Row(
-		    							mainAxisAlignment: MainAxisAlignment.start,
 		    							children: [
 		    								TextButton(
 		    										child: Text(value.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
@@ -201,7 +199,7 @@ class _TabMenuState extends State<TabMenu> with SingleTickerProviderStateMixin {
 		    											widget.changeTab();
 		    											state.currentTab = value;
 															state.setState();
-		    										}),
+		    										},),
 		    								AnimatedBuilder(
 		    									animation: tabSelectorAnimation,
 		    									builder: (BuildContext context, Widget? child) {
@@ -217,7 +215,6 @@ class _TabMenuState extends State<TabMenu> with SingleTickerProviderStateMixin {
 		    						const SizedBox(height: 10),
 		    					] else ...[
 		    						Row(
-		    							mainAxisAlignment: MainAxisAlignment.start,
 		    							children: [
 		    								TextButton(
 		    										child: Text(value.name, style: const TextStyle(fontSize: 18)),
@@ -225,17 +222,17 @@ class _TabMenuState extends State<TabMenu> with SingleTickerProviderStateMixin {
 		    											widget.changeTab();
 		    											state.currentTab = value;
 															state.setState();
-		    										}),
+		    										},),
 		    							],
 		    						),
 		    						const SizedBox(height: 10),
 		    					],
-		    				if (kDebugMode) ...[ StatsFl(maxFps: 300), const SizedBox(height: 20), ]
+		    				if (kDebugMode) ...[ SizedBox(height: 50), StatsFl(maxFps: 300), const SizedBox(height: 20), ],
 		    			],
 		    		),
 		    	),
 		    );
-		  }
+		  },
 		);
 	}
 }
@@ -264,4 +261,3 @@ Future<void> launchMyUrl(String link) async {
 	if (kDebugMode) print('launching url');
 	await launchUrl(url);
 }
-

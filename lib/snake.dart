@@ -60,7 +60,7 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
 		canvas.drawRRect(r, paint);
 
 		// Draw snake
-		for (int i = 0; i < snake.length; i++) {
+		for (var i = 0; i < snake.length; i++) {
 			var cell = snake[i];
 
 			// Don't draw a cell if it leaves the grid.
@@ -69,7 +69,7 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
 
 			var x = cell.x.toDouble() * cellSize;
 			var y = cell.y.toDouble() * cellSize;
-			Paint paint = Paint();
+			var paint = Paint();
 			// paint.color = i == 0 && game.debugMode ? Colors.yellow : Colors .blue; //draw the head a different color than the rest of the body.
 			paint.color = Color(0xff7f7fff);
 
@@ -79,7 +79,7 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
 		}
 
 		// Draw UI.
-		var textPaint = TextPaint(style: TextStyle(fontSize: 35.0, fontFamily: 'Inconsolata', color: Colors.white));
+		var textPaint = TextPaint(style: TextStyle(fontSize: 35, fontFamily: 'Inconsolata', color: Colors.white));
 		var centerPosition = Vector2(gameRef.canvasSize.x / 2, gameRef.canvasSize.y / 2);
 		var bottomCenterPosition = Vector2(gameRef.canvasSize.x / 2, gameRef.canvasSize.y);
 		var topCenterPosition = Vector2(gameRef.canvasSize.x / 2, 0);
@@ -232,7 +232,7 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
 				// set snake's initial position
 				snake = [Position(0, 2), Position(0, 1)];
 				direction = Direction.down;
-				snakeUpdateTimer = Timer(0.15, onTick: () => updateSnake(), repeat: true);
+				snakeUpdateTimer = Timer(0.15, onTick: updateSnake, repeat: true);
 
 				placeNewFood();
 
@@ -259,7 +259,7 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
 				}
 
 				// check if snake is eating itself or out of bounds.
-				for (int i = 1; i < snake.length; i++) {
+				for (var i = 1; i < snake.length; i++) {
 					var body = snake[i];
 					if (body.x == head.x && body.y == head.y) {
 						if (kDebugMode) print('snake ate itself!');

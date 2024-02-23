@@ -59,7 +59,7 @@ class _CoopTabState extends State<CoopTab> {
 											title: Text(reports[index].reportName),
 											children: [
 												SizedBox(width: MediaQuery.of(context).size.width * .6, child: Text(reports[index].contents)),
-											]),
-								)));
+											],),
+								),),);
 	}
 }

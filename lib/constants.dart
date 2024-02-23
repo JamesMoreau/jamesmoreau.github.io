@@ -25,7 +25,7 @@ const githubIconPath = 'assets/icons/github-mark.svg';
 const List<String> coopTermReports = [
 	'assets/coop_term_reports/fall_2020_report.txt',
 	'assets/coop_term_reports/summer_2021_report.txt',
-	'assets/coop_term_reports/winter_summer_2022_report.txt'
+	'assets/coop_term_reports/winter_summer_2022_report.txt',
 ];
 const resumePdfLink = 'https://jamesmoreau.github.io/Resume/JamesMoreau.pdf';
 const lostInTranslationGifPath = 'assets/lit.gif';
@@ -37,38 +37,41 @@ ThemeData lightApplicationTheme = ThemeData(
 	// primarySwatch: MaterialColor(0xff6fb3b8, {}),
 	useMaterial3: true,
 	colorScheme: const ColorScheme(
-			brightness: Brightness.light,
-			primary: Color(0xff2b2b2b),
-			onPrimary: Colors.white,
-			secondary: Color(0xff2b2b2b),
-			onSecondary: Colors.white,
-			error: Colors.red,
-			onError: Colors.white,
-			background: Color(0xffe6e6e6),
-			onBackground: Color(0xff2b2b2b),
-			surface: Color(0xffe6e6e6),
-			onSurface: Color(0xff2b2b2b)),
+		brightness: Brightness.light,
+		primary: Color(0xff2b2b2b),
+		onPrimary: Colors.white,
+		secondary: Color(0xff2b2b2b),
+		onSecondary: Colors.white,
+		error: Colors.red,
+		onError: Colors.white,
+		background: Color(0xffe6e6e6),
+		onBackground: Color(0xff2b2b2b),
+		surface: Color(0xffe6e6e6),
+		onSurface: Color(0xff2b2b2b),
+	),
 	fontFamily: 'Inconsolata',
 	textTheme: TextTheme(bodyMedium: TextStyle(fontSize: 16)),
 	appBarTheme: AppBarTheme(
-			iconTheme: IconThemeData(color: Colors.white),
-			backgroundColor: Color(0xff2b2b2b),
-			titleTextStyle: TextStyle(color: Color(0xffe6e6e6), fontWeight: FontWeight.bold, fontSize: 30, fontFamily: 'Inconsolata'),
-			elevation: 0),
+		iconTheme: IconThemeData(color: Colors.white),
+		backgroundColor: Color(0xff2b2b2b),
+		titleTextStyle: TextStyle(color: Color(0xffe6e6e6), fontWeight: FontWeight.bold, fontSize: 30, fontFamily: 'Inconsolata'),
+		elevation: 0,
+	),
 	elevatedButtonTheme: ElevatedButtonThemeData(
-			style: ElevatedButton.styleFrom(backgroundColor: Color(0xff2b2b2b), foregroundColor: Colors.white, padding: EdgeInsets.all(15))),
+		style: ElevatedButton.styleFrom(backgroundColor: Color(0xff2b2b2b), foregroundColor: Colors.white, padding: EdgeInsets.all(15)),
+	),
 	expansionTileTheme: ExpansionTileThemeData(
 		// collapsed
 		collapsedBackgroundColor: const Color(0xff2b2b2b),
 		collapsedTextColor: Colors.white,
-		collapsedShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+		collapsedShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
 		collapsedIconColor: Colors.white,
 		// open
 		backgroundColor: Colors.transparent,
 		textColor: const Color(0xff2b2b2b),
 		iconColor: const Color(0xff2b2b2b),
 		//other
-		shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+		shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
 	),
 	snackBarTheme: SnackBarThemeData(
 		insetPadding: EdgeInsets.only(bottom: 20),
@@ -76,7 +79,7 @@ ThemeData lightApplicationTheme = ThemeData(
 		width: 300,
 		behavior: SnackBarBehavior.floating,
 		shape: RoundedRectangleBorder(
-			borderRadius: BorderRadius.all(Radius.circular(8.0)),
+			borderRadius: BorderRadius.all(Radius.circular(8)),
 		),
 		contentTextStyle: TextStyle(fontFamily: 'Inconsolata', color: Colors.white),
 	),

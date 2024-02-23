@@ -16,29 +16,39 @@ class WorkTab extends StatelessWidget {
 				Wrap(
 					children: [
 						InkWell(
-								child: HoverText(text: 'Purolator Delivery Pro - Last Mile Delivery Service', bigTextSize: 40, smallTextSize: 25),
-								onTap: () => launchMyUrl('https://apps.apple.com/ca/app/purolator-delivery-pro/id1622239326')),
+								child: HoverText(text: 'Purolator Delivery Pro - Last-mile delivery service', bigTextSize: 40, smallTextSize: 25),
+								onTap: () => launchMyUrl('https://apps.apple.com/ca/app/purolator-delivery-pro/id1622239326'),),
 						SizedBox(width: 10),
-						Icon(Icons.open_in_new)
+						Icon(Icons.open_in_new),
 					],
 				),
 				SizedBox(height: 20),
 				Wrap(
 					children: [
 						InkWell(
-								child: HoverText(text: 'Keyed - A Simple Password Generator with WASM', bigTextSize: 40, smallTextSize: 25),
-								onTap: () => launchMyUrl('https://jamesmoreau.github.io/keyed/')),
+								child: HoverText(text: 'Keyed - A simple password generator with WASM', bigTextSize: 40, smallTextSize: 25),
+								onTap: () => launchMyUrl('https://jamesmoreau.github.io/keyed/'),),
 						SizedBox(width: 10),
-						Icon(Icons.open_in_new)
+						Icon(Icons.open_in_new),
+					],
+				),
+				SizedBox(height: 20),
+				Wrap(
+					children: [
+						InkWell(
+								child: HoverText(text: 'Location Alarm - A proximity based alarm app', bigTextSize: 40, smallTextSize: 25),
+								onTap: () => launchMyUrl('https://github.com/JamesMoreau/Location-Alarm'),),
+						SizedBox(width: 10),
+						Icon(Icons.open_in_new),
 					],
 				),
 				SizedBox(height: 100),
 				Center(
 						child: Stack(children: [
 					Image.asset(lostInTranslationGifPath, width: 499, height: 266, fit: BoxFit.contain),
-					Positioned(bottom: 0, right: 0, child: Text('Lost in Translation ', style: TextStyle(color: Colors.white)))
-				])),
-			]),
+					Positioned(bottom: 0, right: 0, child: Text('Lost in Translation ', style: TextStyle(color: Colors.white))),
+				],),),
+			],),
 		);
 	}
 }
@@ -48,7 +58,7 @@ class HoverText extends StatefulWidget {
 	final double bigTextSize;
 	final double smallTextSize;
 
-	const HoverText({Key? key, required this.text, required this.bigTextSize, required this.smallTextSize}) : super(key: key);
+	const HoverText({required this.text, required this.bigTextSize, required this.smallTextSize, super.key});
 
 	@override
 	State<HoverText> createState() => _HoverTextState();

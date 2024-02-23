@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:my_website/snake.dart';
 
 class GameTab extends StatefulWidget {
-	final double gameSize = 500;
+	double get gameSize => 500;
 
-	const GameTab({Key? key}) : super(key: key);
+	const GameTab({super.key});
 
 	@override
 	State<GameTab> createState() => _GameTabState();
@@ -32,7 +32,7 @@ class _GameTabState extends State<GameTab> {
 							Container(
 								width: widget.gameSize,
 								height: widget.gameSize,
-								decoration: BoxDecoration(border: Border.all(width: 5, color: Colors.black), borderRadius: BorderRadius.all(Radius.circular(3))),
+								decoration: BoxDecoration(border: Border.all(width: 5), borderRadius: BorderRadius.all(Radius.circular(3))),
 								child: GameWidget(
 									game: game,
 									loadingBuilder: (context) => Center(child: CircularProgressIndicator()),
@@ -42,6 +42,6 @@ class _GameTabState extends State<GameTab> {
 							SizedBox(height: 20),
 						],
 					),
-				));
+				),);
 	}
 }

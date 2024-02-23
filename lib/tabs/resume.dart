@@ -7,7 +7,7 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 class ResumeTab extends StatefulWidget {
 	final bool isMobileView;
 
-	const ResumeTab({super.key, required this.isMobileView});
+	const ResumeTab({required this.isMobileView, super.key});
 
 	@override
 	State<ResumeTab> createState() => _ResumeTabState();
@@ -28,13 +28,13 @@ class _ResumeTabState extends State<ResumeTab> {
 								SizedBox(
 										width: MediaQuery.of(context).size.width * 0.4,
 										height: MediaQuery.of(context).size.width * 0.707,
-										child: SfPdfViewer.network(resumePdfLink, initialZoomLevel: 1.1)),
+										child: SfPdfViewer.network(resumePdfLink, initialZoomLevel: 1.1),),
 								Align(
 										alignment: Alignment.topLeft,
 										child: Padding(
 											padding: const EdgeInsets.all(10),
 											child: ElevatedButton.icon(onPressed: () => launchMyUrl(resumePdfLink), icon: Icon(Icons.open_in_new), label: Text('Download')),
-										))
+										),),
 							],
 						),
 					),
