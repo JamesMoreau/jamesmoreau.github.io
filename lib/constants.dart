@@ -27,6 +27,7 @@ const List<String> coopTermReports = [
 	'assets/coop_term_reports/summer_2021_report.txt',
 	'assets/coop_term_reports/winter_summer_2022_report.txt',
 ];
+const reportsDirectoryPath = 'assets/coop_term_reports/';
 const resumePdfLink = 'https://jamesmoreau.github.io/Resume/JamesMoreau.pdf';
 const lostInTranslationGifPath = 'assets/lit.gif';
 const gapOfDunloe = 'assets/gap_of_dunloe.jpeg';

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:my_website/constants.dart';
-import 'package:path/path.dart';
 
 class Report {
 	final String reportName;
@@ -27,7 +26,8 @@ class _CoopTabState extends State<CoopTab> {
 			var name = path.split('/').last; // Extracting the file name
 			var fileContents = await rootBundle.loadString(path);
 
-			reports.add(Report(reportName: name, contents: fileContents));
+			var report = Report(reportName: name, contents: fileContents);
+			reports.add(report);
 		}
 
 		return reports;
