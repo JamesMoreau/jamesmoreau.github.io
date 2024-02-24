@@ -15,7 +15,7 @@ import 'package:url_launcher/url_launcher.dart';
   TODO:
   add french / english resume
   do something with the color picker / calculator or something else cool.
-  convert to spaces!
+  get rid of cuper_icons  
 */
 
 class SiteState extends JuneState {
