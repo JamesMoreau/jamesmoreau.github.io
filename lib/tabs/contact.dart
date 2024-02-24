@@ -12,89 +12,109 @@ class ContactTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return CustomScrollView(
       scrollDirection: Axis.horizontal,
-      child: Row(
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
+      slivers: [
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: Row(
             children: [
-              Row(children: [
-                SelectableText.rich(
-                  TextSpan(
-                    text: 'Email: ',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
                     children: [
-                      TextSpan(
-                        text: myEmail,
-                        style: TextStyle(color: Colors.blue),
+                      SelectableText.rich(
+                        TextSpan(
+                          text: 'Email: ',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                          children: [
+                            TextSpan(
+                              text: myEmail,
+                              style: TextStyle(color: Colors.blue),
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
-                  ),
-                ),
-                IconButton(
-                    icon: Icon(Icons.copy),
-                    onPressed: () {
-                      Clipboard.setData(ClipboardData(text: myEmail));
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Copied to clipboard')),
-                      );
-                    },),
-                SizedBox(width: 20),
-                Icon(Icons.email, size: 40),
-              ],),
-              SizedBox(height: 20),
-              Row(children: [
-                SelectableText.rich(
-                  TextSpan(
-                    text: 'Github: ',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                    children: [
-                      TextSpan(text: githubLink, style: TextStyle(color: Colors.blue), recognizer: TapGestureRecognizer()..onTap = () => launchMyUrl(githubLink)),
-                    ],
-                  ),
-                ),
-                SizedBox(width: 20),
-                SvgPicture.asset(githubIconPath, width: 40, height: 40),
-              ],),
-              SizedBox(height: 20),
-              Row(children: [
-                SelectableText.rich(
-                  TextSpan(
-                    text: 'LinkedIn: ',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                    children: [
-                      TextSpan(
-                        text: linkedInLink,
-                        style: TextStyle(color: Colors.blue),
-                        recognizer: TapGestureRecognizer()..onTap = () => launchMyUrl(linkedInLink),
+                      IconButton(
+                        icon: Icon(Icons.copy),
+                        onPressed: () {
+                          Clipboard.setData(ClipboardData(text: myEmail));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Copied to clipboard')),
+                          );
+                        },
                       ),
+                      SizedBox(width: 20),
+                      Icon(Icons.email, size: 40),
                     ],
                   ),
+                  SizedBox(height: 20),
+                  Row(
+                    children: [
+                      SelectableText.rich(
+                        TextSpan(
+                          text: 'Github: ',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                          children: [
+                            TextSpan(text: githubLink, style: TextStyle(color: Colors.blue), recognizer: TapGestureRecognizer()..onTap = () => launchMyUrl(githubLink)),
+                          ],
+                        ),
+                      ),
+                      SizedBox(width: 20),
+                      SvgPicture.asset(githubIconPath, width: 40, height: 40),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    children: [
+                      SelectableText.rich(
+                        TextSpan(
+                          text: 'LinkedIn: ',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                          children: [
+                            TextSpan(
+                              text: linkedInLink,
+                              style: TextStyle(color: Colors.blue),
+                              recognizer: TapGestureRecognizer()..onTap = () => launchMyUrl(linkedInLink),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(width: 20),
+                      SvgPicture.asset(linkedinIconPath, width: 40, height: 40),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                ],
+              ),
+              if (!isMobileView) ...[
+                SizedBox(width: 75),
+                Expanded(
+                  child: Center(
+										child: Stack(
+											children: [
+												Container(
+													width: 500,
+													height: 600,
+													decoration: BoxDecoration(
+														border: Border.all(
+															width: 2,
+														),
+													),
+													child: Image.asset(gapOfDunloe, fit: BoxFit.cover),
+												),
+												Positioned(bottom: 0, right: 0, child: Text('Gap of Dunloe, Ireland ', style: TextStyle(color: Colors.white))),
+											],
+										),
+									),
                 ),
-                SizedBox(width: 20),
-                SvgPicture.asset(linkedinIconPath, width: 40, height: 40),
-              ],),
-              SizedBox(height: 20),
+              ],
             ],
           ),
-          if (!isMobileView) ...[
-            SizedBox(width: 75),
-            Stack(children: [
-              Container(
-                  width: 500,
-                  height: 600,
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                    width: 2,
-                  ),),
-                  child: Image.asset(gapOfDunloe, fit: BoxFit.cover),),
-                  Positioned(bottom: 0, right: 0, child: Text('Gap of Dunloe, Ireland ', style: TextStyle(color: Colors.white))),
-            ],),
-          ],
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

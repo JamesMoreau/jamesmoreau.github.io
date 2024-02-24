@@ -21,14 +21,19 @@ This site was implemented using Flutter, a UI software development kit created b
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            SelectableText.rich(
-              TextSpan(children: [
-                TextSpan(text: '$about\n\n', style: TextStyle(fontWeight: FontWeight.bold)),
-                TextSpan(text: aboutText),
-              ],),
-            ),
-          ],),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SelectableText.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(text: '$about\n\n', style: TextStyle(fontWeight: FontWeight.bold)),
+                    TextSpan(text: aboutText),
+                  ],
+                ),
+              ),
+            ],
+          ),
           SizedBox(height: 75),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -41,15 +46,17 @@ This site was implemented using Flutter, a UI software development kit created b
                     height: 500,
                   ),
                   Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                        decoration: BoxDecoration(
-                            border: Border.all(
+                    bottom: 0,
+                    right: 0,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
                           width: 2,
-                        ),),
-                        child: Image.asset(markFerrariNatureGifPath, width: 300, height: 300, fit: BoxFit.cover),
-                      ),),
+                        ),
+                      ),
+                      child: Image.asset(markFerrariNatureGifPath, width: 300, height: 300, fit: BoxFit.cover),
+                    ),
+                  ),
                   Positioned(bottom: 0, right: 0, child: Text('Mark Ferrari ', style: TextStyle(color: Colors.white))),
                   Positioned(
                     left: 0,
@@ -57,13 +64,15 @@ This site was implemented using Flutter, a UI software development kit created b
                     child: Stack(
                       children: [
                         Container(
-                            width: 300,
-                            height: 300,
-                            decoration: BoxDecoration(
-                                border: Border.all(
+                          width: 300,
+                          height: 300,
+                          decoration: BoxDecoration(
+                            border: Border.all(
                               width: 2,
-                            ),),
-                            child: Image.asset(myFace, fit: BoxFit.cover),),
+                            ),
+                          ),
+                          child: Image.asset(myFace, fit: BoxFit.cover),
+                        ),
                         Positioned(bottom: 0, right: 0, child: Text('Skye, Scotland ', style: TextStyle(color: Colors.white))),
                       ],
                     ),
