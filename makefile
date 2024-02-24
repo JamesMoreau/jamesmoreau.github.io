@@ -12,7 +12,7 @@ run:
 
 deploy_to_github_pages:
 	flutter build web --release && \
-	rsync -av --delete --exclude='.git' build/web/ github_pages/
+	rsync -av --delete --exclude='.git' build/web/ github_pages/ && \
 	cd github_pages && \
 	git add . && \
 	git commit -m "update website" && \
