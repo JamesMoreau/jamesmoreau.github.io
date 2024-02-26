@@ -31,10 +31,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
   url_launcher: ^6.1.11
   path: ^1.8.2
   statsfl: ^2.3.0
@@ -52,8 +48,8 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
-  dart_code_metrics: ^5.6.0
+  # flutter_lints: ^2.0.0
+  # dart_code_metrics: ^5.6.0
   very_good_analysis: ^5.1.0
 
 # For information on the generic Dart part of this file, see the
@@ -85,11 +81,7 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  fonts:
-    - family: Inconsolata
-      fonts:
-        # - asset: fonts/Inconsolata-Regular.ttf
-        - asset: assets/fonts/Inconsolata-VariableFont_wdth,wght.ttf
+  # fonts:
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf
@@ -98,3 +90,9 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+  
+  fonts:
+    - family: Inconsolata
+      fonts:
+        # - asset: fonts/Inconsolata-Regular.ttf
+        - asset: assets/fonts/Inconsolata-VariableFont_wdth,wght.ttf
