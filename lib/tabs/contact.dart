@@ -58,7 +58,7 @@ class ContactTab extends StatelessWidget {
                           text: 'Github: ',
                           style: TextStyle(fontWeight: FontWeight.bold),
                           children: [
-                            TextSpan(text: githubLink, style: TextStyle(color: Colors.blue), recognizer: TapGestureRecognizer()..onTap = () => launchMyUrl(githubLink)),
+                            TextSpan(text: githubUrl, style: TextStyle(color: Colors.blue), recognizer: TapGestureRecognizer()..onTap = () => launchMyUrl(githubUrl)),
                           ],
                         ),
                       ),
@@ -75,9 +75,9 @@ class ContactTab extends StatelessWidget {
                           style: TextStyle(fontWeight: FontWeight.bold),
                           children: [
                             TextSpan(
-                              text: linkedInLink,
+                              text: linkedInUrl,
                               style: TextStyle(color: Colors.blue),
-                              recognizer: TapGestureRecognizer()..onTap = () => launchMyUrl(linkedInLink),
+                              recognizer: TapGestureRecognizer()..onTap = () => launchMyUrl(linkedInUrl),
                             ),
                           ],
                         ),

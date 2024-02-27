@@ -14,8 +14,8 @@ class MyColors {
 const myName = 'James Moreau';
 const jobTitle = 'Programmer';
 const myEmail = 'jmorea03@uoguelph.ca';
-const githubLink = 'https://github.com/JamesMoreau';
-const linkedInLink = 'https://www.linkedin.com/in/james-moreau/';
+const githubUrl = 'https://github.com/JamesMoreau';
+const linkedInUrl = 'https://www.linkedin.com/in/james-moreau/';
 const university = 'University of Guelph';
 const degree = 'Honours Bachelors of Computer Science';
 const myFace = 'assets/james_moreau_face.jpeg';
@@ -28,7 +28,8 @@ const List<String> coopTermReports = [
   'assets/coop_term_reports/winter_summer_2022_report.txt',
 ];
 const reportsDirectoryPath = 'assets/coop_term_reports/';
-const resumePdfLink = 'https://jamesmoreau.github.io/Resume/JamesMoreau.pdf';
+const resumePdfUrl = 'https://jamesmoreau.github.io/Resume/JamesMoreau.pdf';
+const resumePdfUrlFrench = 'https://jamesmoreau.github.io/Resume/JacquesMoreauFR.pdf';
 const lostInTranslationGifPath = 'assets/lit.gif';
 const gapOfDunloe = 'assets/gap_of_dunloe.jpeg';
 
