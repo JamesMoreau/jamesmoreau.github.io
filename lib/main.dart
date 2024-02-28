@@ -19,7 +19,6 @@ import 'package:url_launcher/url_launcher.dart';
 */
 
 class SiteState extends JuneState {
-  Tab currentTab = Tab.about;
 }
 
 void main() async {
@@ -44,6 +43,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with TickerProviderStateMixin {
+  Tab currentTab = Tab.about;
   late AnimationController tabFadeInController;
   late Animation<double> tabFadeInAnimation;
 
@@ -53,13 +53,13 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  void onTabChanged() {
+  void onTabChanged(Tab tab) {
     if (kDebugMode) {
-      var state = June.getState(SiteState());
-      print('Changing tab to ${state.currentTab.name}');
+      print('Changing tab to ${currentTab.name}');
     }
     tabFadeInController.reset();
     tabFadeInController.forward();
+    currentTab = tab;
     setState(() {});
   }
 
@@ -95,7 +95,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           if (constraints.maxWidth < 1000 || constraints.maxHeight < 600) {
             return Scaffold(
                 appBar: AppBar(title: Text(myName)),
-                drawer: Drawer(child: TabMenu(changeTab: onTabChanged)),
+                drawer: Drawer(child: TabMenu(changeTab: onTabChanged, currentTab: currentTab)),
                 body: Container(
                   decoration: BoxDecoration(
                       border: Border.all(
@@ -104,7 +104,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                   alignment: Alignment.center,
                   child: FadeTransition(
                       opacity: tabFadeInAnimation,
-                      child: Container(padding: const EdgeInsets.all(30), alignment: Alignment.center, child: getTab(state.currentTab, isMobileView: true)),),
+                      child: Container(padding: const EdgeInsets.all(30), alignment: Alignment.center, child: getTab(currentTab, isMobileView: true)),),
                 ),);
           }
 
@@ -123,11 +123,11 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                 alignment: Alignment.center,
                 child: Row(
                   children: [
-                    TabMenu(changeTab: onTabChanged),
+                    TabMenu(changeTab: onTabChanged, currentTab: currentTab),
                     Expanded(
                       child: FadeTransition(
                           opacity: tabFadeInAnimation,
-                          child: Container(padding: const EdgeInsets.all(30), child: getTab(state.currentTab, isMobileView: false)),),
+                          child: Container(padding: const EdgeInsets.all(30), child: getTab(currentTab, isMobileView: false)),),
                     ),
                   ],
                 ),
@@ -141,15 +141,17 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 }
 
 class TabMenu extends StatefulWidget {
-  final void Function() changeTab; // notifies the main page that the tab has changed
+  final Tab currentTab; // This is passed to the tab menu by the main page which holds the actual current tab.
+  final void Function(Tab tab) changeTab; // notifies the main page that the tab has changed
 
-  const TabMenu({required this.changeTab, super.key});
+  const TabMenu({required this.currentTab, required this.changeTab, super.key});
 
   @override
   State<TabMenu> createState() => _TabMenuState();
 }
 
 class _TabMenuState extends State<TabMenu> with SingleTickerProviderStateMixin {
+  Tab currentTab = Tab.about;
   late final AnimationController tabSelector;
   late final Animation<double> tabSelectorAnimation;
 
@@ -189,15 +191,15 @@ class _TabMenuState extends State<TabMenu> with SingleTickerProviderStateMixin {
                 const SelectableText(jobTitle),
                 const SizedBox(height: 40),
                 for (var value in Tab.values)
-                  if (value == state.currentTab) ...[
+                  if (value == currentTab) ...[
                     // draw the currently selected tab differently.
                     Row(
                       children: [
                         TextButton(
                             child: Text(value.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
                             onPressed: () {
-                              widget.changeTab();
-                              state.currentTab = value;
+                              widget.changeTab(value);
+                              currentTab = value;
                               state.setState();
                             },),
                         AnimatedBuilder(
@@ -219,8 +221,8 @@ class _TabMenuState extends State<TabMenu> with SingleTickerProviderStateMixin {
                         TextButton(
                             child: Text(value.name, style: const TextStyle(fontSize: 18)),
                             onPressed: () {
-                              widget.changeTab();
-                              state.currentTab = value;
+                              widget.changeTab(value);
+                              currentTab = value;
                               state.setState();
                             },),
                       ],
