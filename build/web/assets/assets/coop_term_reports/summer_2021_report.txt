@@ -1,0 +1,50 @@
+This summer I had the opportunity to work at Purolator's Digital Lab, where I worked on quality assurance for a new 
+application under development that will help partners of Purolator manage their parcel delivery. Founded in 1960, 
+Purolator is a Canadian courier that delivers parcels to Canadians all around the country. Purolator is at the 
+forefront of technological research and development. Currently they are looking into engineering their fleet to make 
+deliveries easier and faster for the workers, while also reducing emissions (here's a great video to show what I'm 
+talking about: https://www.youtube.com/watch?v=8gm9eCCSaQA). I was very excited to be a part of such an innovative 
+company.
+
+It's kind of a funny story, actually. I had applied to and done an interview with another courier by the name of 
+Shipperbee, which was based in Guelph. This company was acquired by Purolator just after they had hired me. Luckily, my 
+boss negotiated that Co-ops would be transferred over (thanks, Dariusz!).
+
+This was my second fully remote Co-op term so the experience wasn't that alien to me. I was already used to doing 
+scrums over video chat. I have a pretty good setup here at home. And I got a nice mac laptop sent to me so the 
+work-from-home was comfortable. Although, for a future Co-op term I would still like to try working in an office 
+environment.
+
+The work term goals were chosen partly from what I think I missed out on last Co-op term and partly what I think would 
+be a good opportunity at this specific employment. Anyway, the goals I outlined at the beginning of the term are as 
+follows:
+
+1. I want to learn more about microservices and deployment in modern software development.
+2. I want to maintain a daily agenda to record my ideas, tasks, notes, etc. to have a more organized and efficient workday.
+3. I should be able to work effectively on my own without requiring too much assistance from or asking questions of 
+co-workers.
+
+On the topic of my day-to-day work, without getting too specific (I think I signed an NDA), I worked with a great team 
+of developers and QA testers on testing a new mobile application. My hours were 9-5:30 every day. I mainly worked with 
+2 others in the QA team. My most common work item was to re-test a filed bug on multiple devices/platforms to ensure 
+that the issue was fixed. In terms of our testing strategies, we did manual testing, automation testing, and API 
+testing. Doing testing at multiple "levels" is advantageous because you are more likely to catch bugs; like in any 
+field of engineering, the weakest points are the moving parts, so that's where we look first. Aside from testing, we 
+worked on documentation and task management (Azure). During my work term, I feel like I made good contributions to 
+tooling and testing utilities used by Digital lab, that can be used and built upon in the future by other developers.
+
+I would say my academics have helped me to acclimate to a professional tech environment. I think I have strong 
+technical knowledge, which helps me understand when I am testing an issue what is happening behind the scenes. However, 
+I would also say that during my time at Purolator, I've acquired a lot of technical knowledge about the architecture of 
+modern mobile applications, web microservices, and the continuous integration and deployment model. The hard and soft 
+skills I gained here will make me a more well-rounded person who is capable of working well with other teams/members 
+who are focused on their slice of the software stack.
+
+Overall, I would say that from what I have learned over the course of the last few months has made me more confident in 
+abilities as a software developer. I would definitely be interested in coming back to Purolator in the future if that 
+is a possibility.
+
+Acknowledgments:
+
+Thanks to the great QA team, Pooja and Emma.
+Thanks to my boss, Dariusz, and the rest of the team.
