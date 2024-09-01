@@ -73,7 +73,7 @@ This site was implemented using Flutter, a UI software development kit created b
                           ),
                           child: Image.asset(myFace, fit: BoxFit.cover),
                         ),
-                        Positioned(bottom: 0, right: 0, child: Text('Skye, Scotland ', style: TextStyle(color: Colors.white))),
+                        Positioned(bottom: 0, right: 0, child: Text('James, Eclipse ', style: TextStyle(color: Colors.white))),
                       ],
                     ),
                   ),

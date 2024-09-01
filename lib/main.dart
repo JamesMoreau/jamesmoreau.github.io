@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:my_website/constants.dart';
 import 'package:my_website/tabs/about.dart';
 import 'package:my_website/tabs/contact.dart';
-import 'package:my_website/tabs/coop_reports.dart';
+// import 'package:my_website/tabs/coop_reports.dart';3
 import 'package:my_website/tabs/game.dart';
 import 'package:my_website/tabs/resume.dart';
 import 'package:my_website/tabs/work.dart';
@@ -12,8 +12,10 @@ import 'package:url_launcher/url_launcher.dart';
 
 /*
   TODO:
-  do something with the color picker / calculator or something else cool.
   Put studio ghibli somewhere
+  Make github pages deploy from this repo
+  make it so resume takes up whole space
+  upgrade deps and flutter
 */
 
 void main() async {
@@ -123,7 +125,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                     Expanded(
                       child: FadeTransition(
                         opacity: tabFadeInAnimation,
-                        child: Container(padding: const EdgeInsets.all(30), child: getTab(currentTab, isMobileView: false)),
+                        child: Container(padding: const EdgeInsets.all(16), child: getTab(currentTab, isMobileView: false)),
                       ),
                     ),
                   ],
@@ -240,12 +242,18 @@ Widget getTab(Tab tab, {required bool isMobileView}) {
     Tab.work_and_projects => WorkTab(),
     Tab.contact_and_links => ContactTab(isMobileView: isMobileView),
     Tab.game              => GameTab(),
-    Tab.co_op_reports     => CoopTab(),
+    // Tab.co_op_reports     => CoopTab(),
     Tab.resume            => ResumeTab(isMobileView: isMobileView),
   };
 }
 
-enum Tab { about, work_and_projects, resume, contact_and_links, co_op_reports, game }
+enum Tab { 
+  about, 
+  work_and_projects, 
+  resume, 
+  contact_and_links, 
+  // co_op_reports, 
+  game }
 
 Future<void> launchMyUrl(String link) async {
   var url = Uri.parse(link);

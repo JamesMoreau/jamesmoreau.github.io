@@ -37,8 +37,19 @@ class WorkTab extends StatelessWidget {
           Wrap(
             children: [
               InkWell(
-                child: HoverText(text: 'Location Alarm - A proximity based alarm app', bigTextSize: 40, smallTextSize: 25),
-                onTap: () => launchMyUrl('https://github.com/JamesMoreau/Location-Alarm'),
+                child: HoverText(text: 'LocaAlert - A proximity based alarm app', bigTextSize: 40, smallTextSize: 25),
+                onTap: () => launchMyUrl('https://apps.apple.com/ca/app/locaalert/id6478944468'),
+              ),
+              SizedBox(width: 10),
+              Icon(Icons.open_in_new),
+            ],
+          ),
+          SizedBox(height: 20),
+          Wrap(
+            children: [
+              InkWell(
+                child: HoverText(text: 'GemPaint - A WASM based paint program', bigTextSize: 40, smallTextSize: 25),
+                onTap: () => launchMyUrl('https://jamesmoreau.github.io/GemPaint/'),
               ),
               SizedBox(width: 10),
               Icon(Icons.open_in_new),

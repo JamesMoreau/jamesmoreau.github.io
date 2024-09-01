@@ -37,8 +37,7 @@ class _ResumeTabState extends State<ResumeTab> {
       ResumeLanguage.french => resumePdfUrlFrench,
     };
 
-
-    if (widget.isMobileView) {
+    if (widget.isMobileView) { // We don't have enough space to show the actual resume so just show the button.
       return Center(child: raisedResumeButton);
     }
 
