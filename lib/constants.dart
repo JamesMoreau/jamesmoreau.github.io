@@ -46,8 +46,6 @@ ThemeData lightApplicationTheme = ThemeData(
     onSecondary: Colors.white,
     error: Colors.red,
     onError: Colors.white,
-    background: Color(0xffe6e6e6),
-    onBackground: Color(0xff2b2b2b),
     surface: Color(0xffe6e6e6),
     onSurface: Color(0xff2b2b2b),
   ),

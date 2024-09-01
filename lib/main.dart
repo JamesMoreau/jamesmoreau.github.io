@@ -108,7 +108,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         // Wide Layout
         return Scaffold(
           body: ColoredBox(
-            color: Theme.of(context).colorScheme.background,
+            color: Theme.of(context).colorScheme.surface,
             child: Padding(
               padding: const EdgeInsets.all(50),
               child: Container(

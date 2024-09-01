@@ -237,11 +237,9 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
         placeNewFood();
 
         state = GameState.ready;
-        break;
 
       case GameState.ready:
         if (kDebugMode) print('press space to begin.');
-        break;
 
       case GameState.play:
         assert(snake.length >= 2, 'snake should be at least two long');
@@ -273,7 +271,6 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
           state = GameState.gameover;
         }
 
-        break;
 
       case GameState.gameover:
         // display a game over text
