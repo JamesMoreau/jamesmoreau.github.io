@@ -52,7 +52,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   void onTabChanged(Tab tab) {
     if (kDebugMode) {
-      print('Changing tab to ${currentTab.name}');
+      print('Changing tab to ${tab.name}');
     }
     tabFadeInController.reset();
     tabFadeInController.forward();

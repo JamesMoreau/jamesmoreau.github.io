@@ -4,6 +4,7 @@ import 'package:my_website/main.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 enum ResumeLanguage { english, french }
+enum ResumeLoadingState { loading, loaded, error }
 
 class ResumeTab extends StatefulWidget {
   final bool isMobileView;
@@ -49,7 +50,7 @@ class _ResumeTabState extends State<ResumeTab> {
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.4,
               height: MediaQuery.of(context).size.width * 0.707,
-              child: SfPdfViewer.network(myUrl, initialZoomLevel: 1.1 ),
+              child: SfPdfViewer.network(myUrl),
             ),
             Padding(
               padding: const EdgeInsets.all(20),
