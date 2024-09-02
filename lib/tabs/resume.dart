@@ -50,7 +50,7 @@ class _ResumeTabState extends State<ResumeTab> {
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.4,
               height: MediaQuery.of(context).size.width * 0.707,
-              child: SfPdfViewer.network(myUrl),
+              child: SfPdfViewer.network('https://cdn.syncfusion.com/content/PDFViewer/flutter-succinctly.pdf'),
             ),
             Padding(
               padding: const EdgeInsets.all(20),
