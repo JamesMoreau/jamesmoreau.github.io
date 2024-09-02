@@ -13,9 +13,6 @@ import 'package:url_launcher/url_launcher.dart';
 /*
   TODO:
   Put studio ghibli somewhere
-  Make github pages deploy from this repo
-  make it so resume takes up whole space
-  upgrade deps and flutter
 */
 
 void main() async {
