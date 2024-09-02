@@ -97630,26 +97630,29 @@ M(){return"ResumeLanguage."+this.b}}
 A.Jp.prototype={
 ap(){return new A.a7s(B.DI)}}
 A.a7s.prototype={
-V(a){var s,r,q,p,o,n=this,m=null,l=n.d.a
-switch(l){case 0:s="Link to Resume"
+V(a){var s,r,q,p,o,n=this,m=null,l="https://jamesmoreau.github.io/Resume/JamesMoreau.pdf",k="https://jamesmoreau.github.io/Resume/JacquesMoreauFR.pdf",j=n.d.a
+switch(j){case 0:s="Link to Resume"
 break
 case 1:s="Link to French Resume"
 break
-default:s=m}switch(l){case 0:r="https://jamesmoreau.github.io/Resume/JamesMoreau.pdf"
+default:s=m}switch(j){case 0:r=l
 break
-case 1:r="https://jamesmoreau.github.io/Resume/JacquesMoreauFR.pdf"
+case 1:r=k
 break
 default:r=m}q=A.bad(A.fo(B.h8,m,m,m),A.ca(s,m,m,m,m,m,m),new A.aL7(r))
-switch(l){case 0:break
-case 1:break}if(n.a.c)return A.h8(q,m,m)
-l=t.w
-s=A.bC(a,m,l).w
-l=A.bC(a,m,l).w
-r=new A.aqv()
-r.a="https://cdn.syncfusion.com/content/PDFViewer/flutter-succinctly.pdf"
-p=t.HW
+switch(j){case 0:j=l
+break
+case 1:j=k
+break
+default:j=m}if(n.a.c)return A.h8(q,m,m)
+s=t.w
+r=A.bC(a,m,s).w
+s=A.bC(a,m,s).w
+p=new A.aqv()
+p.a=j
+j=t.HW
 o=t.p
-return A.h8(A.pd(A.ea(A.b([A.bI(new A.K0(r,m),l.a.a*0.707,s.a.a*0.4),new A.bY(B.eK,A.fz(A.b([new A.bY(B.lP,q,m),new A.bY(B.lP,new A.B6(A.b([new A.o3(B.DI,A.ca("English",m,m,m,m,m,m),p),new A.o3(B.ZR,A.ca("French",m,m,m,m,m,m),p)],t.bG),A.cC([n.d],t.xa),new A.aL8(n),m,t.q_),m)],o),B.K,m,B.X,B.P),m)],o),B.K,m,B.X,B.P),m,B.aP),m,m)}}
+return A.h8(A.pd(A.ea(A.b([A.bI(new A.K0(p,m),s.a.a*0.707,r.a.a*0.4),new A.bY(B.eK,A.fz(A.b([new A.bY(B.lP,q,m),new A.bY(B.lP,new A.B6(A.b([new A.o3(B.DI,A.ca("English",m,m,m,m,m,m),j),new A.o3(B.ZR,A.ca("French",m,m,m,m,m,m),j)],t.bG),A.cC([n.d],t.xa),new A.aL8(n),m,t.q_),m)],o),B.K,m,B.X,B.P),m)],o),B.K,m,B.X,B.P),m,B.aP),m,m)}}
 A.aL7.prototype={
 $0(){return A.nT(this.a)},
 $S:0}
