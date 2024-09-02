@@ -1,6 +1,6 @@
 {
-    "name": "my_website",
-    "short_name": "my_website",
+    "name": "jamesmoreau.github.io",
+    "short_name": "jamesmoreau.github.io",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
