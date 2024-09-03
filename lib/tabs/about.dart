@@ -50,9 +50,14 @@ This site was implemented using Flutter, a UI software development kit created b
                     right: 0,
                     child: Container(
                       decoration: BoxDecoration(
-                        border: Border.all(
-                          width: 2,
-                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.3),
+                            spreadRadius: 2,
+                            blurRadius: 4,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
                       ),
                       child: Image.asset(markFerrariNatureGifPath, width: 300, height: 300, fit: BoxFit.cover),
                     ),
@@ -67,9 +72,14 @@ This site was implemented using Flutter, a UI software development kit created b
                           width: 300,
                           height: 300,
                           decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 2,
-                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.3),
+                                spreadRadius: 2,
+                                blurRadius: 4,
+                                offset: Offset(0, 3),
+                              ),
+                            ],
                           ),
                           child: Image.asset(myFace, fit: BoxFit.cover),
                         ),

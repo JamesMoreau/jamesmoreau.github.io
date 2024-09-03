@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:my_website/constants.dart';
 import 'package:my_website/tabs/about.dart';
 import 'package:my_website/tabs/contact.dart';
-// import 'package:my_website/tabs/coop_reports.dart';3
 import 'package:my_website/tabs/game.dart';
 import 'package:my_website/tabs/resume.dart';
 import 'package:my_website/tabs/work.dart';
@@ -13,6 +12,11 @@ import 'package:url_launcher/url_launcher.dart';
 /*
   TODO:
   Put studio ghibli somewhere
+  give a more retro feel
+  add more photos
+  more about me
+  do something with the mouse
+  figure out why i cant select text on the resume
 */
 
 void main() async {

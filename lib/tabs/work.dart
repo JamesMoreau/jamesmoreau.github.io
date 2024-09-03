@@ -59,7 +59,19 @@ class WorkTab extends StatelessWidget {
           Center(
             child: Stack(
               children: [
-                Image.asset(lostInTranslationGifPath, width: 499, height: 266, fit: BoxFit.contain),
+                Container(
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.3),
+                        spreadRadius: 2,
+                        blurRadius: 4,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Image.asset(lostInTranslationGifPath, width: 499, height: 266, fit: BoxFit.contain),
+                ),
                 Positioned(bottom: 0, right: 0, child: Text('Lost in Translation ', style: TextStyle(color: Colors.white))),
               ],
             ),

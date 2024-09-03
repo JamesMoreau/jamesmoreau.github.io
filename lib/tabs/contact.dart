@@ -93,22 +93,27 @@ class ContactTab extends StatelessWidget {
                 SizedBox(width: 75),
                 Expanded(
                   child: Center(
-										child: Stack(
-											children: [
-												Container(
-													width: 500,
-													height: 600,
-													decoration: BoxDecoration(
-														border: Border.all(
-															width: 2,
-														),
-													),
-													child: Image.asset(gapOfDunloe, fit: BoxFit.cover),
-												),
-												Positioned(bottom: 0, right: 0, child: Text('Gap of Dunloe, Ireland ', style: TextStyle(color: Colors.white))),
-											],
-										),
-									),
+                    child: Stack(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.3),
+                                spreadRadius: 2,
+                                blurRadius: 4,
+                                offset: Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          width: 500,
+                          height: 600,
+                          child: Image.asset(gapOfDunloe, fit: BoxFit.cover),
+                        ),
+                        Positioned(bottom: 0, right: 0, child: Text('Gap of Dunloe, Ireland ', style: TextStyle(color: Colors.white))),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ],

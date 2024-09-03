@@ -13,7 +13,7 @@ class MyColors {
 
 const myName = 'James Moreau';
 const jobTitle = 'Programmer';
-const myEmail = 'jmorea03@uoguelph.ca';
+const myEmail = 'jp.moreau@aol.com';
 const githubUrl = 'https://github.com/JamesMoreau';
 const linkedInUrl = 'https://www.linkedin.com/in/james-moreau/';
 const university = 'University of Guelph';
