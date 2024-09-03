@@ -13,7 +13,6 @@ import 'package:url_launcher/url_launcher.dart';
   TODO:
   Put studio ghibli somewhere
   give a more retro feel
-  add more photos
   more about me
   do something with the mouse
   figure out why i cant select text on the resume
