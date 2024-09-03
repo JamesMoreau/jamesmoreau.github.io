@@ -27,7 +27,7 @@ linter:
     prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
     always_use_package_imports: true
     lines_longer_than_80_chars: false
-    prefer_const_constructors: false
+    # prefer_const_constructors: false
     prefer_const_literals_to_create_immutables: false
     curly_braces_in_flow_control_structures: false
     
