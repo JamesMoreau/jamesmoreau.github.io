@@ -5,10 +5,17 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:my_website/constants.dart';
 import 'package:my_website/main.dart';
 
-class ContactTab extends StatelessWidget {
+class ContactTab extends StatefulWidget {
   final bool isMobileView;
 
   const ContactTab({required this.isMobileView, super.key});
+
+  @override
+  State<ContactTab> createState() => _ContactTabState();
+}
+
+class _ContactTabState extends State<ContactTab> {
+  bool copied = false;
 
   @override
   Widget build(BuildContext context) {
@@ -38,12 +45,16 @@ class ContactTab extends StatelessWidget {
                         ),
                       ),
                       IconButton(
-                        icon: Icon(Icons.copy),
-                        onPressed: () {
-                          Clipboard.setData(ClipboardData(text: myEmail));
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Copied to clipboard')),
-                          );
+                        icon: copied ? Icon(Icons.done) : Icon(Icons.copy),
+                        onPressed: () async {
+                          await Clipboard.setData(ClipboardData(text: myEmail));
+                          
+                          copied = true;
+                          setState(() {});
+
+                          await Future<void>.delayed(Duration(seconds: 2));
+                          copied = false;
+                          setState(() {});
                         },
                       ),
                       SizedBox(width: 20),
@@ -89,7 +100,7 @@ class ContactTab extends StatelessWidget {
                   SizedBox(height: 20),
                 ],
               ),
-              if (!isMobileView) ...[
+              if (!widget.isMobileView) ...[
                 SizedBox(width: 75),
                 Expanded(
                   child: Center(
@@ -106,11 +117,10 @@ class ContactTab extends StatelessWidget {
                               ),
                             ],
                           ),
-                          width: 500,
-                          height: 600,
-                          child: Image.asset(gapOfDunloe, fit: BoxFit.cover),
+                          height: MediaQuery.of(context).size.height * 0.6,
+                          child: Image.asset(fieldOfDreams, fit: BoxFit.contain),
                         ),
-                        Positioned(bottom: 0, right: 0, child: Text('Gap of Dunloe, Ireland ', style: TextStyle(color: Colors.white))),
+                        Positioned(bottom: 0, right: 0, child: Text('juleko_o ', style: TextStyle(color: Colors.white))),
                       ],
                     ),
                   ),

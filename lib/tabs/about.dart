@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:my_website/constants.dart';
 
 class AboutTab extends StatelessWidget {
-  String get about => '''About''';
   String get aboutText => '''
 Hello, and welcome to my website. This site is all about me, so if you aren't interested in me, then feel free to close this window! I use this site to showcase my work.
 
 I recently graduated from The University of Guelph, majoring in computer science.
+
+I have a passion for software development and I am always looking for new opportunities to learn and grow. I have experience with a variety of programming languages and technologies, and I am always looking to expand my skill set.
 
 This site was implemented using Flutter, a UI software development kit created by Google, and is compiled to target the web.''';
 
@@ -27,7 +28,6 @@ This site was implemented using Flutter, a UI software development kit created b
               SelectableText.rich(
                 TextSpan(
                   children: [
-                    TextSpan(text: '$about\n\n', style: TextStyle(fontWeight: FontWeight.bold)),
                     TextSpan(text: aboutText),
                   ],
                 ),

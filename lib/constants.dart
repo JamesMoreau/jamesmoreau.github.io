@@ -32,6 +32,7 @@ const resumePdfUrl = 'https://jamesmoreau.github.io/Resume/JamesMoreau.pdf';
 const resumePdfUrlFrench = 'https://jamesmoreau.github.io/Resume/JacquesMoreauFR.pdf';
 const lostInTranslationGifPath = 'assets/lit.gif';
 const gapOfDunloe = 'assets/gap_of_dunloe.jpeg';
+const fieldOfDreams = 'assets/field_juleko_o.gif';
 
 /* Theme data */
 
