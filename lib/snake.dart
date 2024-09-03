@@ -53,10 +53,10 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
     var x = food.x.toDouble() * cellSize;
     var y = food.y.toDouble() * cellSize;
     var paint = Paint();
-    paint.color = Color.fromARGB(255, 76, 206, 137);
+    paint.color = const Color.fromARGB(255, 76, 206, 137);
 
     // Rect tileRect = Rect.fromLTRB(x, y, x + cellSize, y + cellSize);
-    var r = RRect.fromLTRBR(x, y, x + cellSize, y + cellSize, Radius.circular(2));
+    var r = RRect.fromLTRBR(x, y, x + cellSize, y + cellSize, const Radius.circular(2));
     canvas.drawRRect(r, paint);
 
     // Draw snake
@@ -71,15 +71,15 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
       var y = cell.y.toDouble() * cellSize;
       var paint = Paint();
       // paint.color = i == 0 && game.debugMode ? Colors.yellow : Colors .blue; //draw the head a different color than the rest of the body.
-      paint.color = Color(0xff7f7fff);
+      paint.color = const Color(0xff7f7fff);
 
       // Epsilon is a small amount that is subtracted from the cell size so that multiple cells do not overlap and keeps them from z fighting.
-      var r = RRect.fromLTRBR(x, y, x + cellSize - epsilon, y + cellSize - epsilon, Radius.circular(2));
+      var r = RRect.fromLTRBR(x, y, x + cellSize - epsilon, y + cellSize - epsilon, const Radius.circular(2));
       canvas.drawRRect(r, paint);
     }
 
     // Draw UI.
-    var textPaint = TextPaint(style: TextStyle(fontSize: 35, fontFamily: 'Inconsolata', color: Colors.white));
+    var textPaint = TextPaint(style: const TextStyle(fontSize: 35, fontFamily: 'Inconsolata', color: Colors.white));
     var centerPosition = Vector2(gameRef.canvasSize.x / 2, gameRef.canvasSize.y / 2);
     var bottomCenterPosition = Vector2(gameRef.canvasSize.x / 2, gameRef.canvasSize.y);
     var topCenterPosition = Vector2(gameRef.canvasSize.x / 2, 0);

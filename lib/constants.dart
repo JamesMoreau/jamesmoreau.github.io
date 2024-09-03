@@ -51,15 +51,15 @@ ThemeData lightApplicationTheme = ThemeData(
     onSurface: Color(0xff2b2b2b),
   ),
   fontFamily: 'Inconsolata',
-  textTheme: TextTheme(bodyMedium: TextStyle(fontSize: 16)),
-  appBarTheme: AppBarTheme(
+  textTheme: const TextTheme(bodyMedium: TextStyle(fontSize: 16)),
+  appBarTheme: const AppBarTheme(
     iconTheme: IconThemeData(color: Colors.white),
     backgroundColor: Color(0xff2b2b2b),
     titleTextStyle: TextStyle(color: Color(0xffe6e6e6), fontWeight: FontWeight.bold, fontSize: 30, fontFamily: 'Inconsolata'),
     elevation: 0,
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
-    style: ElevatedButton.styleFrom(backgroundColor: Color(0xff2b2b2b), foregroundColor: Colors.white, padding: EdgeInsets.all(15)),
+    style: ElevatedButton.styleFrom(backgroundColor: const Color(0xff2b2b2b), foregroundColor: Colors.white, padding: const EdgeInsets.all(15)),
   ),
   expansionTileTheme: ExpansionTileThemeData(
     // collapsed
@@ -74,9 +74,9 @@ ThemeData lightApplicationTheme = ThemeData(
     //other
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
   ),
-  snackBarTheme: SnackBarThemeData(
+  snackBarTheme: const SnackBarThemeData(
     insetPadding: EdgeInsets.only(bottom: 20),
-    backgroundColor: const Color(0xff2b2b2b),
+    backgroundColor: Color(0xff2b2b2b),
     width: 300,
     behavior: SnackBarBehavior.floating,
     shape: RoundedRectangleBorder(

@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:my_website/constants.dart';
-import 'package:my_website/tabs/about.dart';
-import 'package:my_website/tabs/contact.dart';
-import 'package:my_website/tabs/game.dart';
-import 'package:my_website/tabs/resume.dart';
-import 'package:my_website/tabs/work.dart';
+import 'package:jamesmoreau_github_io/constants.dart';
+import 'package:jamesmoreau_github_io/tabs/about.dart';
+import 'package:jamesmoreau_github_io/tabs/contact.dart';
+import 'package:jamesmoreau_github_io/tabs/game.dart';
+import 'package:jamesmoreau_github_io/tabs/resume.dart';
+import 'package:jamesmoreau_github_io/tabs/work.dart';
 import 'package:statsfl/statsfl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -21,7 +21,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: myName, theme: lightApplicationTheme, home: Home());
+    return MaterialApp(title: myName, theme: lightApplicationTheme, home: const Home());
   }
 }
 
@@ -83,13 +83,13 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       builder: (context, constraints) {
         // Too small
         if (constraints.maxWidth < 700 || constraints.maxHeight < 500) {
-          return Scaffold(body: Center(child: Text('Please resize your window to be larger.')));
+          return const Scaffold(body: Center(child: Text('Please resize your window to be larger.')));
         }
 
         // Small Layout
         if (constraints.maxWidth < 1000 || constraints.maxHeight < 600) {
           return Scaffold(
-            appBar: AppBar(title: Text(myName)),
+            appBar: AppBar(title: const Text(myName)),
             drawer: Drawer(child: TabMenu(changeTab: onTabChanged, currentTab: currentTab)),
             body: Container(
               decoration: BoxDecoration(
@@ -226,7 +226,7 @@ class _TabMenuState extends State<TabMenu> with SingleTickerProviderStateMixin {
                 const SizedBox(height: 10),
               ],
             if (kDebugMode) ...[
-              SizedBox(height: 25),
+              const SizedBox(height: 25),
               StatsFl(maxFps: 300),
               const SizedBox(height: 20),
             ],
@@ -239,10 +239,10 @@ class _TabMenuState extends State<TabMenu> with SingleTickerProviderStateMixin {
 
 Widget getTab(Tab tab, {required bool isMobileView}) {
   return switch (tab) {
-    Tab.about             => AboutTab(),
-    Tab.work_and_projects => WorkTab(),
+    Tab.about             => const AboutTab(),
+    Tab.work_and_projects => const WorkTab(),
     Tab.contact_and_links => ContactTab(isMobileView: isMobileView),
-    Tab.game              => GameTab(),
+    Tab.game              => const GameTab(),
     // Tab.co_op_reports     => CoopTab(),
     Tab.resume            => ResumeTab(isMobileView: isMobileView),
   };

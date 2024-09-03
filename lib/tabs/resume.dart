@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_website/constants.dart';
-import 'package:my_website/main.dart';
+import 'package:jamesmoreau_github_io/constants.dart';
+import 'package:jamesmoreau_github_io/main.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 enum ResumeLanguage { english, french }
@@ -30,7 +30,7 @@ class _ResumeTabState extends State<ResumeTab> {
       ResumeLanguage.english => resumePdfUrl,
       ResumeLanguage.french => resumePdfUrlFrench,
     };
-    var raisedResumeButton = ElevatedButton.icon(onPressed: () => launchMyUrl(resumeButtonLink), icon: Icon(Icons.open_in_new), label: Text(resumeButtonText));
+    var raisedResumeButton = ElevatedButton.icon(onPressed: () => launchMyUrl(resumeButtonLink), icon: const Icon(Icons.open_in_new), label: Text(resumeButtonText));
 
     // Get the url according to the selected language
     var myUrl = switch (selectedResumeLanguage) {
@@ -63,7 +63,7 @@ class _ResumeTabState extends State<ResumeTab> {
                   Padding(
                     padding: const EdgeInsets.all(10),
                     child: SegmentedButton<ResumeLanguage>(
-                      segments: [ButtonSegment(value: ResumeLanguage.english, label: Text('English')), ButtonSegment(value: ResumeLanguage.french, label: Text('French'))],
+                      segments: [const ButtonSegment(value: ResumeLanguage.english, label: Text('English')), const ButtonSegment(value: ResumeLanguage.french, label: Text('French'))],
                       selected: {selectedResumeLanguage},
                       onSelectionChanged: (language) {
                         // By default there is only a single segment that can be selected at one time, so its value is always the first item in the selected set.

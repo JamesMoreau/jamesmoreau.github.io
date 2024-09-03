@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_website/constants.dart';
-import 'package:my_website/main.dart';
+import 'package:jamesmoreau_github_io/constants.dart';
+import 'package:jamesmoreau_github_io/main.dart';
 
 class WorkTab extends StatelessWidget {
   const WorkTab({super.key});
@@ -11,51 +11,51 @@ class WorkTab extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: ListView(
         children: [
-          SizedBox(height: 100),
+          const SizedBox(height: 100),
           Wrap(
             children: [
               InkWell(
-                child: HoverText(text: 'Purolator Delivery Pro - Last-mile delivery service', bigTextSize: 40, smallTextSize: 25),
+                child: const HoverText(text: 'Purolator Delivery Pro - Last-mile delivery service', bigTextSize: 40, smallTextSize: 25),
                 onTap: () => launchMyUrl('https://apps.apple.com/ca/app/purolator-delivery-pro/id1622239326'),
               ),
-              SizedBox(width: 10),
-              Icon(Icons.open_in_new),
+              const SizedBox(width: 10),
+              const Icon(Icons.open_in_new),
             ],
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Wrap(
             children: [
               InkWell(
-                child: HoverText(text: 'Keyed - A simple password generator with WASM', bigTextSize: 40, smallTextSize: 25),
+                child: const HoverText(text: 'Keyed - A simple password generator with WASM', bigTextSize: 40, smallTextSize: 25),
                 onTap: () => launchMyUrl('https://jamesmoreau.github.io/keyed/'),
               ),
-              SizedBox(width: 10),
-              Icon(Icons.open_in_new),
+              const SizedBox(width: 10),
+              const Icon(Icons.open_in_new),
             ],
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Wrap(
             children: [
               InkWell(
-                child: HoverText(text: 'LocaAlert - A proximity based alarm app', bigTextSize: 40, smallTextSize: 25),
+                child: const HoverText(text: 'LocaAlert - A proximity based alarm app', bigTextSize: 40, smallTextSize: 25),
                 onTap: () => launchMyUrl('https://apps.apple.com/ca/app/locaalert/id6478944468'),
               ),
-              SizedBox(width: 10),
-              Icon(Icons.open_in_new),
+              const SizedBox(width: 10),
+              const Icon(Icons.open_in_new),
             ],
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Wrap(
             children: [
               InkWell(
-                child: HoverText(text: 'GemPaint - A WASM based paint program', bigTextSize: 40, smallTextSize: 25),
+                child: const HoverText(text: 'GemPaint - A WASM based paint program', bigTextSize: 40, smallTextSize: 25),
                 onTap: () => launchMyUrl('https://jamesmoreau.github.io/GemPaint/'),
               ),
-              SizedBox(width: 10),
-              Icon(Icons.open_in_new),
+              const SizedBox(width: 10),
+              const Icon(Icons.open_in_new),
             ],
           ),
-          SizedBox(height: 100),
+          const SizedBox(height: 100),
           Center(
             child: Stack(
               children: [
@@ -66,13 +66,13 @@ class WorkTab extends StatelessWidget {
                         color: Colors.black.withOpacity(0.3),
                         spreadRadius: 2,
                         blurRadius: 4,
-                        offset: Offset(0, 3),
+                        offset: const Offset(0, 3),
                       ),
                     ],
                   ),
                   child: Image.asset(lostInTranslationGifPath, width: 499, height: 266, fit: BoxFit.contain),
                 ),
-                Positioned(bottom: 0, right: 0, child: Text('Lost in Translation ', style: TextStyle(color: Colors.white))),
+                const Positioned(bottom: 0, right: 0, child: Text('Lost in Translation ', style: TextStyle(color: Colors.white))),
               ],
             ),
           ),

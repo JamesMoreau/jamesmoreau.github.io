@@ -1,7 +1,7 @@
 import 'package:flame/game.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:my_website/snake.dart';
+import 'package:jamesmoreau_github_io/snake.dart';
 
 class GameTab extends StatefulWidget {
   double get gameSize => 500;
@@ -31,14 +31,14 @@ class _GameTabState extends State<GameTab> {
             Container(
               width: widget.gameSize,
               height: widget.gameSize,
-              decoration: BoxDecoration(border: Border.all(width: 5), borderRadius: BorderRadius.all(Radius.circular(3))),
+              decoration: BoxDecoration(border: Border.all(width: 5), borderRadius: const BorderRadius.all(Radius.circular(3))),
               child: GameWidget(
                 game: game,
-                loadingBuilder: (context) => Center(child: CircularProgressIndicator()),
-                errorBuilder: (context, error) => Center(child: Text("Unable to start snake game! :'(")),
+                loadingBuilder: (context) => const Center(child: CircularProgressIndicator()),
+                errorBuilder: (context, error) => const Center(child: Text("Unable to start snake game! :'(")),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
           ],
         ),
       ),
