@@ -25,7 +25,7 @@ This site was implemented using Flutter, a UI software development kit created b
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SelectableText.rich(
+              Text.rich(
                 TextSpan(
                   children: [
                     TextSpan(text: aboutText),
