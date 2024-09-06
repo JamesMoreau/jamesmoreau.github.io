@@ -96020,7 +96020,7 @@ A.Z3.prototype={}
 A.wT.prototype={}
 A.a_s.prototype={}
 A.GG.prototype={
-ap(){return new A.GH(new A.cZ(0,$.aE()),"moon","","png",!0,!1,null,null,null)}}
+ap(){return new A.GH(new A.cZ(0,$.aE()),"assets/moon","","png",!0,!1,null,null,null)}}
 A.GH.prototype={
 gN9(){var s=this.ga8k(),r=this.a
 if(s){r.toString
