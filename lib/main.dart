@@ -1,5 +1,8 @@
+import 'dart:html' as html;
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:image_sequence_animator/image_sequence_animator.dart';
 import 'package:jamesmoreau_github_io/constants.dart';
 import 'package:jamesmoreau_github_io/tabs/about.dart';
 import 'package:jamesmoreau_github_io/tabs/contact.dart';
@@ -86,9 +89,18 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       mouseStylesStack: [
         MouseStyle(
           size: const Size(50, 50),
-          latency: const Duration(milliseconds: 42),
-          alignment: Alignment.centerRight,
-          child: Image.asset(gauntlet_cursor),
+          latency: const Duration(milliseconds: 100),
+          transform: Matrix4.translationValues(32, 32, 0),
+          child: const ImageSequenceAnimator(
+            'Moon', // folderName
+            '',     // fileName
+            1,      // suffixStart
+            0,      // suffixCount
+            'png',  // fileFormat
+            60,     // frameCount
+            fps: 30,
+            isLooping: true,
+          ),
         ),
       ],
       child: LayoutBuilder(
@@ -97,7 +109,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           if (constraints.maxWidth < 700 || constraints.maxHeight < 500) {
             return const Scaffold(body: Center(child: Text('Please resize your window to be larger.')));
           }
-      
+
           // Small Layout
           if (constraints.maxWidth < 1000 || constraints.maxHeight < 600) {
             return Scaffold(
@@ -117,7 +129,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               ),
             );
           }
-      
+
           // Wide Layout
           return Scaffold(
             body: ColoredBox(
@@ -252,22 +264,23 @@ class _TabMenuState extends State<TabMenu> with SingleTickerProviderStateMixin {
 
 Widget getTab(Tab tab, {required bool isMobileView}) {
   return switch (tab) {
-    Tab.about             => const AboutTab(),
+    Tab.about => const AboutTab(),
     Tab.work_and_projects => const WorkTab(),
     Tab.contact_and_links => ContactTab(isMobileView: isMobileView),
-    Tab.game              => const GameTab(),
+    Tab.game => const GameTab(),
     // Tab.co_op_reports     => CoopTab(),
-    Tab.resume            => ResumeTab(isMobileView: isMobileView),
+    Tab.resume => ResumeTab(isMobileView: isMobileView),
   };
 }
 
-enum Tab { 
-  about, 
-  work_and_projects, 
-  resume, 
-  contact_and_links, 
-  // co_op_reports, 
-  game }
+enum Tab {
+  about,
+  work_and_projects,
+  resume,
+  contact_and_links,
+  // co_op_reports,
+  game
+}
 
 Future<void> launchMyUrl(String link) async {
   var url = Uri.parse(link);

@@ -7,7 +7,7 @@ Hello, and welcome to my website. This site is all about me, so if you aren't in
 
 I recently graduated from The University of Guelph, majoring in computer science.
 
-I have a passion for software development and I am always looking for new opportunities to learn and grow. I have experience with a variety of programming languages and technologies, and I am always looking to expand my skill set.
+I have a passion for software development and am always looking for new opportunities to learn and grow. I have experience with a variety of programming languages and technologies.
 
 This site was implemented using Flutter, a UI software development kit created by Google, and is compiled to target the web.''';
 
