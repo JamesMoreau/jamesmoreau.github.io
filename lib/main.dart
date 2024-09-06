@@ -19,6 +19,7 @@ import 'package:url_launcher/url_launcher.dart';
   just move resume(s) to folder in this repo.
   add crt effect
   do something on the game tab (maybe like a flashing border?)
+  fix resume background
 */
 
 void main() async {
