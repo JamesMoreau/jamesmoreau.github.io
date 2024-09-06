@@ -15,10 +15,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 /*
   TODO:
-  Put studio ghibli somewhere
-  give a more retro feel
   more about me
-  do something with the mouse
   just move resume(s) to folder in this repo.
   add crt effect
   do something on the game tab (maybe like a flashing border?)

@@ -48,9 +48,10 @@ class _ResumeTabState extends State<ResumeTab> {
         child: Row(
           children: [
             SizedBox(
-              width: MediaQuery.of(context).size.width * 0.4,
-              height: MediaQuery.of(context).size.width * 0.707,
-              child: SfPdfViewer.network(myUrl),
+              width: 700,
+              // width: MediaQuery.of(context).size.width * 0.4,
+              // height: MediaQuery.of(context).size.height * 0.707,
+              child: SfPdfViewer.network(myUrl, ),
             ),
             Padding(
               padding: const EdgeInsets.all(20),
