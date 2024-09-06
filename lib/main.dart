@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jamesmoreau_github_io/constants.dart';
+import 'package:jamesmoreau_github_io/custom_cursor.dart';
 import 'package:jamesmoreau_github_io/tabs/about.dart';
 import 'package:jamesmoreau_github_io/tabs/contact.dart';
 import 'package:jamesmoreau_github_io/tabs/game.dart';
@@ -15,7 +16,9 @@ import 'package:url_launcher/url_launcher.dart';
   give a more retro feel
   more about me
   do something with the mouse
-  figure out why i cant select text on the resume
+  just move resume(s) to folder in this repo.
+  add crt effect
+  do something on the game tab (maybe like a flashing border?)
 */
 
 void main() async {
