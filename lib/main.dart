@@ -117,7 +117,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               latency: const Duration(milliseconds: 256),
               transform: Matrix4.translationValues(42, 42, 0), // Offset from the mouse
               child: const ImageSequenceAnimator(
-                'Moon', // folderName
+                'moon', // folderName
                 '', // fileName
                 1, // suffixStart
                 0, // suffixCount
