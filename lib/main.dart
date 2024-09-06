@@ -1,12 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jamesmoreau_github_io/constants.dart';
-import 'package:jamesmoreau_github_io/custom_cursor.dart';
 import 'package:jamesmoreau_github_io/tabs/about.dart';
 import 'package:jamesmoreau_github_io/tabs/contact.dart';
 import 'package:jamesmoreau_github_io/tabs/game.dart';
 import 'package:jamesmoreau_github_io/tabs/resume.dart';
 import 'package:jamesmoreau_github_io/tabs/work.dart';
+import 'package:mouse_follower/mouse_follower.dart';
 import 'package:statsfl/statsfl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -81,63 +81,74 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        // Too small
-        if (constraints.maxWidth < 700 || constraints.maxHeight < 500) {
-          return const Scaffold(body: Center(child: Text('Please resize your window to be larger.')));
-        }
-
-        // Small Layout
-        if (constraints.maxWidth < 1000 || constraints.maxHeight < 600) {
-          return Scaffold(
-            appBar: AppBar(title: const Text(myName)),
-            drawer: Drawer(child: TabMenu(changeTab: onTabChanged, currentTab: currentTab)),
-            body: Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-              ),
-              alignment: Alignment.center,
-              child: FadeTransition(
-                opacity: tabFadeInAnimation,
-                child: Container(padding: const EdgeInsets.all(30), alignment: Alignment.center, child: getTab(currentTab, isMobileView: true)),
-              ),
-            ),
-          );
-        }
-
-        // Wide Layout
-        return Scaffold(
-          body: ColoredBox(
-            color: Theme.of(context).colorScheme.surface,
-            child: Padding(
-              padding: const EdgeInsets.all(50),
-              child: Container(
+    return MouseFollower(
+      showDefaultMouseStyle: false,
+      mouseStylesStack: [
+        MouseStyle(
+          size: const Size(50, 50),
+          latency: const Duration(milliseconds: 42),
+          alignment: Alignment.centerRight,
+          child: Image.asset(gauntlet_cursor),
+        ),
+      ],
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          // Too small
+          if (constraints.maxWidth < 700 || constraints.maxHeight < 500) {
+            return const Scaffold(body: Center(child: Text('Please resize your window to be larger.')));
+          }
+      
+          // Small Layout
+          if (constraints.maxWidth < 1000 || constraints.maxHeight < 600) {
+            return Scaffold(
+              appBar: AppBar(title: const Text(myName)),
+              drawer: Drawer(child: TabMenu(changeTab: onTabChanged, currentTab: currentTab)),
+              body: Container(
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: Theme.of(context).colorScheme.primary,
-                    width: 2,
                   ),
                 ),
                 alignment: Alignment.center,
-                child: Row(
-                  children: [
-                    TabMenu(changeTab: onTabChanged, currentTab: currentTab),
-                    Expanded(
-                      child: FadeTransition(
-                        opacity: tabFadeInAnimation,
-                        child: Container(padding: const EdgeInsets.all(16), child: getTab(currentTab, isMobileView: false)),
-                      ),
+                child: FadeTransition(
+                  opacity: tabFadeInAnimation,
+                  child: Container(padding: const EdgeInsets.all(30), alignment: Alignment.center, child: getTab(currentTab, isMobileView: true)),
+                ),
+              ),
+            );
+          }
+      
+          // Wide Layout
+          return Scaffold(
+            body: ColoredBox(
+              color: Theme.of(context).colorScheme.surface,
+              child: Padding(
+                padding: const EdgeInsets.all(50),
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Theme.of(context).colorScheme.primary,
+                      width: 2,
                     ),
-                  ],
+                  ),
+                  alignment: Alignment.center,
+                  child: Row(
+                    children: [
+                      TabMenu(changeTab: onTabChanged, currentTab: currentTab),
+                      Expanded(
+                        child: FadeTransition(
+                          opacity: tabFadeInAnimation,
+                          child: Container(padding: const EdgeInsets.all(16), child: getTab(currentTab, isMobileView: false)),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }
