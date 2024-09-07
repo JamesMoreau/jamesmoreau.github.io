@@ -34,6 +34,8 @@ const lostInTranslationGifPath = 'assets/lit.gif';
 const gapOfDunloe = 'assets/gap_of_dunloe.jpeg';
 const fieldOfDreams = 'assets/field_juleko_o.gif';
 const gauntlet_cursor = 'assets/gauntlet_cursor.png';
+const moon = 'assets/moon.gif';
+const noise = 'assets/noise.png';
 
 /* Theme data */
 

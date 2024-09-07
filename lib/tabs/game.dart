@@ -31,7 +31,7 @@ class _GameTabState extends State<GameTab> {
             Container(
               width: widget.gameSize,
               height: widget.gameSize,
-              decoration: BoxDecoration(border: Border.all(width: 5), borderRadius: const BorderRadius.all(Radius.circular(3))),
+              decoration: BoxDecoration(border: Border.all(width: 5, color: const Color(0xff7f7fff)), borderRadius: const BorderRadius.all(Radius.circular(3))),
               child: GameWidget(
                 game: game,
                 loadingBuilder: (context) => const Center(child: CircularProgressIndicator()),

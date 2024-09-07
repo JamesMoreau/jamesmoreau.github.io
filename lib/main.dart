@@ -1,9 +1,7 @@
-import 'dart:html' as html;
 import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:image_sequence_animator/image_sequence_animator.dart';
 import 'package:jamesmoreau_github_io/constants.dart';
+import 'package:jamesmoreau_github_io/crt_filter.dart';
 import 'package:jamesmoreau_github_io/tabs/about.dart';
 import 'package:jamesmoreau_github_io/tabs/contact.dart';
 import 'package:jamesmoreau_github_io/tabs/game.dart';
@@ -15,11 +13,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 /*
   TODO:
-  more about me
   just move resume(s) to folder in this repo.
   add crt effect
-  do something on the game tab (maybe like a flashing border?)
-  fix resume background
 */
 
 void main() async {
@@ -82,82 +77,75 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        // Too small
-        if (constraints.maxWidth < 700 || constraints.maxHeight < 500) {
-          return const Scaffold(body: Center(child: Text('Please resize your window to be larger.')));
-        }
-
-        // Small Layout
-        if (constraints.maxWidth < 1000 || constraints.maxHeight < 600) {
-          return Scaffold(
-            appBar: AppBar(title: const Text(myName)),
-            drawer: Drawer(child: TabMenu(changeTab: onTabChanged, currentTab: currentTab)),
-            body: Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Theme.of(context).colorScheme.primary,
+    return CRTFilter(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          // Too small
+          if (constraints.maxWidth < 700 || constraints.maxHeight < 500) {
+            return const Scaffold(body: Center(child: Text('Please resize your window to be larger.')));
+          }
+      
+          // Small Layout
+          if (constraints.maxWidth < 1000 || constraints.maxHeight < 600) {
+            return Scaffold(
+              appBar: AppBar(title: const Text(myName)),
+              drawer: Drawer(child: TabMenu(changeTab: onTabChanged, currentTab: currentTab)),
+              body: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+                alignment: Alignment.center,
+                child: FadeTransition(
+                  opacity: tabFadeInAnimation,
+                  child: Container(padding: const EdgeInsets.all(30), alignment: Alignment.center, child: getTab(currentTab, isMobileView: true)),
                 ),
               ),
-              alignment: Alignment.center,
-              child: FadeTransition(
-                opacity: tabFadeInAnimation,
-                child: Container(padding: const EdgeInsets.all(30), alignment: Alignment.center, child: getTab(currentTab, isMobileView: true)),
+            );
+          }
+      
+          // Wide Layout
+          return MouseFollower(
+            mouseStylesStack: [
+              MouseStyle(
+                size: const Size(50, 50),
+                latency: const Duration(milliseconds: 256),
+                transform: Matrix4.translationValues(64, 64, 0), // Offset from the mouse
+                child: Image.asset(moon),
+              ),
+            ],
+            child: Scaffold(
+              body: ColoredBox(
+                color: Theme.of(context).colorScheme.surface,
+                child: Padding(
+                  padding: const EdgeInsets.all(50),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.primary,
+                        width: 2,
+                      ),
+                    ),
+                    alignment: Alignment.center,
+                    child: Row(
+                      children: [
+                        TabMenu(changeTab: onTabChanged, currentTab: currentTab),
+                        Expanded(
+                          child: FadeTransition(
+                            opacity: tabFadeInAnimation,
+                            child: Container(padding: const EdgeInsets.all(16), child: getTab(currentTab, isMobileView: false)),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
             ),
           );
-        }
-
-        // Wide Layout
-        return MouseFollower(
-          mouseStylesStack: [
-            MouseStyle(
-              size: const Size(50, 50),
-              latency: const Duration(milliseconds: 256),
-              transform: Matrix4.translationValues(42, 42, 0), // Offset from the mouse
-              child: const ImageSequenceAnimator(
-                'assets/moon', // folderName
-                '',            // fileName
-                1,             // suffixStart
-                0,             // suffixCount
-                'png',         // fileFormat
-                60,            // frameCount
-                fps: 30,
-                isLooping: true,
-              ),
-            ),
-          ],
-          child: Scaffold(
-            body: ColoredBox(
-              color: Theme.of(context).colorScheme.surface,
-              child: Padding(
-                padding: const EdgeInsets.all(50),
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Theme.of(context).colorScheme.primary,
-                      width: 2,
-                    ),
-                  ),
-                  alignment: Alignment.center,
-                  child: Row(
-                    children: [
-                      TabMenu(changeTab: onTabChanged, currentTab: currentTab),
-                      Expanded(
-                        child: FadeTransition(
-                          opacity: tabFadeInAnimation,
-                          child: Container(padding: const EdgeInsets.all(16), child: getTab(currentTab, isMobileView: false)),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-        );
-      },
+        },
+      ),
     );
   }
 }
@@ -206,7 +194,7 @@ class _TabMenuState extends State<TabMenu> with SingleTickerProviderStateMixin {
           children: [
             const Text(myName, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
             const SizedBox(height: 10),
-            const SelectableText(jobTitle),
+            const Text(jobTitle),
             const SizedBox(height: 40),
             for (var value in Tab.values)
               if (value == widget.currentTab) ...[
