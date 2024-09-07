@@ -7,14 +7,13 @@ import 'package:jamesmoreau_github_io/tabs/contact.dart';
 import 'package:jamesmoreau_github_io/tabs/game.dart';
 import 'package:jamesmoreau_github_io/tabs/resume.dart';
 import 'package:jamesmoreau_github_io/tabs/work.dart';
-import 'package:mouse_follower/mouse_follower.dart';
 import 'package:statsfl/statsfl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /*
   TODO:
   just move resume(s) to folder in this repo.
-  add crt effect
+  add piano
 */
 
 void main() async {
@@ -84,7 +83,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           if (constraints.maxWidth < 700 || constraints.maxHeight < 500) {
             return const Scaffold(body: Center(child: Text('Please resize your window to be larger.')));
           }
-      
+
           // Small Layout
           if (constraints.maxWidth < 1000 || constraints.maxHeight < 600) {
             return Scaffold(
@@ -104,41 +103,31 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               ),
             );
           }
-      
+
           // Wide Layout
-          return MouseFollower(
-            mouseStylesStack: [
-              MouseStyle(
-                size: const Size(50, 50),
-                latency: const Duration(milliseconds: 256),
-                transform: Matrix4.translationValues(64, 64, 0), // Offset from the mouse
-                child: Image.asset(moon),
-              ),
-            ],
-            child: Scaffold(
-              body: ColoredBox(
-                color: Theme.of(context).colorScheme.surface,
-                child: Padding(
-                  padding: const EdgeInsets.all(50),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Theme.of(context).colorScheme.primary,
-                        width: 2,
-                      ),
+          return Scaffold(
+            body: ColoredBox(
+              color: Theme.of(context).colorScheme.surface,
+              child: Padding(
+                padding: const EdgeInsets.all(50),
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Theme.of(context).colorScheme.primary,
+                      width: 2,
                     ),
-                    alignment: Alignment.center,
-                    child: Row(
-                      children: [
-                        TabMenu(changeTab: onTabChanged, currentTab: currentTab),
-                        Expanded(
-                          child: FadeTransition(
-                            opacity: tabFadeInAnimation,
-                            child: Container(padding: const EdgeInsets.all(16), child: getTab(currentTab, isMobileView: false)),
-                          ),
+                  ),
+                  alignment: Alignment.center,
+                  child: Row(
+                    children: [
+                      TabMenu(changeTab: onTabChanged, currentTab: currentTab),
+                      Expanded(
+                        child: FadeTransition(
+                          opacity: tabFadeInAnimation,
+                          child: Container(padding: const EdgeInsets.all(16), child: getTab(currentTab, isMobileView: false)),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -188,13 +177,19 @@ class _TabMenuState extends State<TabMenu> with SingleTickerProviderStateMixin {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: SizedBox(
-        width: 230,
+        width: 252,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(myName, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
+            Row(
+              children: [
+                const Text(myName, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
+                const SizedBox(width: 16),
+                Image.asset(moon),
+              ],
+            ),
             const SizedBox(height: 10),
-            const Text(jobTitle),
+                const Text(jobTitle),
             const SizedBox(height: 40),
             for (var value in Tab.values)
               if (value == widget.currentTab) ...[
@@ -235,6 +230,13 @@ class _TabMenuState extends State<TabMenu> with SingleTickerProviderStateMixin {
                 ),
                 const SizedBox(height: 10),
               ],
+              const SizedBox(height: 25),
+              // Row(
+              //   children: [
+              //     const SizedBox(width: 20),
+              //     Image.asset(moon),
+              //   ],
+              // ),
             if (kDebugMode) ...[
               const SizedBox(height: 25),
               StatsFl(maxFps: 300),

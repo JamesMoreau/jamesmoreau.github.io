@@ -6,6 +6,6 @@ run:
 #	flutter run -d chrome --web-renderer html --release
 #	flutter run -d macos
 
-buildWeb:
+webBuild:
 	flutter build web --release
 

@@ -4,6 +4,7 @@ import 'package:jamesmoreau_github_io/main.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 enum ResumeLanguage { english, french }
+
 enum ResumeLoadingState { loading, loaded, error }
 
 class ResumeTab extends StatefulWidget {
@@ -20,7 +21,6 @@ class _ResumeTabState extends State<ResumeTab> {
 
   @override
   Widget build(BuildContext context) {
-    
     // Button that links to resume pdf repository
     var resumeButtonText = switch (selectedResumeLanguage) {
       ResumeLanguage.english => 'Link to Resume',
@@ -38,7 +38,8 @@ class _ResumeTabState extends State<ResumeTab> {
       ResumeLanguage.french => resumePdfUrlFrench,
     };
 
-    if (widget.isMobileView) { // We don't have enough space to show the actual resume so just show the button.
+    if (widget.isMobileView) {
+      // We don't have enough space to show the actual resume so just show the button.
       return Center(child: raisedResumeButton);
     }
 
@@ -47,11 +48,20 @@ class _ResumeTabState extends State<ResumeTab> {
         scrollDirection: Axis.horizontal,
         child: Row(
           children: [
-            SizedBox(
+            Container(
               width: 700,
               // width: MediaQuery.of(context).size.width * 0.4,
               // height: MediaQuery.of(context).size.height * 0.707,
-              child: SfPdfViewer.network(myUrl,  ),
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.3),
+                    spreadRadius: 2,
+                    blurRadius: 4,
+                  ),
+                ],
+              ),
+              child: SfPdfViewer.network(myUrl),
             ),
             Padding(
               padding: const EdgeInsets.all(20),
@@ -64,7 +74,10 @@ class _ResumeTabState extends State<ResumeTab> {
                   Padding(
                     padding: const EdgeInsets.all(10),
                     child: SegmentedButton<ResumeLanguage>(
-                      segments: [const ButtonSegment(value: ResumeLanguage.english, label: Text('English')), const ButtonSegment(value: ResumeLanguage.french, label: Text('French'))],
+                      segments: [
+                        const ButtonSegment(value: ResumeLanguage.english, label: Text('English')),
+                        const ButtonSegment(value: ResumeLanguage.french, label: Text('French')),
+                      ],
                       selected: {selectedResumeLanguage},
                       onSelectionChanged: (language) {
                         // By default there is only a single segment that can be selected at one time, so its value is always the first item in the selected set.
