@@ -37,6 +37,9 @@ dependencies:
   flame: ^1.7.3
   flutter_svg: ^2.0.7
   syncfusion_flutter_pdfviewer: ^26.2.11
+  webview_flutter_web: ^0.2.3+2
+  webview_flutter: ^4.9.0
+  webview_flutter_platform_interface: ^2.10.0
 
 dev_dependencies:
   flutter_test:

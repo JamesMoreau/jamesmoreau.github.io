@@ -5,11 +5,14 @@ import 'package:flutter/material.dart';
 // This widget overlays a "CRT" emulated filter on top of the child widget (usually the entire app).
 class CRTFilter extends StatelessWidget {
   final Widget child;
+  final bool enabled;
 
-  const CRTFilter({required this.child, super.key});
+  const CRTFilter({required this.child, super.key, this.enabled = true});
 
   @override
   Widget build(BuildContext context) {
+    if (!enabled) return child;
+
     return Stack(
       children: [
         child, // App content

@@ -12,11 +12,10 @@ import 'package:url_launcher/url_launcher.dart';
 
 /*
   TODO:
-  just move resume(s) to folder in this repo.
   add piano
 */
 
-void main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
@@ -77,6 +76,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return CRTFilter(
+      enabled: false,
       child: LayoutBuilder(
         builder: (context, constraints) {
           // Too small

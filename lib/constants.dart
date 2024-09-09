@@ -28,8 +28,8 @@ const List<String> coopTermReports = [
   'assets/coop_term_reports/winter_summer_2022_report.txt',
 ];
 const reportsDirectoryPath = 'assets/coop_term_reports/';
-const resumePdfUrl = 'https://jamesmoreau.github.io/Resume/JamesMoreau.pdf';
-const resumePdfUrlFrench = 'https://jamesmoreau.github.io/Resume/JacquesMoreauFR.pdf';
+const resumePdfUrl = 'https://jamesmoreau.github.io/Resume/James_Moreau.pdf';
+const resumePdfUrlFrench = 'https://jamesmoreau.github.io/Resume/Jacques_Moreau.pdf';
 const lostInTranslationGifPath = 'assets/lit.gif';
 const gapOfDunloe = 'assets/gap_of_dunloe.jpeg';
 const fieldOfDreams = 'assets/field_juleko_o.gif';
