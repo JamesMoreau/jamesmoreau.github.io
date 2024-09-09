@@ -75,66 +75,63 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return CRTFilter(
-      enabled: false,
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          // Too small
-          if (constraints.maxWidth < 700 || constraints.maxHeight < 500) {
-            return const Scaffold(body: Center(child: Text('Please resize your window to be larger.')));
-          }
-
-          // Small Layout
-          if (constraints.maxWidth < 1000 || constraints.maxHeight < 600) {
-            return Scaffold(
-              appBar: AppBar(title: const Text(myName)),
-              drawer: Drawer(child: TabMenu(changeTab: onTabChanged, currentTab: currentTab)),
-              body: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                ),
-                alignment: Alignment.center,
-                child: FadeTransition(
-                  opacity: tabFadeInAnimation,
-                  child: Container(padding: const EdgeInsets.all(30), alignment: Alignment.center, child: getTab(currentTab, isMobileView: true)),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Too small
+        if (constraints.maxWidth < 700 || constraints.maxHeight < 500) {
+          return const Scaffold(body: Center(child: Text('Please resize your window to be larger.')));
+        }
+    
+        // Small Layout
+        if (constraints.maxWidth < 1000 || constraints.maxHeight < 600) {
+          return Scaffold(
+            appBar: AppBar(title: const Text(myName)),
+            drawer: Drawer(child: TabMenu(changeTab: onTabChanged, currentTab: currentTab)),
+            body: Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.primary,
                 ),
               ),
-            );
-          }
-
-          // Wide Layout
-          return Scaffold(
-            body: ColoredBox(
-              color: Theme.of(context).colorScheme.surface,
-              child: Padding(
-                padding: const EdgeInsets.all(50),
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Theme.of(context).colorScheme.primary,
-                      width: 2,
-                    ),
-                  ),
-                  alignment: Alignment.center,
-                  child: Row(
-                    children: [
-                      TabMenu(changeTab: onTabChanged, currentTab: currentTab),
-                      Expanded(
-                        child: FadeTransition(
-                          opacity: tabFadeInAnimation,
-                          child: Container(padding: const EdgeInsets.all(16), child: getTab(currentTab, isMobileView: false)),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+              alignment: Alignment.center,
+              child: FadeTransition(
+                opacity: tabFadeInAnimation,
+                child: Container(padding: const EdgeInsets.all(30), alignment: Alignment.center, child: getTab(currentTab, isMobileView: true)),
               ),
             ),
           );
-        },
-      ),
+        }
+    
+        // Wide Layout
+        return Scaffold(
+          body: ColoredBox(
+            color: Theme.of(context).colorScheme.surface,
+            child: Padding(
+              padding: const EdgeInsets.all(50),
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.primary,
+                    width: 2,
+                  ),
+                ),
+                alignment: Alignment.center,
+                child: Row(
+                  children: [
+                    TabMenu(changeTab: onTabChanged, currentTab: currentTab),
+                    Expanded(
+                      child: FadeTransition(
+                        opacity: tabFadeInAnimation,
+                        child: Container(padding: const EdgeInsets.all(16), child: getTab(currentTab, isMobileView: false)),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
