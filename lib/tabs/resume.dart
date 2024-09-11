@@ -21,7 +21,6 @@ class _ResumeTabState extends State<ResumeTab> {
 
   @override
   Widget build(BuildContext context) {
-    
     // Button that links to resume pdf repository
     var resumeButtonText = switch (selectedResumeLanguage) {
       ResumeLanguage.english => 'Link to Resume',
@@ -48,50 +47,36 @@ class _ResumeTabState extends State<ResumeTab> {
     var availableHeight = MediaQuery.of(context).size.height;
     var pdfWidth = availableHeight / math.sqrt(2); // A4 paper ratio
 
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: SizedBox( // Ensures that the resume is centered on the screen.
-        width: MediaQuery.of(context).size.width,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: pdfWidth,
-              height: availableHeight,
-              child: SfPdfViewer.network(myUrl),
-            ),
-            const SizedBox(width: 20),
-            Column(
-              children: [
-                const SizedBox(height: 20),
-                raisedResumeButton,
-                const SizedBox(height: 20),
-                SegmentedButton<ResumeLanguage>(
-                  segments: [
-                    const ButtonSegment(value: ResumeLanguage.english, label: Text('English')),
-                    const ButtonSegment(value: ResumeLanguage.french, label: Text('French')),
-                  ],
-                  selected: {selectedResumeLanguage},
-                  onSelectionChanged: (language) {
-                    selectedResumeLanguage = language.first;
-                    setState(() {});
-                  },
-                ),
-              ],
-            ),
-          ],
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        SizedBox(
+          width: pdfWidth,
+          height: availableHeight,
+          child: SfPdfViewer.network(myUrl),
         ),
-      ),
+        Positioned(
+          right: 20,
+          top: 20,
+          child: Column(
+            children: [
+              raisedResumeButton,
+              const SizedBox(height: 20),
+              SegmentedButton<ResumeLanguage>(
+                segments: [
+                  const ButtonSegment(value: ResumeLanguage.english, label: Text('English')),
+                  const ButtonSegment(value: ResumeLanguage.french, label: Text('French')),
+                ],
+                selected: {selectedResumeLanguage},
+                onSelectionChanged: (language) {
+                  selectedResumeLanguage = language.first;
+                  setState(() {});
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
-
-  // decoration: BoxDecoration(
-  //   boxShadow: [
-  //     BoxShadow(
-  //       color: Colors.black.withOpacity(0.3),
-  //       spreadRadius: 2,
-  //       blurRadius: 4,
-  //     ),
-  //   ],
-  // ),
