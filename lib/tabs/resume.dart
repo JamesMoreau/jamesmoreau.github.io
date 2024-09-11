@@ -1,11 +1,11 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:jamesmoreau_github_io/constants.dart';
 import 'package:jamesmoreau_github_io/main.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 enum ResumeLanguage { english, french }
-
-enum ResumeLoadingState { loading, loaded, error }
 
 class ResumeTab extends StatefulWidget {
   final bool isMobileView;
@@ -21,6 +21,7 @@ class _ResumeTabState extends State<ResumeTab> {
 
   @override
   Widget build(BuildContext context) {
+    
     // Button that links to resume pdf repository
     var resumeButtonText = switch (selectedResumeLanguage) {
       ResumeLanguage.english => 'Link to Resume',
@@ -43,51 +44,40 @@ class _ResumeTabState extends State<ResumeTab> {
       return Center(child: raisedResumeButton);
     }
 
-    return Center(
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
+    // Ensure the height fits the available screen space so that the entire resume is visible.
+    var availableHeight = MediaQuery.of(context).size.height;
+    var pdfWidth = availableHeight / math.sqrt(2); // A4 paper ratio
+
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: SizedBox( // Ensures that the resume is centered on the screen.
+        width: MediaQuery.of(context).size.width,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              width: 700,
-              // width: MediaQuery.of(context).size.width * 0.4,
-              // height: MediaQuery.of(context).size.height * 0.707,
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.3),
-                    spreadRadius: 2,
-                    blurRadius: 4,
-                  ),
-                ],
-              ),
+              width: pdfWidth,
+              height: availableHeight,
               child: SfPdfViewer.network(myUrl),
             ),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: raisedResumeButton,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: SegmentedButton<ResumeLanguage>(
-                      segments: [
-                        const ButtonSegment(value: ResumeLanguage.english, label: Text('English')),
-                        const ButtonSegment(value: ResumeLanguage.french, label: Text('French')),
-                      ],
-                      selected: {selectedResumeLanguage},
-                      onSelectionChanged: (language) {
-                        // By default there is only a single segment that can be selected at one time, so its value is always the first item in the selected set.
-                        selectedResumeLanguage = language.first;
-                        setState(() {});
-                      },
-                    ),
-                  ),
-                ],
-              ),
+            const SizedBox(width: 20),
+            Column(
+              children: [
+                const SizedBox(height: 20),
+                raisedResumeButton,
+                const SizedBox(height: 20),
+                SegmentedButton<ResumeLanguage>(
+                  segments: [
+                    const ButtonSegment(value: ResumeLanguage.english, label: Text('English')),
+                    const ButtonSegment(value: ResumeLanguage.french, label: Text('French')),
+                  ],
+                  selected: {selectedResumeLanguage},
+                  onSelectionChanged: (language) {
+                    selectedResumeLanguage = language.first;
+                    setState(() {});
+                  },
+                ),
+              ],
             ),
           ],
         ),
@@ -95,3 +85,13 @@ class _ResumeTabState extends State<ResumeTab> {
     );
   }
 }
+
+  // decoration: BoxDecoration(
+  //   boxShadow: [
+  //     BoxShadow(
+  //       color: Colors.black.withOpacity(0.3),
+  //       spreadRadius: 2,
+  //       blurRadius: 4,
+  //     ),
+  //   ],
+  // ),

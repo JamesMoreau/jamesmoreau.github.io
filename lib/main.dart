@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jamesmoreau_github_io/constants.dart';
-import 'package:jamesmoreau_github_io/crt_filter.dart';
 import 'package:jamesmoreau_github_io/tabs/about.dart';
 import 'package:jamesmoreau_github_io/tabs/contact.dart';
 import 'package:jamesmoreau_github_io/tabs/game.dart';
@@ -13,6 +12,7 @@ import 'package:url_launcher/url_launcher.dart';
 /*
   TODO:
   add piano
+  add breakout! (https://tsoding.github.io/jaibreak/)
 */
 
 void main() {
