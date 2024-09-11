@@ -1,10 +1,11 @@
 import 'package:flame/game.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:jamesmoreau_github_io/snake.dart';
+import 'package:jamesmoreau_github_io/games/breakout.dart';
+import 'package:jamesmoreau_github_io/games/snake.dart';
+
+enum Games { breakout, snake }
 
 class GameTab extends StatefulWidget {
-  double get gameSize => 500;
 
   const GameTab({super.key});
 
@@ -13,38 +14,82 @@ class GameTab extends StatefulWidget {
 }
 
 class _GameTabState extends State<GameTab> {
-  FlameGame game = SnakeGame();
+  FlameGame snakeGame = SnakeGame();
+  FlameGame breakoutGame = Breakout();
+  Games currentGame = Games.breakout;
 
   @override
   void initState() {
-    if (kDebugMode) game.debugMode = true;
+    // if (kDebugMode) snakeGame.debugMode = true;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child:
-        Container(
-          width: widget.gameSize,
-          height: widget.gameSize,
-          decoration: BoxDecoration(
-            border: Border.all(width: 5, color: const Color(0xff7f7fff)),
-            borderRadius: const BorderRadius.all(Radius.circular(3)),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.3),
-                spreadRadius: 2,
-                blurRadius: 4,
+    var currentGameSize = switch (currentGame) {
+      Games.snake => snakeGameSize,
+      Games.breakout => breakoutGameSize,
+    };
+
+    var currentGameObject = switch (currentGame) {
+      Games.snake => snakeGame,
+      Games.breakout => breakoutGame,
+    };
+
+    return SizedBox.expand(
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          ClipRect(
+            child: SizedBox(
+              width: currentGameSize.width,
+              height: currentGameSize.height,
+              child: GameWidget(
+                game: currentGameObject,
+                loadingBuilder: (context) => const Center(child: CircularProgressIndicator()),
+                errorBuilder: (context, error) => const Center(child: Text("Unable to start snake game! :'(")),
               ),
-            ],
+            ),
           ),
-          child: GameWidget(
-            game: game,
-            loadingBuilder: (context) => const Center(child: CircularProgressIndicator()),
-            errorBuilder: (context, error) => const Center(child: Text("Unable to start snake game! :'(")),
+          
+          Positioned(
+            top: 20,
+            right: 20,
+            child: Container(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+                color: Colors.white,
+              ),
+              child: SegmentedButton<Games>(
+                selected: {currentGame},
+                segments: [
+                  const ButtonSegment(label: Text('Snake'), value: Games.snake),
+                  const ButtonSegment(label: Text('Breakout'), value: Games.breakout),
+                ],
+                onSelectionChanged: (game) {
+                  // By default there is only a single segment that can be
+                  // selected at one time, so its value is always the first
+                  // item in the selected set.
+                  currentGame = game.first;
+                  setState(() {});
+                },
+              ),
+            ),
           ),
-        ),
+        ],
+      ),
     );
   }
 }
+
+  // decoration: BoxDecoration(
+  //   border: Border.all(width: 5, color: const Color(0xff7f7fff)),
+  //   borderRadius: const BorderRadius.all(Radius.circular(3)),
+  //   boxShadow: [
+  //     BoxShadow(
+  //       color: Colors.black.withOpacity(0.3),
+  //       spreadRadius: 2,
+  //       blurRadius: 4,
+  //     ),
+  //   ],
+  // ),

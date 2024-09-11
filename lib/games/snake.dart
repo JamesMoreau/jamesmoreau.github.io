@@ -10,6 +10,8 @@ enum GameState { setup, ready, play, gameover, victory }
 
 enum Direction { up, down, left, right }
 
+Size snakeGameSize = const Size(500, 500);
+
 class Position {
   int x = 0;
   int y = 0;
@@ -239,7 +241,8 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
         state = GameState.ready;
 
       case GameState.ready:
-        if (kDebugMode) print('press space to begin.');
+        // if (kDebugMode) print('press space to begin.');
+        break;
 
       case GameState.play:
         assert(snake.length >= 2, 'snake should be at least two long');

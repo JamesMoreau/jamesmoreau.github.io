@@ -62,16 +62,22 @@ class _ResumeTabState extends State<ResumeTab> {
             children: [
               raisedResumeButton,
               const SizedBox(height: 20),
-              SegmentedButton<ResumeLanguage>(
-                segments: [
-                  const ButtonSegment(value: ResumeLanguage.english, label: Text('English')),
-                  const ButtonSegment(value: ResumeLanguage.french, label: Text('French')),
-                ],
-                selected: {selectedResumeLanguage},
-                onSelectionChanged: (language) {
-                  selectedResumeLanguage = language.first;
-                  setState(() {});
-                },
+              Container(
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  color: Colors.white,
+                ),
+                child: SegmentedButton<ResumeLanguage>(
+                  segments: [
+                    const ButtonSegment(value: ResumeLanguage.english, label: Text('English')),
+                    const ButtonSegment(value: ResumeLanguage.french, label: Text('French')),
+                  ],
+                  selected: {selectedResumeLanguage},
+                  onSelectionChanged: (language) {
+                    selectedResumeLanguage = language.first;
+                    setState(() {});
+                  },
+                ),
               ),
             ],
           ),
