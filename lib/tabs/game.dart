@@ -63,8 +63,8 @@ class _GameTabState extends State<GameTab> {
               child: SegmentedButton<Games>(
                 selected: {currentGame},
                 segments: [
-                  const ButtonSegment(label: Text('Snake'), value: Games.snake),
                   const ButtonSegment(label: Text('Breakout'), value: Games.breakout),
+                  const ButtonSegment(label: Text('Snake'), value: Games.snake),
                 ],
                 onSelectionChanged: (game) {
                   // By default there is only a single segment that can be
