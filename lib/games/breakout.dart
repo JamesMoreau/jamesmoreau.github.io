@@ -2,10 +2,11 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-// TODO: 
+// TODO:
 // move walls outside of game window
 // add ball
 // Collosion of walls and balls
@@ -44,10 +45,10 @@ class Breakout extends FlameGame with HasCollisionDetection, HasKeyboardHandlerC
     size.setValues(breakoutGameSize.width, breakoutGameSize.height);
 
     // Place walls
-    var wallTop = Wall(position: Vector2.zero(), size: Vector2(breakoutGameSize.width, wallThickness));
-    var wallBottom = Wall(position: Vector2(0, breakoutGameSize.height - wallThickness), size: Vector2(breakoutGameSize.width, wallThickness));
-    var wallLeft = Wall(position: Vector2.zero(), size: Vector2(wallThickness, breakoutGameSize.height));
-    var wallRight = Wall(position: Vector2(breakoutGameSize.width - wallThickness, 0), size: Vector2(wallThickness, breakoutGameSize.height));
+    var wallTop = Wall(position: Vector2.zero(), size: Vector2(breakoutGameSize.width, wallThickness), isVertical: false);
+    var wallBottom = Wall(position: Vector2(0, breakoutGameSize.height - wallThickness), size: Vector2(breakoutGameSize.width, wallThickness), isVertical: false);
+    var wallLeft = Wall(position: Vector2.zero(), size: Vector2(wallThickness, breakoutGameSize.height), isVertical: true);
+    var wallRight = Wall(position: Vector2(breakoutGameSize.width - wallThickness, 0), size: Vector2(wallThickness, breakoutGameSize.height), isVertical: true);
 
     await addAll([wallTop, wallBottom, wallLeft, wallRight]);
 
@@ -120,7 +121,7 @@ class Breakout extends FlameGame with HasCollisionDetection, HasKeyboardHandlerC
   }
 }
 
-class Brick extends PositionComponent with CollisionCallbacks{
+class Brick extends PositionComponent with CollisionCallbacks {
   Color color;
 
   Brick({required this.color});
@@ -140,7 +141,7 @@ class Brick extends PositionComponent with CollisionCallbacks{
   }
 }
 
-class Paddle extends PositionComponent with KeyboardHandler, CollisionCallbacks, HasGameRef<Breakout> {
+class Paddle extends PositionComponent with KeyboardHandler, HasGameRef<Breakout> {
   int horizontalMovement = 0;
 
   @override
@@ -164,8 +165,8 @@ class Paddle extends PositionComponent with KeyboardHandler, CollisionCallbacks,
       position.x = 0;
     }
 
-    if (position.x + size.x > gameRef.size.x) {
-      position.x = gameRef.size.x - size.x;
+    if (position.x + size.x > breakoutGameSize.width) {
+      position.x = breakoutGameSize.width - size.x;
     }
 
     switch (gameRef.state) {
@@ -191,8 +192,10 @@ class Paddle extends PositionComponent with KeyboardHandler, CollisionCallbacks,
   }
 }
 
-class Wall extends PositionComponent with CollisionCallbacks {
-  Wall({required Vector2 position, required Vector2 size}) {
+class Wall extends PositionComponent {
+  bool isVertical; // true if the wall is vertical, false if horizontal
+
+  Wall({required Vector2 position, required Vector2 size, required this.isVertical}) {
     this.position = position;
     this.size = size;
   }
@@ -201,6 +204,9 @@ class Wall extends PositionComponent with CollisionCallbacks {
   Future<void> onLoad() async {
     super.onLoad();
     anchor = Anchor.topLeft;
+
+    var hitbox = RectangleHitbox(size: size);
+    add(hitbox);
   }
 
   @override
@@ -211,21 +217,17 @@ class Wall extends PositionComponent with CollisionCallbacks {
     paint.color = Colors.blue;
     canvas.drawRect(size.toRect(), paint);
   }
-
-  @override
-  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    super.onCollision(intersectionPoints, other);
-    throw UnimplementedError();
-    
-  }
 }
 
-class Projectile extends PositionComponent with CollisionCallbacks {
+class Projectile extends PositionComponent with CollisionCallbacks, HasGameRef<Breakout> {
   Vector2 velocity = Vector2.zero();
 
   @override
   Future<void> onLoad() async {
-    velocity = Vector2(0, projectileSpeed);
+    velocity = Vector2(projectileSpeed, projectileSpeed);
+
+    var hitbox = RectangleHitbox(size: size);
+    add(hitbox);
   }
 
   @override
@@ -243,13 +245,24 @@ class Projectile extends PositionComponent with CollisionCallbacks {
 
     position += velocity * dt;
   }
-  
+
   @override
-  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    super.onCollision(intersectionPoints, other);
-    
+  void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
+    super.onCollisionStart(intersectionPoints, other);
+
+    if (kDebugMode) {
+      print('Projectile collided with $other');
+    }
+
     if (other is Wall) {
-      velocity.y *= -1;
+      // Bounce based on the wall's orientation
+      if (other.isVertical) {
+        // Invert the x velocity for a vertical wall
+        velocity.x *= -1;
+      } else {
+        // Invert the y velocity for a horizontal wall
+        velocity.y *= -1;
+      }
     }
 
     if (other is Brick) {
@@ -260,6 +273,6 @@ class Projectile extends PositionComponent with CollisionCallbacks {
     if (other is Paddle) {
       velocity.y *= -1;
     }
-    
   }
+
 }
