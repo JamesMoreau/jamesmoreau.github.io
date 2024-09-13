@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:math' as math;
 import 'dart:ui';
 
@@ -8,9 +10,9 @@ import 'package:flame/game.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 // TODO:
-// move walls outside of game window
 // Collosion of walls and balls
 // Make fps text decide to display based on debug mode immediately (in the render method)
 // Sometimes the projectile clips through the walls. Look at the flame logo example
@@ -92,7 +94,7 @@ class Breakout extends FlameGame with HasCollisionDetection, HasKeyboardHandlerC
       }
     }
 
-    await addAll(bricks);
+    // await addAll(bricks);
 
     // Place projectile
     projectile = Projectile()
@@ -126,12 +128,17 @@ class Breakout extends FlameGame with HasCollisionDetection, HasKeyboardHandlerC
   void render(Canvas canvas) {
     super.render(canvas);
 
-    if (gameRef.debugMode) {
-      var textPaint = TextPaint(style: const TextStyle(fontSize: 20, fontFamily: 'Inconsolata', color: Colors.white));
-      var topRightPosition = Vector2(size.x, 0);
-      var projectilePosition = projectile == null ? Vector2.zero() : projectile!.position;
-      textPaint.render(canvas, 'Projectile Position: (${projectilePosition.x.toStringAsFixed(2)}, ${projectilePosition.y.toStringAsFixed(2)})', topRightPosition, anchor: Anchor.topRight);
-    }
+    // if (gameRef.debugMode) {
+    //   var textPaint = TextPaint(style: const TextStyle(fontSize: 20, fontFamily: 'Inconsolata', color: Colors.white));
+    //   var topRightPosition = Vector2(size.x, size.y);
+    //   var projectilePosition = projectile == null ? Vector2.zero() : projectile!.position;
+
+    //   var formatter = NumberFormat('0000.00');
+    //   var formattedX = formatter.format(projectilePosition.x);
+    //   var formattedY = formatter.format(projectilePosition.y);
+
+    //   textPaint.render(canvas, 'Projectile Position: ($formattedX, $formattedY)', topRightPosition, anchor: Anchor.bottomRight);
+    // }
   }
 }
 
@@ -213,14 +220,18 @@ class Projectile extends RectangleComponent with CollisionCallbacks, HasGameRef<
   Future<void> onLoad() async {
     var random = math.Random().nextDouble();
     var spawnAngle = lerpDouble(0, 360, random)!;
-    
+
     var vx = math.cos(spawnAngle * degree) * projectileSpeed;
     var vy = math.sin(spawnAngle * degree) * projectileSpeed;
-    
-    velocity = Vector2(vx, vy);
 
-    var hitbox = RectangleHitbox(size: size);
-    add(hitbox);
+    // velocity = Vector2(vx, vy);
+    velocity = Vector2(0, -projectileSpeed);
+
+    // var hitbox = RectangleHitbox(size: size);
+    var hitbox = CircleHitbox(radius: size.x / 2)
+      ..collisionType = CollisionType.active;
+
+    await add(hitbox);
   }
 
   @override
@@ -243,30 +254,33 @@ class Projectile extends RectangleComponent with CollisionCallbacks, HasGameRef<
   void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollisionStart(intersectionPoints, other);
 
-    if (kDebugMode) {
-      print('Projectile collided with $other');
+    if (game.debugMode) {
+      var now = DateTime.now();
+      var hour = now.hour.toString().padLeft(2, '0');
+      var minute = now.minute.toString().padLeft(2, '0');
+      var second = now.second.toString().padLeft(2, '0');
+      print('Projectile collided with $other. [$hour:$minute:$second]');
     }
 
     if (other is ScreenHitbox) {
       final collisionPoint = intersectionPoints.first;
-
-      // Left Side Collision
-      if (collisionPoint.x == 0) {
+      
+      if (collisionPoint.x == 0) { // Left Side Collision
         velocity.x = -velocity.x;
         velocity.y = velocity.y;
       }
-      // Right Side Collision
-      if (collisionPoint.x == game.size.x) {
+      
+      if (collisionPoint.x == game.size.x) { // Right Side Collision
         velocity.x = -velocity.x;
         velocity.y = velocity.y;
       }
-      // Top Side Collision
-      if (collisionPoint.y == 0) {
+      
+      if (collisionPoint.y == 0) { // Top Side Collision
         velocity.x = velocity.x;
         velocity.y = -velocity.y;
       }
-      // Bottom Side Collision
-      if (collisionPoint.y == game.size.y) {
+      
+      if (collisionPoint.y == game.size.y) { // Bottom Side Collision
         velocity.x = velocity.x;
         velocity.y = -velocity.y;
       }
