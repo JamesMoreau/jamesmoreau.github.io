@@ -1,4 +1,5 @@
 import 'package:flame/game.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jamesmoreau_github_io/games/breakout.dart';
 import 'package:jamesmoreau_github_io/games/snake.dart';
@@ -20,7 +21,6 @@ class _GameTabState extends State<GameTab> {
 
   @override
   void initState() {
-    // if (kDebugMode) snakeGame.debugMode = true;
     super.initState();
   }
 
@@ -35,6 +35,8 @@ class _GameTabState extends State<GameTab> {
       Games.snake => snakeGame,
       Games.breakout => breakoutGame,
     };
+
+    if (kDebugMode) currentGameObject.debugMode = true;
 
     return SizedBox.expand(
       child: Stack(

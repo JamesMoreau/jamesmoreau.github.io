@@ -1,3 +1,6 @@
+import 'dart:math' as math;
+import 'dart:ui';
+
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
@@ -8,14 +11,19 @@ import 'package:flutter/services.dart';
 
 // TODO:
 // move walls outside of game window
-// add ball
 // Collosion of walls and balls
+// Make fps text decide to display based on debug mode immediately (in the render method)
+// Sometimes the projectile clips through the walls. Look at the flame logo example
+
+// Investigate random lag spikes (only seem to happen when projectile is in the game view)
+
+// Maybe just move everything into the main class?
 
 enum GameState { ready, play, gameOver, victory }
 
 const Size breakoutGameSize = Size(900, 600);
 const Color background = Color(0xFF181818);
-const double wallThickness = 10;
+const degree = math.pi / 180;
 
 const double projectileSize = 10;
 const double projectileSpeed = 400;
@@ -32,8 +40,11 @@ const double brickSpacing = 16;
 const double rowsOfBricks = 9;
 const double bricksPerRow = 10;
 
-class Breakout extends FlameGame with HasCollisionDetection, HasKeyboardHandlerComponents {
+class Breakout extends FlameGame with HasCollisionDetection, HasKeyboardHandlerComponents, HasGameRef<Breakout> {
   GameState state = GameState.play;
+  List<Brick> bricks = [];
+  Paddle? paddle;
+  Projectile? projectile;
 
   @override
   Color backgroundColor() => background;
@@ -42,25 +53,17 @@ class Breakout extends FlameGame with HasCollisionDetection, HasKeyboardHandlerC
   Future<void> onLoad() async {
     super.onLoad();
 
-    size.setValues(breakoutGameSize.width, breakoutGameSize.height);
-
     // Place walls
-    var wallTop = Wall(position: Vector2.zero(), size: Vector2(breakoutGameSize.width, wallThickness), isVertical: false);
-    var wallBottom = Wall(position: Vector2(0, breakoutGameSize.height - wallThickness), size: Vector2(breakoutGameSize.width, wallThickness), isVertical: false);
-    var wallLeft = Wall(position: Vector2.zero(), size: Vector2(wallThickness, breakoutGameSize.height), isVertical: true);
-    var wallRight = Wall(position: Vector2(breakoutGameSize.width - wallThickness, 0), size: Vector2(wallThickness, breakoutGameSize.height), isVertical: true);
-
-    await addAll([wallTop, wallBottom, wallLeft, wallRight]);
+    await add(ScreenHitbox());
 
     // Place paddle
-    var paddle = Paddle()
+    paddle = Paddle()
       ..size.setValues(paddleWidth, paddleHeight)
-      ..position = Vector2(breakoutGameSize.width / 2 - paddleWidth / 2, breakoutGameSize.height - paddleOffsetFromBottom);
+      ..position = Vector2(size.x / 2 - paddleWidth / 2, size.y - paddleOffsetFromBottom);
 
-    add(paddle);
+    await add(paddle!);
 
     // Place bricks
-    var bricks = <Brick>[];
     var colors = [
       const Color(0xFFE9443A),
       const Color(0xFFD88B42),
@@ -74,7 +77,7 @@ class Breakout extends FlameGame with HasCollisionDetection, HasKeyboardHandlerC
     ];
 
     var gridWidth = brickWidth * bricksPerRow + brickSpacing * (bricksPerRow - 1);
-    var xOffset = (breakoutGameSize.width - gridWidth) / 2;
+    var xOffset = (size.x - gridWidth) / 2;
     var yOffset = 50.0;
 
     for (var row = 0; row < rowsOfBricks; row++) {
@@ -85,18 +88,22 @@ class Breakout extends FlameGame with HasCollisionDetection, HasKeyboardHandlerC
           ..size.setValues(brickWidth, brickHeight)
           ..position = Vector2(xOffset + col * (brickWidth + brickSpacing), row * (brickHeight + brickSpacing) + yOffset);
 
-        add(brick);
+        bricks.add(brick);
       }
     }
 
     await addAll(bricks);
 
     // Place projectile
-    var projectile = Projectile()
+    projectile = Projectile()
       ..size.setValues(projectileSize, projectileSize)
-      ..position = Vector2(breakoutGameSize.width / 2, breakoutGameSize.height / 2);
+      ..position = Vector2(size.x / 2, size.y / 2);
 
-    add(projectile);
+    await add(projectile!);
+
+    if (gameRef.debugMode) {
+      add(FpsTextComponent(position: Vector2(0, size.y - 24)));
+    }
   }
 
   @override
@@ -118,6 +125,13 @@ class Breakout extends FlameGame with HasCollisionDetection, HasKeyboardHandlerC
   @override
   void render(Canvas canvas) {
     super.render(canvas);
+
+    if (gameRef.debugMode) {
+      var textPaint = TextPaint(style: const TextStyle(fontSize: 20, fontFamily: 'Inconsolata', color: Colors.white));
+      var topRightPosition = Vector2(size.x, 0);
+      var projectilePosition = projectile == null ? Vector2.zero() : projectile!.position;
+      textPaint.render(canvas, 'Projectile Position: (${projectilePosition.x.toStringAsFixed(2)}, ${projectilePosition.y.toStringAsFixed(2)})', topRightPosition, anchor: Anchor.topRight);
+    }
   }
 }
 
@@ -165,8 +179,8 @@ class Paddle extends PositionComponent with KeyboardHandler, HasGameRef<Breakout
       position.x = 0;
     }
 
-    if (position.x + size.x > breakoutGameSize.width) {
-      position.x = breakoutGameSize.width - size.x;
+    if (position.x + size.x > gameRef.size.x) {
+      position.x = gameRef.size.x - size.x;
     }
 
     switch (gameRef.state) {
@@ -192,39 +206,18 @@ class Paddle extends PositionComponent with KeyboardHandler, HasGameRef<Breakout
   }
 }
 
-class Wall extends PositionComponent {
-  bool isVertical; // true if the wall is vertical, false if horizontal
-
-  Wall({required Vector2 position, required Vector2 size, required this.isVertical}) {
-    this.position = position;
-    this.size = size;
-  }
-
-  @override
-  Future<void> onLoad() async {
-    super.onLoad();
-    anchor = Anchor.topLeft;
-
-    var hitbox = RectangleHitbox(size: size);
-    add(hitbox);
-  }
-
-  @override
-  void render(Canvas canvas) {
-    super.render(canvas);
-
-    var paint = Paint();
-    paint.color = Colors.blue;
-    canvas.drawRect(size.toRect(), paint);
-  }
-}
-
-class Projectile extends PositionComponent with CollisionCallbacks, HasGameRef<Breakout> {
+class Projectile extends RectangleComponent with CollisionCallbacks, HasGameRef<Breakout> {
   Vector2 velocity = Vector2.zero();
 
   @override
   Future<void> onLoad() async {
-    velocity = Vector2(projectileSpeed, projectileSpeed);
+    var random = math.Random().nextDouble();
+    var spawnAngle = lerpDouble(0, 360, random)!;
+    
+    var vx = math.cos(spawnAngle * degree) * projectileSpeed;
+    var vy = math.sin(spawnAngle * degree) * projectileSpeed;
+    
+    velocity = Vector2(vx, vy);
 
     var hitbox = RectangleHitbox(size: size);
     add(hitbox);
@@ -254,25 +247,29 @@ class Projectile extends PositionComponent with CollisionCallbacks, HasGameRef<B
       print('Projectile collided with $other');
     }
 
-    if (other is Wall) {
-      // Bounce based on the wall's orientation
-      if (other.isVertical) {
-        // Invert the x velocity for a vertical wall
-        velocity.x *= -1;
-      } else {
-        // Invert the y velocity for a horizontal wall
-        velocity.y *= -1;
+    if (other is ScreenHitbox) {
+      final collisionPoint = intersectionPoints.first;
+
+      // Left Side Collision
+      if (collisionPoint.x == 0) {
+        velocity.x = -velocity.x;
+        velocity.y = velocity.y;
+      }
+      // Right Side Collision
+      if (collisionPoint.x == game.size.x) {
+        velocity.x = -velocity.x;
+        velocity.y = velocity.y;
+      }
+      // Top Side Collision
+      if (collisionPoint.y == 0) {
+        velocity.x = velocity.x;
+        velocity.y = -velocity.y;
+      }
+      // Bottom Side Collision
+      if (collisionPoint.y == game.size.y) {
+        velocity.x = velocity.x;
+        velocity.y = -velocity.y;
       }
     }
-
-    if (other is Brick) {
-      remove(other);
-      velocity.y *= -1;
-    }
-
-    if (other is Paddle) {
-      velocity.y *= -1;
-    }
   }
-
 }
