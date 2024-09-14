@@ -5,15 +5,15 @@ import 'dart:ui';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 // TODO:
-// Make fps text decide to display based on debug mode immediately (in the render method)
+// Use gameobject.new
 
 enum GameState { ready, play, gameOver, victory }
 
@@ -21,8 +21,8 @@ const Size breakoutGameSize = Size(900, 600);
 const Color background = Color(0xFF181818);
 const degree = math.pi / 180;
 
-const double projectileSize = 20;
-const double projectileSpeed = 300;
+const double projectileSize = 10;
+const double projectileSpeed = 250;
 
 const double paddleSpeed = 700;
 const double paddleWidth = 80;
@@ -33,14 +33,13 @@ const Color paddleColor = Color(0xFFEA453C);
 const double brickWidth = 50;
 const double brickHeight = 10;
 const double brickSpacing = 16;
-const double rowsOfBricks = 9;
-const double bricksPerRow = 10;
+const double rowsOfBricks = 8;
+const double bricksPerRow = 8;
 
 class Breakout extends FlameGame with HasCollisionDetection, HasKeyboardHandlerComponents, HasGameRef<Breakout> {
-  GameState state = GameState.play;
-  List<Brick> bricks = [];
-  Paddle? paddle;
-  Projectile? projectile;
+  GameState state = GameState.ready;
+
+  FpsTextComponent fps = FpsTextComponent();
 
   @override
   Color backgroundColor() => background;
@@ -52,12 +51,21 @@ class Breakout extends FlameGame with HasCollisionDetection, HasKeyboardHandlerC
     // Place walls
     await add(ScreenHitbox());
 
-    // Place paddle
-    paddle = Paddle()
-      ..size.setValues(paddleWidth, paddleHeight)
-      ..position = Vector2(size.x / 2 - paddleWidth / 2, size.y - paddleOffsetFromBottom);
+    await setup();
 
-    await add(paddle!);
+    if (game.debugMode) add(FpsTextComponent(position: Vector2(0, size.y), anchor: Anchor.bottomLeft));
+  }
+
+  Future<void> setup() async {
+    // Clear old stuff
+    removeAll(children.query<Brick>());
+    removeAll(children.query<Paddle>());
+    removeAll(children.query<Projectile>());
+
+    // Place paddle
+    var paddlePosition = Vector2(size.x / 2 - paddleWidth / 2, size.y - paddleOffsetFromBottom);
+    var paddle = Paddle(position: paddlePosition);
+    await add(paddle);
 
     // Place bricks
     var colors = [
@@ -71,18 +79,16 @@ class Breakout extends FlameGame with HasCollisionDetection, HasKeyboardHandlerC
       const Color(0xFF5AB2C3),
       const Color(0xFF4885DE),
     ];
-
     var gridWidth = brickWidth * bricksPerRow + brickSpacing * (bricksPerRow - 1);
     var xOffset = (size.x - gridWidth) / 2;
     var yOffset = 50.0;
 
+    var bricks = <Brick>[];
     for (var row = 0; row < rowsOfBricks; row++) {
       for (var col = 0; col < bricksPerRow; col++) {
         var color = colors[row % colors.length];
-
-        var brick = Brick(color: color)
-          ..size.setValues(brickWidth, brickHeight)
-          ..position = Vector2(xOffset + col * (brickWidth + brickSpacing), row * (brickHeight + brickSpacing) + yOffset);
+        var position = Vector2(xOffset + col * (brickWidth + brickSpacing), row * (brickHeight + brickSpacing) + yOffset);
+        var brick = Brick(position: position, color: color);
 
         bricks.add(brick);
       }
@@ -90,42 +96,36 @@ class Breakout extends FlameGame with HasCollisionDetection, HasKeyboardHandlerC
 
     await addAll(bricks);
 
-    // Place projectile
-    projectile = Projectile()
-      ..size.setValues(projectileSize, projectileSize)
-      ..position = Vector2(size.x / 2, size.y / 2);
-
-    await add(projectile!);
-
-    if (gameRef.debugMode) {
-      add(FpsTextComponent(position: Vector2(0, size.y - 24)));
-    }
-  }
-
-  @override
-  void update(double dt) {
-    super.update(dt);
-
-    switch (state) {
-      case GameState.ready:
-        break;
-      case GameState.play:
-        break;
-      case GameState.gameOver:
-        break;
-      case GameState.victory:
-        break;
-    }
+    state = GameState.ready;
   }
 
   @override
   void render(Canvas canvas) {
     super.render(canvas);
 
-    if (gameRef.debugMode) {
+    var textPaint = TextPaint(style: const TextStyle(fontSize: 35, fontFamily: 'InconsolataQ', color: Colors.white));
+    var centerPosition = Vector2(game.canvasSize.x / 2, game.canvasSize.y / 2);
+    var topCenterPosition = Vector2(game.canvasSize.x / 2, 0);
+
+    switch (state) {
+      case GameState.ready:
+        textPaint.render(canvas, 'BREAKOUT!', topCenterPosition, anchor: Anchor.topCenter);
+        textPaint.render(canvas, 'Use left and right arrow keys to play.', centerPosition, anchor: Anchor.center);
+      case GameState.play:
+        break;
+      case GameState.gameOver:
+        textPaint.render(canvas, 'GAME OVER', topCenterPosition, anchor: Anchor.topCenter);
+        textPaint.render(canvas, 'Press R to Restart', centerPosition, anchor: Anchor.center);
+      case GameState.victory:
+        textPaint.render(canvas, 'VICTORY!', topCenterPosition, anchor: Anchor.topCenter);
+        textPaint.render(canvas, 'Press R to Restart', centerPosition, anchor: Anchor.center);
+    }
+
+    if (game.debugMode) {
       var textPaint = TextPaint(style: const TextStyle(fontSize: 20, fontFamily: 'Inconsolata', color: Colors.white));
       var topRightPosition = Vector2(size.x, size.y);
-      var projectilePosition = projectile == null ? Vector2.zero() : projectile!.position;
+      var query = children.query<Paddle>();
+      var projectilePosition = query.isEmpty ? Vector2.zero() : query.first.position;
 
       var formatter = NumberFormat('0000.00');
       var formattedX = formatter.format(projectilePosition.x);
@@ -136,30 +136,25 @@ class Breakout extends FlameGame with HasCollisionDetection, HasKeyboardHandlerC
   }
 }
 
-class Brick extends PositionComponent with CollisionCallbacks {
+class Brick extends RectangleComponent with CollisionCallbacks {
   Color color;
 
-  Brick({required this.color});
+  Brick({required super.position, required this.color}) : super(anchor: Anchor.center, size: Vector2(brickWidth, brickHeight), children: [RectangleHitbox()]);
 
   @override
   void render(Canvas canvas) {
     super.render(canvas);
 
-    var paint = Paint();
-    paint.color = color;
-    canvas.drawRect(size.toRect(), paint);
-  }
-
-  @override
-  void update(double dt) {
-    super.update(dt);
+    paint = Paint()
+      ..color = color
+      ..style = PaintingStyle.fill;
   }
 }
 
 class Paddle extends PositionComponent with KeyboardHandler, HasGameRef<Breakout> {
   int horizontalMovement = 0;
 
-  Paddle() : super(anchor: Anchor.center, children: [RectangleHitbox()]);
+  Paddle({required super.position}) : super(size: Vector2(paddleWidth, paddleHeight), children: [RectangleHitbox()]);
 
   @override
   void render(Canvas canvas) {
@@ -174,6 +169,8 @@ class Paddle extends PositionComponent with KeyboardHandler, HasGameRef<Breakout
   void update(double dt) {
     super.update(dt);
 
+    if (game.state != GameState.play) return;
+
     var movement = horizontalMovement * paddleSpeed * dt;
     position.x += movement;
 
@@ -182,17 +179,44 @@ class Paddle extends PositionComponent with KeyboardHandler, HasGameRef<Breakout
       position.x = 0;
     }
 
-    if (position.x + size.x > gameRef.size.x) {
-      position.x = gameRef.size.x - size.x;
+    if (position.x + size.x > game.size.x) {
+      position.x = game.size.x - size.x;
     }
   }
 
   @override
   bool onKeyEvent(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
-    horizontalMovement = 0;
 
-    horizontalMovement += keysPressed.contains(LogicalKeyboardKey.arrowLeft) ? -1 : 0;
-    horizontalMovement += keysPressed.contains(LogicalKeyboardKey.arrowRight) ? 1 : 0;
+    switch (game.state) {
+      case GameState.ready:
+        if (keysPressed.contains(LogicalKeyboardKey.arrowLeft) || keysPressed.contains(LogicalKeyboardKey.arrowRight)) {
+          if (game.debugMode) print('starting game');
+          game.state = GameState.play;
+
+          var projectile = Projectile(position: Vector2(game.size.x / 2, game.size.y / 2));
+          game.add(projectile);
+        }
+
+      case GameState.play:
+        horizontalMovement = 0;
+        horizontalMovement += keysPressed.contains(LogicalKeyboardKey.arrowLeft) ? -1 : 0;
+        horizontalMovement += keysPressed.contains(LogicalKeyboardKey.arrowRight) ? 1 : 0;
+
+        if (event.logicalKey == LogicalKeyboardKey.keyR) {
+          game.setup();
+        }
+        
+      case GameState.gameOver:
+        if (event.logicalKey == LogicalKeyboardKey.keyR) {
+          game.setup();
+        }
+        
+      case GameState.victory:
+        if (event.logicalKey == LogicalKeyboardKey.keyR) {
+          game.setup();
+        }
+
+    }
 
     return true;
   }
@@ -201,7 +225,7 @@ class Paddle extends PositionComponent with KeyboardHandler, HasGameRef<Breakout
 class Projectile extends CircleComponent with CollisionCallbacks, HasGameRef<Breakout> {
   Vector2 velocity = Vector2.zero();
 
-  Projectile() : super(anchor: Anchor.center, radius: projectileSize, children: [CircleHitbox()]);
+  Projectile({required super.position}) : super(anchor: Anchor.center, radius: projectileSize, children: [CircleHitbox()]);
 
   @override
   Future<void> onLoad() async {
@@ -211,14 +235,7 @@ class Projectile extends CircleComponent with CollisionCallbacks, HasGameRef<Bre
       ..color = Colors.white
       ..style = PaintingStyle.fill;
 
-    var random = math.Random().nextDouble();
-    var spawnAngle = lerpDouble(0, 360, random)!;
-
-    var vx = math.cos(spawnAngle * degree) * projectileSpeed;
-    var vy = math.sin(spawnAngle * degree) * projectileSpeed;
-
-    velocity = Vector2(vx, vy);
-    // velocity = Vector2(0, -projectileSpeed);
+    velocity = Vector2(0, projectileSpeed);
   }
 
   @override
@@ -245,44 +262,36 @@ class Projectile extends CircleComponent with CollisionCallbacks, HasGameRef<Bre
         velocity.y = -velocity.y;
       } else if (intersectionPoints.first.x <= 0) {
         velocity.x = -velocity.x;
-      } else if (intersectionPoints.first.x >= gameRef.size.x) {
+      } else if (intersectionPoints.first.x >= game.size.x) {
         velocity.x = -velocity.x;
-      } else if (intersectionPoints.first.y >= gameRef.size.y) {
-        velocity.y = -velocity.y;
+      } else if (intersectionPoints.first.y >= game.size.y) {
+        // Game Over
+        add(
+          RemoveEffect(
+            delay: 1,
+            onComplete: () => game.state = GameState.gameOver,
+          ),
+        );
       }
-
     } else if (other is Paddle) {
       velocity.y = -velocity.y;
-      velocity.x = velocity.x + (position.x - other.position.x) / other.size.x * gameRef.size.x * 0.3;
-
+      velocity.x = velocity.x + (position.x - other.position.x) / other.size.x * game.size.x * 0.3;
     } else if (other is Brick) {
+      if (position.y < other.position.y - other.size.y / 2) {
+        velocity.y = -velocity.y;
+      } else if (position.y > other.position.y + other.size.y / 2) {
+        velocity.y = -velocity.y;
+      } else if (position.x < other.position.x) {
+        velocity.x = -velocity.x;
+      } else if (position.x > other.position.x) {
+        velocity.x = -velocity.x;
+      }
 
-      
+      other.removeFromParent();
+      var remainingBricks = game.children.query<Brick>();
+      if (remainingBricks.isEmpty) {
+        game.state = GameState.victory;
+      }
     }
-
   }
 }
-
-// if (other is ScreenHitbox) {
-//   final collisionPoint = intersectionPoints.first;
-
-//   if (collisionPoint.x == 0) { // Left Side Collision
-//     velocity.x = -velocity.x;
-//     velocity.y = velocity.y;
-//   }
-
-//   if (collisionPoint.x == game.size.x) { // Right Side Collision
-//     velocity.x = -velocity.x;
-//     velocity.y = velocity.y;
-//   }
-
-//   if (collisionPoint.y == 0) { // Top Side Collision
-//     velocity.x = velocity.x;
-//     velocity.y = -velocity.y;
-//   }
-
-//   if (collisionPoint.y == game.size.y) { // Bottom Side Collision
-//     velocity.x = velocity.x;
-//     velocity.y = -velocity.y;
-//   }
-// }

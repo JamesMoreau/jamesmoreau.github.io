@@ -35,7 +35,7 @@ class _GameTabState extends State<GameTab> {
       Games.breakout => breakoutGame,
     };
 
-    if (kDebugMode) currentGameObject.debugMode = true;
+    if (kDebugMode) currentGameObject.debugMode = false;
 
     return SizedBox.expand(
       child: Stack(
