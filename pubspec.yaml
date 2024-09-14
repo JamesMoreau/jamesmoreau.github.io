@@ -37,6 +37,7 @@ dependencies:
   flutter_svg: ^2.0.7
   syncfusion_flutter_pdfviewer: ^26.2.11
   intl: ^0.19.0
+  flame_forge2d: ^0.18.2
 
 dev_dependencies:
   flutter_test:

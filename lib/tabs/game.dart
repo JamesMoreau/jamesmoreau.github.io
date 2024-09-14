@@ -7,7 +7,6 @@ import 'package:jamesmoreau_github_io/games/snake.dart';
 enum Games { breakout, snake }
 
 class GameTab extends StatefulWidget {
-
   const GameTab({super.key});
 
   @override
@@ -49,11 +48,15 @@ class _GameTabState extends State<GameTab> {
               child: GameWidget(
                 game: currentGameObject,
                 loadingBuilder: (context) => const Center(child: CircularProgressIndicator()),
-                errorBuilder: (context, error) => const Center(child: Text("Unable to start snake game! :'(")),
+                errorBuilder: (context, error) => const Center(
+                  child: Text(
+                    "Unable to start game! :'(",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
               ),
             ),
           ),
-          
           Positioned(
             top: 20,
             right: 20,
