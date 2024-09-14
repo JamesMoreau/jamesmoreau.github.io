@@ -13,13 +13,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 // TODO:
-// Collosion of walls and balls
 // Make fps text decide to display based on debug mode immediately (in the render method)
-// Sometimes the projectile clips through the walls. Look at the flame logo example
-
-// Investigate random lag spikes (only seem to happen when projectile is in the game view)
-
-// Maybe just move everything into the main class?
 
 enum GameState { ready, play, gameOver, victory }
 
@@ -27,8 +21,8 @@ const Size breakoutGameSize = Size(900, 600);
 const Color background = Color(0xFF181818);
 const degree = math.pi / 180;
 
-const double projectileSize = 10;
-const double projectileSpeed = 400;
+const double projectileSize = 20;
+const double projectileSpeed = 300;
 
 const double paddleSpeed = 700;
 const double paddleWidth = 80;
@@ -75,7 +69,7 @@ class Breakout extends FlameGame with HasCollisionDetection, HasKeyboardHandlerC
       const Color(0xFF76EF78),
       const Color(0xFF69D3A2),
       const Color(0xFF5AB2C3),
-      const Color(0xFF4885DE)
+      const Color(0xFF4885DE),
     ];
 
     var gridWidth = brickWidth * bricksPerRow + brickSpacing * (bricksPerRow - 1);
@@ -94,7 +88,7 @@ class Breakout extends FlameGame with HasCollisionDetection, HasKeyboardHandlerC
       }
     }
 
-    // await addAll(bricks);
+    await addAll(bricks);
 
     // Place projectile
     projectile = Projectile()
@@ -128,17 +122,17 @@ class Breakout extends FlameGame with HasCollisionDetection, HasKeyboardHandlerC
   void render(Canvas canvas) {
     super.render(canvas);
 
-    // if (gameRef.debugMode) {
-    //   var textPaint = TextPaint(style: const TextStyle(fontSize: 20, fontFamily: 'Inconsolata', color: Colors.white));
-    //   var topRightPosition = Vector2(size.x, size.y);
-    //   var projectilePosition = projectile == null ? Vector2.zero() : projectile!.position;
+    if (gameRef.debugMode) {
+      var textPaint = TextPaint(style: const TextStyle(fontSize: 20, fontFamily: 'Inconsolata', color: Colors.white));
+      var topRightPosition = Vector2(size.x, size.y);
+      var projectilePosition = projectile == null ? Vector2.zero() : projectile!.position;
 
-    //   var formatter = NumberFormat('0000.00');
-    //   var formattedX = formatter.format(projectilePosition.x);
-    //   var formattedY = formatter.format(projectilePosition.y);
+      var formatter = NumberFormat('0000.00');
+      var formattedX = formatter.format(projectilePosition.x);
+      var formattedY = formatter.format(projectilePosition.y);
 
-    //   textPaint.render(canvas, 'Projectile Position: ($formattedX, $formattedY)', topRightPosition, anchor: Anchor.bottomRight);
-    // }
+      textPaint.render(canvas, 'Projectile Position: ($formattedX, $formattedY)', topRightPosition, anchor: Anchor.bottomRight);
+    }
   }
 }
 
@@ -165,6 +159,8 @@ class Brick extends PositionComponent with CollisionCallbacks {
 class Paddle extends PositionComponent with KeyboardHandler, HasGameRef<Breakout> {
   int horizontalMovement = 0;
 
+  Paddle() : super(anchor: Anchor.center, children: [RectangleHitbox()]);
+
   @override
   void render(Canvas canvas) {
     super.render(canvas);
@@ -189,17 +185,6 @@ class Paddle extends PositionComponent with KeyboardHandler, HasGameRef<Breakout
     if (position.x + size.x > gameRef.size.x) {
       position.x = gameRef.size.x - size.x;
     }
-
-    switch (gameRef.state) {
-      case GameState.ready:
-        break;
-      case GameState.play:
-        break;
-      case GameState.gameOver:
-        break;
-      case GameState.victory:
-        break;
-    }
   }
 
   @override
@@ -213,34 +198,27 @@ class Paddle extends PositionComponent with KeyboardHandler, HasGameRef<Breakout
   }
 }
 
-class Projectile extends RectangleComponent with CollisionCallbacks, HasGameRef<Breakout> {
+class Projectile extends CircleComponent with CollisionCallbacks, HasGameRef<Breakout> {
   Vector2 velocity = Vector2.zero();
+
+  Projectile() : super(anchor: Anchor.center, radius: projectileSize, children: [CircleHitbox()]);
 
   @override
   Future<void> onLoad() async {
+    await super.onLoad();
+
+    paint = Paint()
+      ..color = Colors.white
+      ..style = PaintingStyle.fill;
+
     var random = math.Random().nextDouble();
     var spawnAngle = lerpDouble(0, 360, random)!;
 
     var vx = math.cos(spawnAngle * degree) * projectileSpeed;
     var vy = math.sin(spawnAngle * degree) * projectileSpeed;
 
-    // velocity = Vector2(vx, vy);
-    velocity = Vector2(0, -projectileSpeed);
-
-    // var hitbox = RectangleHitbox(size: size);
-    var hitbox = CircleHitbox(radius: size.x / 2)
-      ..collisionType = CollisionType.active;
-
-    await add(hitbox);
-  }
-
-  @override
-  void render(Canvas canvas) {
-    super.render(canvas);
-
-    var paint = Paint();
-    paint.color = Colors.white;
-    canvas.drawRect(size.toRect(), paint);
+    velocity = Vector2(vx, vy);
+    // velocity = Vector2(0, -projectileSpeed);
   }
 
   @override
@@ -263,27 +241,48 @@ class Projectile extends RectangleComponent with CollisionCallbacks, HasGameRef<
     }
 
     if (other is ScreenHitbox) {
-      final collisionPoint = intersectionPoints.first;
-      
-      if (collisionPoint.x == 0) { // Left Side Collision
+      if (intersectionPoints.first.y <= 0) {
+        velocity.y = -velocity.y;
+      } else if (intersectionPoints.first.x <= 0) {
         velocity.x = -velocity.x;
-        velocity.y = velocity.y;
-      }
-      
-      if (collisionPoint.x == game.size.x) { // Right Side Collision
+      } else if (intersectionPoints.first.x >= gameRef.size.x) {
         velocity.x = -velocity.x;
-        velocity.y = velocity.y;
-      }
-      
-      if (collisionPoint.y == 0) { // Top Side Collision
-        velocity.x = velocity.x;
+      } else if (intersectionPoints.first.y >= gameRef.size.y) {
         velocity.y = -velocity.y;
       }
+
+    } else if (other is Paddle) {
+      velocity.y = -velocity.y;
+      velocity.x = velocity.x + (position.x - other.position.x) / other.size.x * gameRef.size.x * 0.3;
+
+    } else if (other is Brick) {
+
       
-      if (collisionPoint.y == game.size.y) { // Bottom Side Collision
-        velocity.x = velocity.x;
-        velocity.y = -velocity.y;
-      }
     }
+
   }
 }
+
+// if (other is ScreenHitbox) {
+//   final collisionPoint = intersectionPoints.first;
+
+//   if (collisionPoint.x == 0) { // Left Side Collision
+//     velocity.x = -velocity.x;
+//     velocity.y = velocity.y;
+//   }
+
+//   if (collisionPoint.x == game.size.x) { // Right Side Collision
+//     velocity.x = -velocity.x;
+//     velocity.y = velocity.y;
+//   }
+
+//   if (collisionPoint.y == 0) { // Top Side Collision
+//     velocity.x = velocity.x;
+//     velocity.y = -velocity.y;
+//   }
+
+//   if (collisionPoint.y == game.size.y) { // Bottom Side Collision
+//     velocity.x = velocity.x;
+//     velocity.y = -velocity.y;
+//   }
+// }
