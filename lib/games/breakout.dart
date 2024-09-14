@@ -13,7 +13,6 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 // TODO:
-// Use gameobject.new
 
 enum GameState { ready, play, gameOver, victory }
 
@@ -23,6 +22,7 @@ const degree = math.pi / 180;
 
 const double projectileSize = 10;
 const double projectileSpeed = 250;
+const double maxSpeed = 300;
 
 const double paddleSpeed = 700;
 const double paddleWidth = 80;
@@ -63,7 +63,7 @@ class Breakout extends FlameGame with HasCollisionDetection, HasKeyboardHandlerC
     removeAll(children.query<Projectile>());
 
     // Place paddle
-    var paddlePosition = Vector2(size.x / 2 - paddleWidth / 2, size.y - paddleOffsetFromBottom);
+    var paddlePosition = Vector2(breakoutGameSize.width / 2 - paddleWidth / 2, breakoutGameSize.height - paddleOffsetFromBottom);
     var paddle = Paddle(position: paddlePosition);
     await add(paddle);
 
@@ -80,7 +80,7 @@ class Breakout extends FlameGame with HasCollisionDetection, HasKeyboardHandlerC
       const Color(0xFF4885DE),
     ];
     var gridWidth = brickWidth * bricksPerRow + brickSpacing * (bricksPerRow - 1);
-    var xOffset = (size.x - gridWidth) / 2;
+    var xOffset = (breakoutGameSize.width - gridWidth) / 2;
     var yOffset = 50.0;
 
     var bricks = <Brick>[];
@@ -132,6 +132,10 @@ class Breakout extends FlameGame with HasCollisionDetection, HasKeyboardHandlerC
       var formattedY = formatter.format(projectilePosition.y);
 
       textPaint.render(canvas, 'Projectile Position: ($formattedX, $formattedY)', topRightPosition, anchor: Anchor.bottomRight);
+      
+      var bricks = children.query<Brick>();
+      var brickCount = bricks.length;
+      textPaint.render(canvas, 'Brick Count: $brickCount', topRightPosition + Vector2(0, -24), anchor: Anchor.bottomRight);
     }
   }
 }
@@ -186,7 +190,6 @@ class Paddle extends PositionComponent with KeyboardHandler, HasGameRef<Breakout
 
   @override
   bool onKeyEvent(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
-
     switch (game.state) {
       case GameState.ready:
         if (keysPressed.contains(LogicalKeyboardKey.arrowLeft) || keysPressed.contains(LogicalKeyboardKey.arrowRight)) {
@@ -205,17 +208,16 @@ class Paddle extends PositionComponent with KeyboardHandler, HasGameRef<Breakout
         if (event.logicalKey == LogicalKeyboardKey.keyR) {
           game.setup();
         }
-        
+
       case GameState.gameOver:
         if (event.logicalKey == LogicalKeyboardKey.keyR) {
           game.setup();
         }
-        
+
       case GameState.victory:
         if (event.logicalKey == LogicalKeyboardKey.keyR) {
           game.setup();
         }
-
     }
 
     return true;
@@ -235,12 +237,17 @@ class Projectile extends CircleComponent with CollisionCallbacks, HasGameRef<Bre
       ..color = Colors.white
       ..style = PaintingStyle.fill;
 
-    velocity = Vector2(0, projectileSpeed);
+    velocity = Vector2(-projectileSpeed, projectileSpeed);
   }
 
   @override
   void update(double dt) {
     super.update(dt);
+
+    // Limit the speed
+    if (velocity.length > maxSpeed) {
+      velocity = velocity.normalized() * maxSpeed;
+    }
 
     position += velocity * dt;
   }
@@ -258,14 +265,28 @@ class Projectile extends CircleComponent with CollisionCallbacks, HasGameRef<Bre
     }
 
     if (other is ScreenHitbox) {
-      if (intersectionPoints.first.y <= 0) {
-        velocity.y = -velocity.y;
-      } else if (intersectionPoints.first.x <= 0) {
-        velocity.x = -velocity.x;
-      } else if (intersectionPoints.first.x >= game.size.x) {
-        velocity.x = -velocity.x;
-      } else if (intersectionPoints.first.y >= game.size.y) {
-        // Game Over
+      var left = 0.0;
+      var right = game.size.x;
+      var top = 0.0;
+      var bottom = game.size.y;
+      Vector2 normal;
+      
+      if (position.x - radius <= left) { // Check collision with the left wall
+        normal = Vector2(1, 0); // Normal pointing right
+        velocity = velocity.reflected(normal);
+        position.x = left + radius;
+        
+      } else if (position.x + radius >= right) { // Check collision with the right wall
+        normal = Vector2(-1, 0); // Normal pointing left
+        velocity = velocity.reflected(normal);
+        position.x = right - radius;
+        
+      } else if (position.y - radius <= top) { // Check collision with the top wall
+        normal = Vector2(0, 1); // Normal pointing down
+        velocity = velocity.reflected(normal);
+        position.y = top + radius;
+        
+      } else if (position.y + radius >= bottom) { // Check collision with the bottom wall
         add(
           RemoveEffect(
             delay: 1,
@@ -274,23 +295,33 @@ class Projectile extends CircleComponent with CollisionCallbacks, HasGameRef<Bre
         );
       }
     } else if (other is Paddle) {
+      // Reflect the velocity
       velocity.y = -velocity.y;
-      velocity.x = velocity.x + (position.x - other.position.x) / other.size.x * game.size.x * 0.3;
+
+      // Adjust position
+      position.y = other.position.y - other.size.y / 2 - radius;
     } else if (other is Brick) {
-      if (position.y < other.position.y - other.size.y / 2) {
-        velocity.y = -velocity.y;
-      } else if (position.y > other.position.y + other.size.y / 2) {
-        velocity.y = -velocity.y;
-      } else if (position.x < other.position.x) {
+      // Determine collision side
+      var overlapX = (other.size.x / 2 + radius) - (position.x - other.position.x).abs();
+      var overlapY = (other.size.y / 2 + radius) - (position.y - other.position.y).abs();
+
+      if (overlapX < overlapY) {
+        // Collision from the side
         velocity.x = -velocity.x;
-      } else if (position.x > other.position.x) {
-        velocity.x = -velocity.x;
+        position.x += velocity.x.sign * overlapX;
+      } else {
+        // Collision from top or bottom
+        velocity.y = -velocity.y;
+        position.y += velocity.y.sign * overlapY;
       }
 
       other.removeFromParent();
-      var remainingBricks = game.children.query<Brick>();
-      if (remainingBricks.isEmpty) {
-        game.state = GameState.victory;
+      if (game.children.query<Brick>().isEmpty) {
+        add(
+          RemoveEffect(
+            onComplete: () => game.state = GameState.victory,
+          ),
+        );
       }
     }
   }
