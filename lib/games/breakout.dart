@@ -3,11 +3,13 @@
 import 'dart:math' as math;
 import 'dart:ui';
 
+import 'package:flame/camera.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
+import 'package:flame_forge2d/body_component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -30,8 +32,8 @@ const double paddleHeight = 10;
 const double paddleOffsetFromBottom = 50;
 const Color paddleColor = Color(0xFFEA453C);
 
-const double brickWidth = 50;
-const double brickHeight = 10;
+const double brickWidth = 60;
+const double brickHeight = 14;
 const double brickSpacing = 16;
 const double rowsOfBricks = 8;
 const double bricksPerRow = 8;
@@ -124,7 +126,7 @@ class Breakout extends FlameGame with HasCollisionDetection, HasKeyboardHandlerC
     if (game.debugMode) {
       var textPaint = TextPaint(style: const TextStyle(fontSize: 20, fontFamily: 'Inconsolata', color: Colors.white));
       var topRightPosition = Vector2(size.x, size.y);
-      var query = children.query<Paddle>();
+      var query = children.query<Projectile>();
       var projectilePosition = query.isEmpty ? Vector2.zero() : query.first.position;
 
       var formatter = NumberFormat('0000.00');
@@ -132,7 +134,7 @@ class Breakout extends FlameGame with HasCollisionDetection, HasKeyboardHandlerC
       var formattedY = formatter.format(projectilePosition.y);
 
       textPaint.render(canvas, 'Projectile Position: ($formattedX, $formattedY)', topRightPosition, anchor: Anchor.bottomRight);
-      
+
       var bricks = children.query<Brick>();
       var brickCount = bricks.length;
       textPaint.render(canvas, 'Brick Count: $brickCount', topRightPosition + Vector2(0, -24), anchor: Anchor.bottomRight);
@@ -183,8 +185,8 @@ class Paddle extends PositionComponent with KeyboardHandler, HasGameRef<Breakout
       position.x = 0;
     }
 
-    if (position.x + size.x > game.size.x) {
-      position.x = game.size.x - size.x;
+    if (position.x + size.x > breakoutGameSize.width) {
+      position.x = breakoutGameSize.width - size.x;
     }
   }
 
@@ -196,7 +198,7 @@ class Paddle extends PositionComponent with KeyboardHandler, HasGameRef<Breakout
           if (game.debugMode) print('starting game');
           game.state = GameState.play;
 
-          var projectile = Projectile(position: Vector2(game.size.x / 2, game.size.y / 2));
+          var projectile = Projectile(position: Vector2(breakoutGameSize.width / 2, breakoutGameSize.height / 2));
           game.add(projectile);
         }
 
@@ -237,7 +239,7 @@ class Projectile extends CircleComponent with CollisionCallbacks, HasGameRef<Bre
       ..color = Colors.white
       ..style = PaintingStyle.fill;
 
-    velocity = Vector2(-projectileSpeed, projectileSpeed);
+    velocity = Vector2(projectileSpeed, projectileSpeed);
   }
 
   @override
@@ -266,27 +268,28 @@ class Projectile extends CircleComponent with CollisionCallbacks, HasGameRef<Bre
 
     if (other is ScreenHitbox) {
       var left = 0.0;
-      var right = game.size.x;
+      var right = breakoutGameSize.width;
       var top = 0.0;
-      var bottom = game.size.y;
+      var bottom = breakoutGameSize.height;
       Vector2 normal;
-      
-      if (position.x - radius <= left) { // Check collision with the left wall
+
+      if (position.x - radius <= left) {
+        // Check collision with the left wall
         normal = Vector2(1, 0); // Normal pointing right
         velocity = velocity.reflected(normal);
         position.x = left + radius;
-        
-      } else if (position.x + radius >= right) { // Check collision with the right wall
+      } else if (position.x + radius >= right) {
+        // Check collision with the right wall
         normal = Vector2(-1, 0); // Normal pointing left
         velocity = velocity.reflected(normal);
         position.x = right - radius;
-        
-      } else if (position.y - radius <= top) { // Check collision with the top wall
+      } else if (position.y - radius <= top) {
+        // Check collision with the top wall
         normal = Vector2(0, 1); // Normal pointing down
         velocity = velocity.reflected(normal);
         position.y = top + radius;
-        
-      } else if (position.y + radius >= bottom) { // Check collision with the bottom wall
+      } else if (position.y + radius >= bottom) {
+        // Check collision with the bottom wall
         add(
           RemoveEffect(
             delay: 1,
