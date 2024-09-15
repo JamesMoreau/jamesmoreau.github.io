@@ -15,6 +15,8 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 // TODO:
+// Fix no victory on last brick
+// Add particle effects.
 
 enum GameState { ready, play, gameOver, victory }
 
@@ -40,7 +42,7 @@ const double bricksPerRow = 8;
 
 class Breakout extends FlameGame with HasCollisionDetection, HasKeyboardHandlerComponents, HasGameRef<Breakout> {
   GameState state = GameState.ready;
-
+  late bool ezMode;
   FpsTextComponent fps = FpsTextComponent();
 
   @override
@@ -49,6 +51,8 @@ class Breakout extends FlameGame with HasCollisionDetection, HasKeyboardHandlerC
   @override
   Future<void> onLoad() async {
     super.onLoad();
+
+    ezMode = false;
 
     // Place walls
     await add(ScreenHitbox());
@@ -86,13 +90,20 @@ class Breakout extends FlameGame with HasCollisionDetection, HasKeyboardHandlerC
     var yOffset = 50.0;
 
     var bricks = <Brick>[];
-    for (var row = 0; row < rowsOfBricks; row++) {
-      for (var col = 0; col < bricksPerRow; col++) {
-        var color = colors[row % colors.length];
-        var position = Vector2(xOffset + col * (brickWidth + brickSpacing), row * (brickHeight + brickSpacing) + yOffset);
-        var brick = Brick(position: position, color: color);
+    if (ezMode) {
+      var brick = Brick(position: Vector2(brickWidth, breakoutGameSize.height / 2), color: colors[0]);
+      bricks.add(brick);
+    } else {
+      for (var row = 0; row < rowsOfBricks; row++) {
+        for (var col = 0; col < bricksPerRow; col++) {
+          var color = colors[row % colors.length];
+          var x = xOffset + col * (brickWidth + brickSpacing);
+          var y = yOffset + row * (brickHeight + brickSpacing);
+          var position = Vector2(x, y);
+          var brick = Brick(position: position, color: color);
 
-        bricks.add(brick);
+          bricks.add(brick);
+        }
       }
     }
 
@@ -273,23 +284,27 @@ class Projectile extends CircleComponent with CollisionCallbacks, HasGameRef<Bre
       var bottom = breakoutGameSize.height;
       Vector2 normal;
 
+      // Check collision with the left wall
       if (position.x - radius <= left) {
-        // Check collision with the left wall
         normal = Vector2(1, 0); // Normal pointing right
         velocity = velocity.reflected(normal);
         position.x = left + radius;
-      } else if (position.x + radius >= right) {
+
         // Check collision with the right wall
+      } else if (position.x + radius >= right) {
         normal = Vector2(-1, 0); // Normal pointing left
         velocity = velocity.reflected(normal);
         position.x = right - radius;
-      } else if (position.y - radius <= top) {
+
         // Check collision with the top wall
+      } else if (position.y - radius <= top) {
         normal = Vector2(0, 1); // Normal pointing down
         velocity = velocity.reflected(normal);
         position.y = top + radius;
-      } else if (position.y + radius >= bottom) {
+
         // Check collision with the bottom wall
+      } else if (position.y + radius >= bottom) {
+        // Game Over
         add(
           RemoveEffect(
             delay: 1,
