@@ -1,8 +1,5 @@
 // ignore_for_file: avoid_print
 
-// TODO:
-// rm has game ref. replace with hasgamereference
-
 import 'dart:math' as math;
 
 import 'package:flame/collisions.dart';
