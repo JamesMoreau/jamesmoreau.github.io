@@ -2,7 +2,6 @@
 
 // TODO:
 // Fix no victory on last brick
-// Fix bricks not centered
 // Add particle effects.
 
 import 'dart:math' as math;
@@ -40,7 +39,7 @@ const double bricksPerRow = 8;
 
 class Breakout extends FlameGame with HasCollisionDetection, HasKeyboardHandlerComponents, HasGameRef<Breakout> {
   GameState state = GameState.ready;
-  late bool ezMode;
+  bool ezMode = false;
   FpsTextComponent fps = FpsTextComponent();
 
   @override
@@ -49,8 +48,6 @@ class Breakout extends FlameGame with HasCollisionDetection, HasKeyboardHandlerC
   @override
   Future<void> onLoad() async {
     super.onLoad();
-
-    ezMode = false;
 
     // Place walls
     await add(ScreenHitbox());
@@ -154,7 +151,18 @@ class Breakout extends FlameGame with HasCollisionDetection, HasKeyboardHandlerC
 class Brick extends RectangleComponent with CollisionCallbacks {
   Color color;
 
-  Brick({required super.position, required this.color}) : super(anchor: Anchor.center, size: Vector2(brickWidth, brickHeight), children: [RectangleHitbox()]);
+  Brick({required super.position, required this.color}) : super(anchor: Anchor.topLeft, size: Vector2(brickWidth, brickHeight));
+
+  @override
+  Future<void> onLoad() async {
+    await super.onLoad();
+
+    debugColor = Colors.transparent;
+
+    var hitbox = RectangleHitbox();
+    hitbox.debugColor = Colors.transparent;
+    add(hitbox);
+  }
 
   @override
   void render(Canvas canvas) {
@@ -248,7 +256,17 @@ class Projectile extends CircleComponent with CollisionCallbacks, HasGameRef<Bre
       ..color = Colors.white
       ..style = PaintingStyle.fill;
 
-    velocity = Vector2(projectileSpeed, projectileSpeed);
+    // Generate a random angle between 225 and 315 degrees
+    var random = math.Random();
+    var minAngle = 45 * degree;
+    var maxAngle = 135 * degree;
+    var angle = random.nextDouble() * (maxAngle - minAngle) + minAngle;
+
+    // Set the velocity based on the random angle
+    velocity = Vector2(
+      projectileSpeed * math.cos(angle),
+      projectileSpeed * math.sin(angle),
+    );
   }
 
   @override
@@ -317,16 +335,18 @@ class Projectile extends CircleComponent with CollisionCallbacks, HasGameRef<Bre
       // Adjust position
       position.y = other.position.y - other.size.y / 2 - radius;
     } else if (other is Brick) {
-      // Determine collision side
-      var overlapX = (other.size.x / 2 + radius) - (position.x - other.position.x).abs();
-      var overlapY = (other.size.y / 2 + radius) - (position.y - other.position.y).abs();
+      // We want to reflect based on the center of the brick.
+      var brickCenterX = other.position.x + other.size.x / 2;
+      var brickCenterY = other.position.y + other.size.y / 2;
 
-      if (overlapX < overlapY) {
-        // Collision from the side
+      // Determine collision side
+      var overlapX = (other.size.x / 2 + radius) - (position.x - brickCenterX).abs();
+      var overlapY = (other.size.y / 2 + radius) - (position.y - brickCenterY).abs();
+
+      if (overlapX < overlapY) { // Collision from the sides
         velocity.x = -velocity.x;
         position.x += velocity.x.sign * overlapX;
-      } else {
-        // Collision from top or bottom
+      } else { // Collision from top or bottom
         velocity.y = -velocity.y;
         position.y += velocity.y.sign * overlapY;
       }

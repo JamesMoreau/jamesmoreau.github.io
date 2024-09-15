@@ -35,23 +35,26 @@ class _GameTabState extends State<GameTab> {
       Games.breakout => breakoutGame,
     };
 
-    if (kDebugMode) currentGameObject.debugMode = true;
+    if (kDebugMode) currentGameObject.debugMode = true; //TODO remove
 
     return SizedBox.expand(
       child: Stack(
         alignment: Alignment.center,
         children: [
-          ClipRect(
-            child: SizedBox(
-              width: currentGameSize.width,
-              height: currentGameSize.height,
-              child: GameWidget(
-                game: currentGameObject,
-                loadingBuilder: (context) => const Center(child: CircularProgressIndicator()),
-                errorBuilder: (context, error) => const Center(
-                  child: Text(
-                    "Unable to start game! :'(",
-                    style: TextStyle(color: Colors.white),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: ClipRect(
+              child: SizedBox(
+                width: currentGameSize.width,
+                height: currentGameSize.height,
+                child: GameWidget(
+                  game: currentGameObject,
+                  loadingBuilder: (context) => const Center(child: CircularProgressIndicator()),
+                  errorBuilder: (context, error) => const Center(
+                    child: Text(
+                      "Unable to start game! :'(",
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ),
               ),
