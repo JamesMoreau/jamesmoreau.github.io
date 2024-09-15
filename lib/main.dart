@@ -37,7 +37,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with TickerProviderStateMixin {
-  Tab currentTab = Tab.game;
+  Tab currentTab = Tab.about;
   late AnimationController tabFadeInController;
   late Animation<double> tabFadeInAnimation;
 
