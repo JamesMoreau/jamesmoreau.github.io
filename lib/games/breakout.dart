@@ -2,6 +2,7 @@
 
 // TODO:
 // Add particle effects.
+// rm has game ref
 
 import 'dart:math' as math;
 
@@ -10,6 +11,7 @@ import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
+import 'package:flame/particles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -38,7 +40,7 @@ const double bricksPerRow = 8;
 
 class Breakout extends FlameGame with HasCollisionDetection, HasKeyboardHandlerComponents, HasGameRef<Breakout> {
   GameState state = GameState.ready;
-  bool ezMode = true;
+  bool ezMode = false; // TOGGLE THIS
   FpsTextComponent fps = FpsTextComponent();
 
   @override
@@ -156,7 +158,7 @@ class Breakout extends FlameGame with HasCollisionDetection, HasKeyboardHandlerC
   }
 }
 
-class Brick extends RectangleComponent with CollisionCallbacks {
+class Brick extends RectangleComponent with CollisionCallbacks, HasGameReference<Breakout> {
   Color color;
 
   Brick({required super.position, required this.color}) : super(anchor: Anchor.topLeft, size: Vector2(brickWidth, brickHeight));
@@ -179,6 +181,41 @@ class Brick extends RectangleComponent with CollisionCallbacks {
     paint = Paint()
       ..color = color
       ..style = PaintingStyle.fill;
+  }
+
+  @override
+  void onRemove() {
+    explode();
+    super.onRemove();
+  }
+
+  void explode() {
+    print('Explode called for brick at position: $position');
+    var brickCenter = position + size / 2;
+
+    final particleComponent = ParticleSystemComponent(
+      particle: Particle.generate(
+        count: 20,
+        lifespan: 0.5,
+        generator: (i) => AcceleratedParticle(
+          acceleration: Vector2(0, 600), // gravity effect
+          speed: Vector2(
+            (math.Random().nextDouble() - 0.5) * 200,
+            (math.Random().nextDouble() - 0.5) * 200,
+          ),
+          position: position.clone(),
+          child: CircleParticle(
+            radius: 2,
+            paint: Paint()..color = color,
+          ),
+        ),
+      ),
+      position: brickCenter,
+      priority: 1
+    );
+
+    game.add(particleComponent);
+    print('ParticleComponent added to game at position: $position');
   }
 }
 
@@ -362,6 +399,7 @@ class Projectile extends CircleComponent with CollisionCallbacks, HasGameRef<Bre
       }
 
       other.removeFromParent();
+
       var isLastBrick = game.children.query<Brick>().length == 1;
       if (isLastBrick) {
         game.state = GameState.victory;
