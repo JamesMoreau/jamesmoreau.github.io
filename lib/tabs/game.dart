@@ -35,18 +35,28 @@ class _GameTabState extends State<GameTab> {
       Games.breakout => breakoutGame,
     };
 
-    if (kDebugMode) currentGameObject.debugMode = true;
+    if (kDebugMode) currentGameObject.debugMode = false;
 
     return SizedBox.expand(
       child: Stack(
         alignment: Alignment.center,
         children: [
           SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: ClipRect(
-              child: SizedBox(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Container(
+                clipBehavior: Clip.hardEdge,
                 width: currentGameSize.width,
                 height: currentGameSize.height,
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.3),
+                      spreadRadius: 2,
+                      blurRadius: 4,
+                    ),
+                  ],
+                ),
                 child: GameWidget(
                   game: currentGameObject,
                   loadingBuilder: (context) => const Center(child: CircularProgressIndicator()),
@@ -89,15 +99,3 @@ class _GameTabState extends State<GameTab> {
     );
   }
 }
-
-  // decoration: BoxDecoration(
-  //   border: Border.all(width: 5, color: const Color(0xff7f7fff)),
-  //   borderRadius: const BorderRadius.all(Radius.circular(3)),
-  //   boxShadow: [
-  //     BoxShadow(
-  //       color: Colors.black.withOpacity(0.3),
-  //       spreadRadius: 2,
-  //       blurRadius: 4,
-  //     ),
-  //   ],
-  // ),
