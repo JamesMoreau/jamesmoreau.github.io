@@ -1,7 +1,6 @@
 // ignore_for_file: avoid_print
 
 // TODO:
-// Fix no victory on last brick
 // Add particle effects.
 
 import 'dart:math' as math;
@@ -39,7 +38,7 @@ const double bricksPerRow = 8;
 
 class Breakout extends FlameGame with HasCollisionDetection, HasKeyboardHandlerComponents, HasGameRef<Breakout> {
   GameState state = GameState.ready;
-  bool ezMode = false;
+  bool ezMode = true;
   FpsTextComponent fps = FpsTextComponent();
 
   @override
@@ -105,6 +104,15 @@ class Breakout extends FlameGame with HasCollisionDetection, HasKeyboardHandlerC
     await addAll(bricks);
 
     state = GameState.ready;
+  }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+
+    if (state == GameState.play && children.query<Brick>().isEmpty) {
+      state = GameState.victory;
+    }
   }
 
   @override
@@ -343,21 +351,21 @@ class Projectile extends CircleComponent with CollisionCallbacks, HasGameRef<Bre
       var overlapX = (other.size.x / 2 + radius) - (position.x - brickCenterX).abs();
       var overlapY = (other.size.y / 2 + radius) - (position.y - brickCenterY).abs();
 
-      if (overlapX < overlapY) { // Collision from the sides
+      if (overlapX < overlapY) {
+        // Collision from the sides
         velocity.x = -velocity.x;
         position.x += velocity.x.sign * overlapX;
-      } else { // Collision from top or bottom
+      } else {
+        // Collision from top or bottom
         velocity.y = -velocity.y;
         position.y += velocity.y.sign * overlapY;
       }
 
       other.removeFromParent();
-      if (game.children.query<Brick>().isEmpty) {
-        add(
-          RemoveEffect(
-            onComplete: () => game.state = GameState.victory,
-          ),
-        );
+      var isLastBrick = game.children.query<Brick>().length == 1;
+      if (isLastBrick) {
+        game.state = GameState.victory;
+        add(RemoveEffect()); // Projectile deletes itself.
       }
     }
   }
