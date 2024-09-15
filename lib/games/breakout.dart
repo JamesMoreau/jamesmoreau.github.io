@@ -1,22 +1,19 @@
 // ignore_for_file: avoid_print
 
-import 'dart:math' as math;
-import 'dart:ui';
+// TODO:
+// Fix no victory on last brick
+// Add particle effects.
 
-import 'package:flame/camera.dart';
+import 'dart:math' as math;
+
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
-import 'package:flame_forge2d/body_component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-
-// TODO:
-// Fix no victory on last brick
-// Add particle effects.
 
 enum GameState { ready, play, gameOver, victory }
 
