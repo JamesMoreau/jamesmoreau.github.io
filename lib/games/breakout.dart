@@ -2,6 +2,7 @@
 
 // TODO:
 // Fix no victory on last brick
+// Fix bricks not centered
 // Add particle effects.
 
 import 'dart:math' as math;
