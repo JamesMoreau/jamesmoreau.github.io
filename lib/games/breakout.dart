@@ -198,12 +198,12 @@ class Brick extends RectangleComponent with CollisionCallbacks, HasGameReference
         count: 20,
         lifespan: 0.5,
         generator: (i) => AcceleratedParticle(
-          acceleration: Vector2(0, 600), // gravity effect
+          position: Vector2.zero(), // Start from the center
+          acceleration: Vector2(0, 600), // Gravity effect
           speed: Vector2(
             (math.Random().nextDouble() - 0.5) * 200,
             (math.Random().nextDouble() - 0.5) * 200,
           ),
-          position: position.clone(),
           child: CircleParticle(
             radius: 2,
             paint: Paint()..color = color,
@@ -211,11 +211,11 @@ class Brick extends RectangleComponent with CollisionCallbacks, HasGameReference
         ),
       ),
       position: brickCenter,
-      priority: 1
+      priority: 1,
     );
 
     game.add(particleComponent);
-    print('ParticleComponent added to game at position: $position');
+    print('ParticleComponent added to game at position: $brickCenter');
   }
 }
 
