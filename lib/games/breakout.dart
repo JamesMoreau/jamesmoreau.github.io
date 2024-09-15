@@ -1,7 +1,6 @@
 // ignore_for_file: avoid_print
 
 // TODO:
-// Add particle effects to paddle.
 // rm has game ref. replace with hasgamereference
 
 import 'dart:math' as math;
@@ -38,7 +37,7 @@ const double brickSpacing = 16;
 const double rowsOfBricks = 8;
 const double bricksPerRow = 8;
 
-class Breakout extends FlameGame with HasCollisionDetection, HasKeyboardHandlerComponents, HasGameRef<Breakout> {
+class Breakout extends FlameGame with HasCollisionDetection, HasKeyboardHandlerComponents, HasGameReference<Breakout> {
   GameState state = GameState.ready;
   bool ezMode = false; // TOGGLE THIS
   FpsTextComponent fps = FpsTextComponent();
@@ -192,7 +191,7 @@ class Brick extends RectangleComponent with CollisionCallbacks, HasGameReference
   void explode() {
     var brickCenter = position + size / 2;
 
-    final particleComponent = ParticleSystemComponent(
+    var particleComponent = ParticleSystemComponent(
       particle: Particle.generate(
         count: 20,
         lifespan: 0.5,
@@ -221,7 +220,7 @@ class Brick extends RectangleComponent with CollisionCallbacks, HasGameReference
   }
 }
 
-class Paddle extends PositionComponent with KeyboardHandler, HasGameRef<Breakout> {
+class Paddle extends PositionComponent with KeyboardHandler, HasGameReference<Breakout> {
   int horizontalMovement = 0;
 
   Paddle({required super.position}) : super(size: Vector2(paddleWidth, paddleHeight), children: [RectangleHitbox()]);
@@ -288,9 +287,45 @@ class Paddle extends PositionComponent with KeyboardHandler, HasGameRef<Breakout
 
     return true;
   }
+
+  void emitParticlesOnProjectileImpact(Projectile projectile) {
+    var collisionPoint = Vector2(projectile.position.x, position.y - size.y / 2);
+
+    var particleComponent = ParticleSystemComponent(
+      particle: Particle.generate(
+        generator: (i) => AcceleratedParticle(
+          position: Vector2.zero(),
+          acceleration: Vector2(0, 200),
+          speed: Vector2(
+            (math.Random().nextDouble() - 0.5) * 150,
+            -(math.Random().nextDouble() * 100 + 50),
+          ),
+          child: ComputedParticle(
+            lifespan: 0.5,
+            renderer: (canvas, particle) {
+              var currentColor = Colors.white.withOpacity(1.0 - particle.progress);
+              var paint = Paint()
+                ..color = currentColor
+                ..style = PaintingStyle.fill;
+
+              canvas.drawCircle(
+                Offset.zero,
+                1.5,
+                paint,
+              );
+            },
+          ),
+        ),
+      ),
+      position: collisionPoint,
+      priority: 1,
+    );
+
+    game.add(particleComponent);
+  }
 }
 
-class Projectile extends CircleComponent with CollisionCallbacks, HasGameRef<Breakout> {
+class Projectile extends CircleComponent with CollisionCallbacks, HasGameReference<Breakout> {
   Vector2 velocity = Vector2.zero();
 
   Projectile({required super.position}) : super(anchor: Anchor.center, radius: projectileSize, children: [CircleHitbox()]);
@@ -303,13 +338,11 @@ class Projectile extends CircleComponent with CollisionCallbacks, HasGameRef<Bre
       ..color = Colors.white
       ..style = PaintingStyle.fill;
 
-    // Generate a random angle between 225 and 315 degrees
     var random = math.Random();
     var minAngle = 45 * degree;
     var maxAngle = 135 * degree;
     var angle = random.nextDouble() * (maxAngle - minAngle) + minAngle;
 
-    // Set the velocity based on the random angle
     velocity = Vector2(
       projectileSpeed * math.cos(angle),
       projectileSpeed * math.sin(angle),
@@ -320,8 +353,7 @@ class Projectile extends CircleComponent with CollisionCallbacks, HasGameRef<Bre
   void update(double dt) {
     super.update(dt);
 
-    // Limit the speed
-    if (velocity.length > maxSpeed) {
+    if (velocity.length > maxSpeed) { // Limit the speed
       velocity = velocity.normalized() * maxSpeed;
     }
 
@@ -347,26 +379,26 @@ class Projectile extends CircleComponent with CollisionCallbacks, HasGameRef<Bre
       var bottom = breakoutGameSize.height;
       Vector2 normal;
 
-      // Check collision with the left wall
-      if (position.x - radius <= left) {
+      
+      if (position.x - radius <= left) { // Check collision with the left wall
         normal = Vector2(1, 0); // Normal pointing right
         velocity = velocity.reflected(normal);
         position.x = left + radius;
 
-        // Check collision with the right wall
-      } else if (position.x + radius >= right) {
+        
+      } else if (position.x + radius >= right) { // Check collision with the right wall
         normal = Vector2(-1, 0); // Normal pointing left
         velocity = velocity.reflected(normal);
         position.x = right - radius;
 
-        // Check collision with the top wall
-      } else if (position.y - radius <= top) {
+       
+      } else if (position.y - radius <= top) { // Check collision with the top wall
         normal = Vector2(0, 1); // Normal pointing down
         velocity = velocity.reflected(normal);
         position.y = top + radius;
 
-        // Check collision with the bottom wall
-      } else if (position.y + radius >= bottom) {
+        
+      } else if (position.y + radius >= bottom) { // Check collision with the bottom wall
         // Game Over
         add(
           RemoveEffect(
@@ -381,6 +413,8 @@ class Projectile extends CircleComponent with CollisionCallbacks, HasGameRef<Bre
 
       // Adjust position
       position.y = other.position.y - other.size.y / 2 - radius;
+
+      other.emitParticlesOnProjectileImpact(this);
     } else if (other is Brick) {
       // We want to reflect based on the center of the brick.
       var brickCenterX = other.position.x + other.size.x / 2;
