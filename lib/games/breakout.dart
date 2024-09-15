@@ -1,8 +1,8 @@
 // ignore_for_file: avoid_print
 
 // TODO:
-// Add particle effects.
-// rm has game ref
+// Add particle effects to paddle.
+// rm has game ref. replace with hasgamereference
 
 import 'dart:math' as math;
 
@@ -194,56 +194,32 @@ class Brick extends RectangleComponent with CollisionCallbacks, HasGameReference
 
     final particleComponent = ParticleSystemComponent(
       particle: Particle.generate(
-        count: 20, 
+        count: 20,
+        lifespan: 0.5,
         generator: (i) => AcceleratedParticle(
-          lifespan: 0.5,
-          position: Vector2.zero(), // Start from the center
+          position: Vector2.zero(),
           speed: Vector2(
             (math.Random().nextDouble() - 0.5) * 400,
             (math.Random().nextDouble() - 0.5) * 400,
           ),
-          child: CircleParticle(
-            radius: 2,
-            paint: Paint()..color = color,
+          child: ComputedParticle(
+            renderer: (canvas, particle) {
+              var currentColor = color.withOpacity(1.0 - particle.progress);
+              var paint = Paint()
+                ..color = currentColor
+                ..style = PaintingStyle.fill;
+
+              canvas.drawCircle(Offset.zero, 2, paint);
+            },
           ),
         ),
       ),
       position: brickCenter,
-      priority: 1,
     );
 
     game.add(particleComponent);
   }
 }
-
-// void explode() {
-//     print('Explode called for brick at position: $position');
-//     var brickCenter = position + size / 2;
-
-//     final particleComponent = ParticleSystemComponent(
-//       particle: Particle.generate(
-//         count: 20,
-//         lifespan: 0.5,
-//         generator: (i) => AcceleratedParticle(
-//           position: Vector2.zero(), // Start from the center
-//           acceleration: Vector2(0, 600), // Gravity effect
-//           speed: Vector2(
-//             (math.Random().nextDouble() - 0.5) * 200,
-//             (math.Random().nextDouble() - 0.5) * 200,
-//           ),
-//           child: CircleParticle(
-//             radius: 2,
-//             paint: Paint()..color = color,
-//           ),
-//         ),
-//       ),
-//       position: brickCenter,
-//       priority: 1,
-//     );
-
-//     game.add(particleComponent);
-//     print('ParticleComponent added to game at position: $brickCenter');
-//   }
 
 class Paddle extends PositionComponent with KeyboardHandler, HasGameRef<Breakout> {
   int horizontalMovement = 0;
