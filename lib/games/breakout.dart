@@ -190,19 +190,17 @@ class Brick extends RectangleComponent with CollisionCallbacks, HasGameReference
   }
 
   void explode() {
-    print('Explode called for brick at position: $position');
     var brickCenter = position + size / 2;
 
     final particleComponent = ParticleSystemComponent(
       particle: Particle.generate(
-        count: 20,
-        lifespan: 0.5,
+        count: 20, 
         generator: (i) => AcceleratedParticle(
+          lifespan: 0.5,
           position: Vector2.zero(), // Start from the center
-          acceleration: Vector2(0, 600), // Gravity effect
           speed: Vector2(
-            (math.Random().nextDouble() - 0.5) * 200,
-            (math.Random().nextDouble() - 0.5) * 200,
+            (math.Random().nextDouble() - 0.5) * 400,
+            (math.Random().nextDouble() - 0.5) * 400,
           ),
           child: CircleParticle(
             radius: 2,
@@ -215,9 +213,37 @@ class Brick extends RectangleComponent with CollisionCallbacks, HasGameReference
     );
 
     game.add(particleComponent);
-    print('ParticleComponent added to game at position: $brickCenter');
   }
 }
+
+// void explode() {
+//     print('Explode called for brick at position: $position');
+//     var brickCenter = position + size / 2;
+
+//     final particleComponent = ParticleSystemComponent(
+//       particle: Particle.generate(
+//         count: 20,
+//         lifespan: 0.5,
+//         generator: (i) => AcceleratedParticle(
+//           position: Vector2.zero(), // Start from the center
+//           acceleration: Vector2(0, 600), // Gravity effect
+//           speed: Vector2(
+//             (math.Random().nextDouble() - 0.5) * 200,
+//             (math.Random().nextDouble() - 0.5) * 200,
+//           ),
+//           child: CircleParticle(
+//             radius: 2,
+//             paint: Paint()..color = color,
+//           ),
+//         ),
+//       ),
+//       position: brickCenter,
+//       priority: 1,
+//     );
+
+//     game.add(particleComponent);
+//     print('ParticleComponent added to game at position: $brickCenter');
+//   }
 
 class Paddle extends PositionComponent with KeyboardHandler, HasGameRef<Breakout> {
   int horizontalMovement = 0;
