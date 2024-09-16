@@ -161,26 +161,23 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
       case GameState.play:
         switch (event.logicalKey) {
           case LogicalKeyboardKey.arrowUp:
-            if (direction != Direction.down && !changedDirectionThisTurn) { // TODO: refactor for reuse
-              direction = Direction.up;
-              changedDirectionThisTurn = true;
+            if (direction != Direction.down && !changedDirectionThisTurn) {
+              changeSnakeDirection(Direction.up);
               return true;
             }
           case LogicalKeyboardKey.arrowRight:
             if (direction != Direction.left && !changedDirectionThisTurn) {
-              direction = Direction.right;
-              changedDirectionThisTurn = true;
+              changeSnakeDirection(Direction.right);
               return true;
             }
           case LogicalKeyboardKey.arrowDown:
             if (direction != Direction.up && !changedDirectionThisTurn) {
-              direction = Direction.down;
-              changedDirectionThisTurn = true;
+              changeSnakeDirection(Direction.down);
               return true;
             }
           case LogicalKeyboardKey.arrowLeft:
             if (direction != Direction.right && !changedDirectionThisTurn) {
-              direction = Direction.left;
+              changeSnakeDirection(Direction.left);
               changedDirectionThisTurn = true;
               return true;
             }
@@ -229,6 +226,18 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
         }
         return false;
     }
+  }
+
+  void changeSnakeDirection(Direction newDirection) {
+    if (changedDirectionThisTurn) return;
+    if ((direction == Direction.up && newDirection == Direction.down) ||
+        (direction == Direction.down && newDirection == Direction.up) ||
+        (direction == Direction.left && newDirection == Direction.right) ||
+        (direction == Direction.right && newDirection == Direction.left)) {
+      return; // Prevent reversing direction.
+    }
+    direction = newDirection;
+    changedDirectionThisTurn = true;
   }
 
   @override
