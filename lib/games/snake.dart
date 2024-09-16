@@ -13,6 +13,7 @@ enum Direction { up, down, left, right }
 Size snakeGameSize = const Size(500, 500);
 
 class Position {
+  //TODO remove
   int x = 0;
   int y = 0;
 
@@ -42,6 +43,7 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
   List<Position> snake = [];
   Direction direction = Direction.down;
   bool changedDirectionThisTurn = false;
+  bool hasEatenFood = false;
 
   late Timer snakeUpdateTimer;
   double snakeUpdateInterval = 1;
@@ -126,11 +128,14 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
     if (kDebugMode) print('current snake: $snake, length: ${snake.length}, direction: ${direction.name}.');
 
     // update the snake's position
-    var snakeHead = snake.first;
-    var newHead = nextPosition(snakeHead, direction);
+    var newHead = nextPosition(snake.first, direction);
     snake.insert(0, newHead);
-    snake.removeLast();
 
+    if (!hasEatenFood) {
+      snake.removeLast();
+    } else {
+      hasEatenFood = false; // Reset the flag.
+    }
     changedDirectionThisTurn = false;
   }
 
@@ -156,7 +161,7 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
       case GameState.play:
         switch (event.logicalKey) {
           case LogicalKeyboardKey.arrowUp:
-            if (direction != Direction.down && !changedDirectionThisTurn) {
+            if (direction != Direction.down && !changedDirectionThisTurn) { // TODO: refactor for reuse
               direction = Direction.up;
               changedDirectionThisTurn = true;
               return true;
@@ -250,16 +255,16 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
         snakeUpdateTimer.update(dt); // runs the snake update code
 
         var head = snake.first;
-        var next = nextPosition(head, direction);
+        // var next = nextPosition(head, direction);
 
         // check if snake eats food
         if (head.x == food.x && head.y == food.y) {
-          snake.add(next);
-          // food = Position(-1, -1);
+          hasEatenFood = true;
+          // snake.add(next);
           placeNewFood();
         }
 
-        // check if snake is eating itself or out of bounds.
+        // check if snake is eating itself.
         for (var i = 1; i < snake.length; i++) {
           var body = snake[i];
           if (body.x == head.x && body.y == head.y) {
@@ -268,12 +273,12 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
           }
         }
 
+        // Check if snake is out of bounds
         var outOfBounds = positionIsOutOfBounds(head);
         if (outOfBounds) {
           if (kDebugMode) print('Snake left the grid.');
           state = GameState.gameover;
         }
-
 
       case GameState.gameover:
         // display a game over text
