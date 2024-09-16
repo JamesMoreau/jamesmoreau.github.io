@@ -11,17 +11,8 @@ enum GameState { setup, ready, play, gameover, victory }
 enum Direction { up, down, left, right }
 
 Size snakeGameSize = const Size(500, 500);
-
-class Position {
-  //TODO remove
-  int x = 0;
-  int y = 0;
-
-  Position(this.x, this.y);
-
-  @override
-  String toString() => 'x: $x, y: $y';
-}
+int gridSize = 16;
+double snakeUpdateInterval = 0.15;
 
 class SnakeGame extends FlameGame with HasKeyboardHandlerComponents {
   late Main main;
@@ -37,16 +28,14 @@ class SnakeGame extends FlameGame with HasKeyboardHandlerComponents {
 
 class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame> {
   GameState state = GameState.setup;
-  int gridSize = 16;
 
-  Position food = Position(0, 0);
-  List<Position> snake = [];
+  Vector2 food = Vector2(0, 0);
+  List<Vector2> snake = [];
   Direction direction = Direction.down;
   bool changedDirectionThisTurn = false;
   bool hasEatenFood = false;
 
   late Timer snakeUpdateTimer;
-  double snakeUpdateInterval = 1;
 
   @override
   void render(Canvas canvas) {
@@ -54,8 +43,8 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
     var epsilon = 0.1;
 
     // Draw Food
-    var x = food.x.toDouble() * cellSize;
-    var y = food.y.toDouble() * cellSize;
+    var x = food.x * cellSize;
+    var y = food.y * cellSize;
     var paint = Paint();
     paint.color = const Color.fromARGB(255, 76, 206, 137);
 
@@ -71,8 +60,8 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
       var outOfBounds = positionIsOutOfBounds(cell);
       if (outOfBounds) continue;
 
-      var x = cell.x.toDouble() * cellSize;
-      var y = cell.y.toDouble() * cellSize;
+      var x = cell.x * cellSize;
+      var y = cell.y * cellSize;
       var paint = Paint();
       // paint.color = i == 0 && game.debugMode ? Colors.yellow : Colors .blue; //draw the head a different color than the rest of the body.
       paint.color = const Color(0xff7f7fff);
@@ -103,17 +92,15 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
 
   void placeNewFood() {
     // Check if there are no places to place the food. This is the victory condition, ie, the snake occupies the entire grid.
-    var totalGridCells = gridSize * gridSize;
-    var totalSnakeCells = snake.length;
-    if (totalSnakeCells == totalGridCells) {
-      //game is won
+    if (snake.length == gridSize * gridSize) { //game is won
       state = GameState.victory;
+      return;
     }
 
     while (true) {
       var random = math.Random();
-      food.x = random.nextInt(gridSize);
-      food.y = random.nextInt(gridSize);
+      food.x = random.nextInt(gridSize).toDouble();
+      food.y = random.nextInt(gridSize).toDouble();
 
       // check food is not in the same position as the snake.
       var inSnake = false;
@@ -246,9 +233,9 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
       case GameState.setup:
 
         // set snake's initial position
-        snake = [Position(0, 2), Position(0, 1)];
+        snake = [Vector2(0, 2), Vector2(0, 1)];
         direction = Direction.down;
-        snakeUpdateTimer = Timer(0.15, onTick: updateSnake, repeat: true);
+        snakeUpdateTimer = Timer(snakeUpdateInterval, onTick: updateSnake, repeat: true);
 
         placeNewFood();
 
@@ -300,16 +287,16 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
     super.update(dt);
   }
 
-  Position nextPosition(Position current, Direction d) {
+  Vector2 nextPosition(Vector2 current, Direction d) {
     return switch (direction) {
-      Direction.up => Position(current.x, current.y - 1),
-      Direction.down => Position(current.x, current.y + 1),
-      Direction.left => Position(current.x - 1, current.y),
-      Direction.right => Position(current.x + 1, current.y)
+      Direction.up => Vector2(current.x, current.y - 1),
+      Direction.down => Vector2(current.x, current.y + 1),
+      Direction.left => Vector2(current.x - 1, current.y),
+      Direction.right => Vector2(current.x + 1, current.y)
     };
   }
 
-  bool positionIsOutOfBounds(Position p) {
+  bool positionIsOutOfBounds(Vector2 p) {
     return p.x < 0 || p.y < 0 || p.x >= gridSize || p.y >= gridSize;
   }
 }
