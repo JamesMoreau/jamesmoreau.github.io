@@ -36,7 +36,7 @@ const double bricksPerRow = 8;
 
 class Breakout extends FlameGame with HasCollisionDetection, HasKeyboardHandlerComponents, HasGameReference<Breakout> {
   GameState state = GameState.ready;
-  bool ezMode = false; // TOGGLE THIS
+  bool ezMode = false; // TOGGLE-ABLE
   FpsTextComponent fps = FpsTextComponent();
 
   @override
@@ -267,7 +267,7 @@ class Paddle extends PositionComponent with KeyboardHandler, HasGameReference<Br
         horizontalMovement += keysPressed.contains(LogicalKeyboardKey.arrowLeft) ? -1 : 0;
         horizontalMovement += keysPressed.contains(LogicalKeyboardKey.arrowRight) ? 1 : 0;
 
-        if (event.logicalKey == LogicalKeyboardKey.keyR) {
+        if (event.logicalKey == LogicalKeyboardKey.keyR && game.debugMode) {
           game.setup();
         }
 
