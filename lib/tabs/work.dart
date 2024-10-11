@@ -11,7 +11,6 @@ class WorkTab extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: ListView(
         children: [
-          const SizedBox(height: 100),
           Wrap(
             children: [
               InkWell(
@@ -50,6 +49,17 @@ class WorkTab extends StatelessWidget {
               InkWell(
                 child: const HoverText(text: 'GemPaint - A WASM based paint program', bigTextSize: 40, smallTextSize: 25),
                 onTap: () => launchMyUrl('https://jamesmoreau.github.io/GemPaint/'),
+              ),
+              const SizedBox(width: 10),
+              const Icon(Icons.open_in_new),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Wrap(
+            children: [
+              InkWell(
+                child: const HoverText(text: 'Pixel8 - Convert any image to pixel art', bigTextSize: 40, smallTextSize: 25),
+                onTap: () => launchMyUrl('https://jamesmoreau.github.io/pixel8/'),
               ),
               const SizedBox(width: 10),
               const Icon(Icons.open_in_new),
