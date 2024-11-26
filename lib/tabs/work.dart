@@ -15,7 +15,7 @@ class WorkTab extends StatelessWidget {
             children: [
               InkWell(
                 child: const HoverText(text: 'Purolator Delivery Pro - Last-mile delivery service', bigTextSize: 40, smallTextSize: 25),
-                onTap: () => launchMyUrl('https://apps.apple.com/ca/app/locaalert/id6478944468?platform=iphone'),
+                onTap: () => launchMyUrl('https://apps.apple.com/ca/app/purolator-delivery-pro/id1622239326'),
               ),
               const SizedBox(width: 10),
               const Icon(Icons.open_in_new),
