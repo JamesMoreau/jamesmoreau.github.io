@@ -5,9 +5,11 @@ class AboutTab extends StatelessWidget {
   String get aboutText => '''
 Hello, and welcome to my website. This site is all about me, so if you aren't interested in me, then feel free to close this window! I use this site to showcase my work.
 
-I recently graduated from The University of Guelph, majoring in computer science.
+I graduated from The University of Guelph, majoring in computer science.
 
 I have a passion for software development and am always looking for new opportunities to learn and grow. I have experience with a variety of programming languages and technologies.
+
+I am interested in astronomy 🔭, travel 🚊, gaming 🎮, and hiking 🏔️.
 
 This site was implemented using Flutter, a UI software development kit created by Google, and is compiled to target the web.''';
 

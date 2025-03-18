@@ -65,6 +65,17 @@ class WorkTab extends StatelessWidget {
               const Icon(Icons.open_in_new),
             ],
           ),
+          const SizedBox(height: 20),
+          Wrap(
+            children: [
+              InkWell(
+                child: const HoverText(text: 'GemPlayer - A lightweight music player', bigTextSize: 40, smallTextSize: 25),
+                onTap: () => launchMyUrl('https://github.com/JamesMoreau/gem-player'),
+              ),
+              const SizedBox(width: 10),
+              const Icon(Icons.open_in_new),
+            ],
+          ),
           const SizedBox(height: 100),
           Center(
             child: Stack(
