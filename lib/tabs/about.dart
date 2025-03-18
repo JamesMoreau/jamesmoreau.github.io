@@ -52,7 +52,7 @@ This site was implemented using Flutter, a UI software development kit created b
                       decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.3),
+                            color: Colors.black.withAlpha((0.3 * 255).toInt()),
                             spreadRadius: 2,
                             blurRadius: 4,
                           ),
@@ -73,7 +73,7 @@ This site was implemented using Flutter, a UI software development kit created b
                           decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withOpacity(0.3),
+                                color: Colors.black.withAlpha((0.3 * 255).toInt()),
                                 spreadRadius: 2,
                                 blurRadius: 4,
                               ),

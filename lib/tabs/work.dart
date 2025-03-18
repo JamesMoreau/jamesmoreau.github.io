@@ -73,7 +73,7 @@ class WorkTab extends StatelessWidget {
                   decoration: BoxDecoration(
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
+                        color: Colors.black.withAlpha((0.3 * 255).toInt()),
                         spreadRadius: 2,
                         blurRadius: 4,
                       ),

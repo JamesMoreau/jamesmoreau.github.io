@@ -200,7 +200,7 @@ class Brick extends RectangleComponent with CollisionCallbacks, HasGameReference
           ),
           child: ComputedParticle(
             renderer: (canvas, particle) {
-              var currentColor = color.withOpacity(1.0 - particle.progress);
+                var currentColor = color.withAlpha((255 * (1.0 - particle.progress)).toInt());
               var paint = Paint()
                 ..color = currentColor
                 ..style = PaintingStyle.fill;
@@ -300,7 +300,7 @@ class Paddle extends PositionComponent with KeyboardHandler, HasGameReference<Br
           child: ComputedParticle(
             lifespan: 0.5,
             renderer: (canvas, particle) {
-              var currentColor = Colors.white.withOpacity(1.0 - particle.progress);
+                var currentColor = Colors.white.withAlpha((255 * (1.0 - particle.progress)).toInt());
               var paint = Paint()
                 ..color = currentColor
                 ..style = PaintingStyle.fill;
