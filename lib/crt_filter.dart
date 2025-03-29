@@ -37,7 +37,7 @@ class CRTScanLinesPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     var paint = Paint();
-    paint.color = Colors.black.withAlpha((0.04 * 255).toInt());
+    paint.color = Colors.black.withValues(alpha: 0.04);
     paint.style = PaintingStyle.fill;
 
     var lineSpacing = 4;

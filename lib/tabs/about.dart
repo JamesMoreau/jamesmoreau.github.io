@@ -54,7 +54,7 @@ This site was implemented using Flutter, a UI software development kit created b
                       decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withAlpha((0.3 * 255).toInt()),
+                            color: Colors.black.withValues(alpha: 0.3),
                             spreadRadius: 2,
                             blurRadius: 4,
                           ),
@@ -75,7 +75,7 @@ This site was implemented using Flutter, a UI software development kit created b
                           decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withAlpha((0.3 * 255).toInt()),
+                                color: Colors.black.withValues(alpha: 0.3),
                                 spreadRadius: 2,
                                 blurRadius: 4,
                               ),
