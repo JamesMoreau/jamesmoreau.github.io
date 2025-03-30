@@ -11,6 +11,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 /*
   TODO:
+  make images display the file type for more retro feel.
   make work page split horizontally
   add piano
 */
