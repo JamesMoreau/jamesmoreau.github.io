@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-class AboutTab extends StatelessWidget {
-  String get aboutText => '''
+const aboutText = '''
 Hello, and welcome to my website. This site is all about me, so if you aren't interested in me, then feel free to close this window! I use this site to showcase my work.
 
 I graduated from The University of Guelph, majoring in computer science.
@@ -10,7 +9,10 @@ I have a passion for software development and am always looking for new opportun
 
 I am interested in astronomy 🔭, travel 🚊, gaming 🎮, and hiking 🏔️.
 
-This site was implemented using Flutter, a UI software development kit created by Google, and is compiled to target the web.''';
+This site was implemented using Flutter, a UI software development kit created by Google, and is compiled to target the web.
+''';
+
+class AboutTab extends StatelessWidget {
 
   const AboutTab({
     super.key,
@@ -29,7 +31,7 @@ This site was implemented using Flutter, a UI software development kit created b
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Column(
+          const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text.rich(
