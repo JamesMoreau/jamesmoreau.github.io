@@ -6,6 +6,9 @@ class WorkTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var gifPath = 'assets/lost_in_translation.gif'; 
+    var gifTitle = gifPath.split('/').last;
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: ListView(
@@ -89,9 +92,9 @@ class WorkTab extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: Image.asset('assets/lit.gif', width: 499, height: 266, fit: BoxFit.contain),
+                  child: Image.asset(gifPath, width: 499, height: 266, fit: BoxFit.contain),
                 ),
-                const Positioned(bottom: 0, right: 0, child: Text('Lost in Translation ', style: TextStyle(color: Colors.white))),
+                Positioned(bottom: 0, right: 0, child: Text(gifTitle, style: const TextStyle(color: Colors.white))),
               ],
             ),
           ),
