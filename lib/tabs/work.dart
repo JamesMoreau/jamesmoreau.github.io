@@ -6,98 +6,111 @@ class WorkTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var gifPath = 'assets/lost_in_translation.gif'; 
+    var gifPath = 'assets/lost_in_translation.gif';
     var gifTitle = gifPath.split('/').last;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      child: ListView(
+      padding: const EdgeInsets.all(20),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Wrap(
-            children: [
-              InkWell(
-                child: const HoverText(text: 'Purolator Delivery Pro - Last-mile delivery service', bigTextSize: 40, smallTextSize: 25),
-                onTap: () => launchMyUrl('https://apps.apple.com/ca/app/purolator-delivery-pro/id1622239326'),
-              ),
-              const SizedBox(width: 10),
-              const Icon(Icons.open_in_new),
-            ],
-          ),
-          const SizedBox(height: 20),
-          Wrap(
-            children: [
-              InkWell(
-                child: const HoverText(text: 'Keyed - A simple password generator with WASM', bigTextSize: 40, smallTextSize: 25),
-                onTap: () => launchMyUrl('https://jamesmoreau.github.io/keyed/'),
-              ),
-              const SizedBox(width: 10),
-              const Icon(Icons.open_in_new),
-            ],
-          ),
-          const SizedBox(height: 20),
-          Wrap(
-            children: [
-              InkWell(
-                child: const HoverText(text: 'Spot Alert - A proximity based alarm app', bigTextSize: 40, smallTextSize: 25),
-                onTap: () => launchMyUrl('https://apps.apple.com/ca/app/spot-alert/id6478944468'),
-              ),
-              const SizedBox(width: 10),
-              const Icon(Icons.open_in_new),
-            ],
-          ),
-          const SizedBox(height: 20),
-          Wrap(
-            children: [
-              InkWell(
-                child: const HoverText(text: 'GemPaint - A WASM based paint program', bigTextSize: 40, smallTextSize: 25),
-                onTap: () => launchMyUrl('https://jamesmoreau.github.io/GemPaint/'),
-              ),
-              const SizedBox(width: 10),
-              const Icon(Icons.open_in_new),
-            ],
-          ),
-          const SizedBox(height: 20),
-          Wrap(
-            children: [
-              InkWell(
-                child: const HoverText(text: 'Pixel8 - Convert any image to pixel art', bigTextSize: 40, smallTextSize: 25),
-                onTap: () => launchMyUrl('https://jamesmoreau.github.io/pixel8/'),
-              ),
-              const SizedBox(width: 10),
-              const Icon(Icons.open_in_new),
-            ],
-          ),
-          const SizedBox(height: 20),
-          Wrap(
-            children: [
-              InkWell(
-                child: const HoverText(text: 'GemPlayer - A lightweight music player', bigTextSize: 40, smallTextSize: 25),
-                onTap: () => launchMyUrl('https://github.com/JamesMoreau/gem-player'),
-              ),
-              const SizedBox(width: 10),
-              const Icon(Icons.open_in_new),
-            ],
-          ),
-          const SizedBox(height: 100),
-          Center(
-            child: Stack(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.3),
-                        spreadRadius: 2,
-                        blurRadius: 4,
-                      ),
-                    ],
-                  ),
-                  child: Image.asset(gifPath, width: 499, height: 266, fit: BoxFit.contain),
+          Expanded(
+            flex: 2,
+            child: ListView(
+              shrinkWrap: true,
+              children: const [
+                WorkLink(
+                  text: 'Purolator Delivery Pro - Last-mile delivery service',
+                  url: 'https://apps.apple.com/ca/app/purolator-delivery-pro/id1622239326',
                 ),
-                Positioned(bottom: 0, right: 0, child: Text(gifTitle, style: const TextStyle(color: Colors.white))),
+                WorkLink(
+                  text: 'Keyed - A simple password generator with WASM',
+                  url: 'https://jamesmoreau.github.io/keyed/',
+                ),
+                WorkLink(
+                  text: 'Spot Alert - A proximity based alarm app',
+                  url: 'https://apps.apple.com/ca/app/spot-alert/id6478944468',
+                ),
+                WorkLink(
+                  text: 'GemPaint - A WASM based paint program',
+                  url: 'https://jamesmoreau.github.io/GemPaint/',
+                ),
+                WorkLink(
+                  text: 'Pixel8 - Convert any image to pixel art',
+                  url: 'https://jamesmoreau.github.io/pixel8/',
+                ),
+                WorkLink(
+                  text: 'GemPlayer - A lightweight music player',
+                  url: 'https://github.com/JamesMoreau/gem-player',
+                ),
               ],
             ),
           ),
+          const SizedBox(width: 40),
+          Expanded(
+            child: Column(
+              children: [
+                Stack(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.3),
+                            spreadRadius: 2,
+                            blurRadius: 4,
+                          ),
+                        ],
+                      ),
+                      child: Image.asset(
+                        gifPath,
+                        width: 499,
+                        height: 266,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: Text(
+                        gifTitle,
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class WorkLink extends StatelessWidget {
+  final String text;
+  final String url;
+
+  const WorkLink({required this.text, required this.url, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: Wrap(
+        crossAxisAlignment: WrapCrossAlignment.center,
+        children: [
+          InkWell(
+            onTap: () => launchMyUrl(url),
+            child: HoverText(
+              text: text,
+              bigTextSize: 40,
+              smallTextSize: 25,
+            ),
+          ),
+          const SizedBox(width: 10),
+          const Icon(Icons.open_in_new),
         ],
       ),
     );
