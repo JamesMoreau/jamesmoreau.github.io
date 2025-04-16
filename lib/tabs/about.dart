@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jamesmoreau_github_io/constants.dart';
 
 class AboutTab extends StatelessWidget {
   String get aboutText => '''
@@ -19,6 +18,12 @@ This site was implemented using Flutter, a UI software development kit created b
 
   @override
   Widget build(BuildContext context) {
+    var jamesImage = 'assets/james_eclipse.jpg';
+    var jamesTitle = jamesImage.split('/').last;
+
+    var natureImage = 'assets/mark_ferrari_nature.gif';
+    var natureTitle = natureImage.split('/').last;
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,10 +65,10 @@ This site was implemented using Flutter, a UI software development kit created b
                           ),
                         ],
                       ),
-                      child: Image.asset(markFerrariNatureGifPath, width: 300, height: 300, fit: BoxFit.cover),
+                      child: Image.asset(natureImage, width: 300, height: 300, fit: BoxFit.cover),
                     ),
                   ),
-                  const Positioned(bottom: 0, right: 0, child: Text('Mark Ferrari ', style: TextStyle(color: Colors.white))),
+                  Positioned(bottom: 0, right: 0, child: Text(natureTitle, style: const TextStyle(color: Colors.white))),
                   Positioned(
                     left: 0,
                     top: 0,
@@ -81,9 +86,9 @@ This site was implemented using Flutter, a UI software development kit created b
                               ),
                             ],
                           ),
-                          child: Image.asset(myFace, fit: BoxFit.cover),
+                          child: Image.asset(jamesImage, fit: BoxFit.cover),
                         ),
-                        const Positioned(bottom: 0, right: 0, child: Text('James, Eclipse ', style: TextStyle(color: Colors.white))),
+                        Positioned(bottom: 0, right: 0, child: Text(jamesTitle, style: const TextStyle(color: Colors.white))),
                       ],
                     ),
                   ),
