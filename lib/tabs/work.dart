@@ -36,8 +36,8 @@ class WorkTab extends StatelessWidget {
           Wrap(
             children: [
               InkWell(
-                child: const HoverText(text: 'LocaAlert - A proximity based alarm app', bigTextSize: 40, smallTextSize: 25),
-                onTap: () => launchMyUrl('https://apps.apple.com/ca/app/locaalert/id6478944468'),
+                child: const HoverText(text: 'Spot Alert - A proximity based alarm app', bigTextSize: 40, smallTextSize: 25),
+                onTap: () => launchMyUrl('https://apps.apple.com/ca/app/spot-alert/id6478944468'),
               ),
               const SizedBox(width: 10),
               const Icon(Icons.open_in_new),
