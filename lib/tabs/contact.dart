@@ -41,7 +41,7 @@ class _ContactTabState extends State<ContactTab> {
                           style: TextStyle(fontWeight: FontWeight.bold),
                           children: [
                             TextSpan(
-                              text: '',
+                              text: email,
                               style: TextStyle(color: Colors.blue),
                             ),
                           ],
