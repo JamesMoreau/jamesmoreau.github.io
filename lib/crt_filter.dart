@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
+const noise = 'assets/noise.png';
+
 // This widget overlays a "CRT" emulated filter on top of the child widget (usually the entire app).
 class CRTFilter extends StatelessWidget {
   final Widget child;

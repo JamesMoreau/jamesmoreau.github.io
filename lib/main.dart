@@ -185,7 +185,7 @@ class _TabMenuState extends State<TabMenu> with SingleTickerProviderStateMixin {
               children: [
                 const Text(myName, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
                 const SizedBox(width: 16),
-                Image.asset(moon),
+                Image.asset('assets/moon.gif'),
               ],
             ),
             const SizedBox(height: 10),

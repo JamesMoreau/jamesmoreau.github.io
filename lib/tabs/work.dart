@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jamesmoreau_github_io/constants.dart';
 import 'package:jamesmoreau_github_io/main.dart';
 
 class WorkTab extends StatelessWidget {
@@ -90,7 +89,7 @@ class WorkTab extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: Image.asset(lostInTranslationGifPath, width: 499, height: 266, fit: BoxFit.contain),
+                  child: Image.asset('assets/lit.gif', width: 499, height: 266, fit: BoxFit.contain),
                 ),
                 const Positioned(bottom: 0, right: 0, child: Text('Lost in Translation ', style: TextStyle(color: Colors.white))),
               ],

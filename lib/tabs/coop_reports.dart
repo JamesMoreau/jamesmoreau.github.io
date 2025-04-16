@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:jamesmoreau_github_io/constants.dart';
+
+const List<String> coopTermReports = [
+  'assets/coop_term_reports/fall_2020_report.txt',
+  'assets/coop_term_reports/summer_2021_report.txt',
+  'assets/coop_term_reports/winter_summer_2022_report.txt',
+];
 
 class Report {
   final String reportName;

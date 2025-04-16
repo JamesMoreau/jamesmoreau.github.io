@@ -10,21 +10,6 @@ class MyColors {
   static const transparent = Color.fromARGB(0, 0, 0, 0);
 }
 
-const List<String> coopTermReports = [
-  'assets/coop_term_reports/fall_2020_report.txt',
-  'assets/coop_term_reports/summer_2021_report.txt',
-  'assets/coop_term_reports/winter_summer_2022_report.txt',
-];
-const reportsDirectoryPath = 'assets/coop_term_reports/';
-const resumePdfUrl = 'https://jamesmoreau.github.io/Resume/James_Moreau.pdf';
-const resumePdfUrlFrench = 'https://jamesmoreau.github.io/Resume/Jacques_Moreau.pdf';
-const lostInTranslationGifPath = 'assets/lit.gif';
-const gapOfDunloe = 'assets/gap_of_dunloe.jpeg';
-const fieldOfDreams = 'assets/field_juleko_o.gif';
-const gauntlet_cursor = 'assets/gauntlet_cursor.png';
-const moon = 'assets/moon.gif';
-const noise = 'assets/noise.png';
-
 ThemeData lightApplicationTheme = ThemeData(
   // primarySwatch: MaterialColor(0xff6fb3b8, {}),
   useMaterial3: true,

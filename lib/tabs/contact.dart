@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:jamesmoreau_github_io/constants.dart';
 import 'package:jamesmoreau_github_io/main.dart';
 
 class ContactTab extends StatefulWidget {
@@ -125,7 +124,7 @@ class _ContactTabState extends State<ContactTab> {
                             ],
                           ),
                           height: MediaQuery.of(context).size.height * 0.6,
-                          child: Image.asset(fieldOfDreams, fit: BoxFit.contain),
+                          child: Image.asset('assets/field_juleko_o.gif', fit: BoxFit.contain),
                         ),
                         const Positioned(bottom: 0, right: 0, child: Text('juleko_o ', style: TextStyle(color: Colors.white))),
                       ],

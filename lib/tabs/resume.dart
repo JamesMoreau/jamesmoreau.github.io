@@ -1,9 +1,12 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:jamesmoreau_github_io/constants.dart';
 import 'package:jamesmoreau_github_io/main.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+
+
+const resumePdfUrl = 'https://jamesmoreau.github.io/Resume/James_Moreau.pdf';
+const resumePdfUrlFrench = 'https://jamesmoreau.github.io/Resume/Jacques_Moreau.pdf';
 
 enum ResumeLanguage { english, french }
 
