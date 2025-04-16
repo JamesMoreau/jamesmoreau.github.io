@@ -31,13 +31,12 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   flame: ^1.7.3
-  flame_forge2d: ^0.18.2
   flutter:
     sdk: flutter
   flutter_svg: ^2.0.7
-  intl: ^0.19.0
+  intl: ^0.20.2
   statsfl: ^2.3.0
-  syncfusion_flutter_pdfviewer: ^26.2.11
+  syncfusion_flutter_pdfviewer: ^29.1.38
   url_launcher: ^6.1.11
 
 dev_dependencies:
@@ -51,7 +50,7 @@ dev_dependencies:
   # rules and activating additional ones.
   # flutter_lints: ^2.0.0
   # dart_code_metrics: ^5.6.0
-  very_good_analysis: ^5.1.0
+  very_good_analysis: ^7.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
