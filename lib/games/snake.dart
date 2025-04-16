@@ -49,7 +49,13 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
     paint.color = const Color.fromARGB(255, 76, 206, 137);
 
     // Rect tileRect = Rect.fromLTRB(x, y, x + cellSize, y + cellSize);
-    var r = RRect.fromLTRBR(x, y, x + cellSize, y + cellSize, const Radius.circular(2));
+    var r = RRect.fromLTRBR(
+      x,
+      y,
+      x + cellSize,
+      y + cellSize,
+      const Radius.circular(2),
+    );
     canvas.drawRRect(r, paint);
 
     // Draw snake
@@ -67,32 +73,80 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
       paint.color = const Color(0xff7f7fff);
 
       // Epsilon is a small amount that is subtracted from the cell size so that multiple cells do not overlap and keeps them from z fighting.
-      var r = RRect.fromLTRBR(x, y, x + cellSize - epsilon, y + cellSize - epsilon, const Radius.circular(2));
+      var r = RRect.fromLTRBR(
+        x,
+        y,
+        x + cellSize - epsilon,
+        y + cellSize - epsilon,
+        const Radius.circular(2),
+      );
       canvas.drawRRect(r, paint);
     }
 
     // Draw UI.
-    var textPaint = TextPaint(style: const TextStyle(fontSize: 35, fontFamily: 'Inconsolata', color: Colors.white));
+    var textPaint = TextPaint(
+      style: const TextStyle(
+        fontSize: 35,
+        fontFamily: 'Inconsolata',
+        color: Colors.white,
+      ),
+    );
     var centerPosition = Vector2(gameRef.canvasSize.x / 2, gameRef.canvasSize.y / 2);
     var bottomCenterPosition = Vector2(gameRef.canvasSize.x / 2, gameRef.canvasSize.y);
     var topCenterPosition = Vector2(gameRef.canvasSize.x / 2, 0);
 
     if (state == GameState.victory) {
-      textPaint.render(canvas, 'You Win!', centerPosition, anchor: Anchor.center);
-      textPaint.render(canvas, "Press 'R' to restart", bottomCenterPosition, anchor: Anchor.bottomCenter);
+      textPaint.render(
+        canvas,
+        'You Win!',
+        centerPosition,
+        anchor: Anchor.center,
+      );
+      textPaint.render(
+        canvas,
+        "Press 'R' to restart",
+        bottomCenterPosition,
+        anchor: Anchor.bottomCenter,
+      );
     } else if (state == GameState.gameover) {
-      textPaint.render(canvas, 'Game Over.', centerPosition, anchor: Anchor.center);
-      textPaint.render(canvas, "Press 'R' to restart", bottomCenterPosition, anchor: Anchor.bottomCenter);
+      textPaint.render(
+        canvas,
+        'Game Over.',
+        centerPosition,
+        anchor: Anchor.center,
+      );
+      textPaint.render(
+        canvas,
+        "Press 'R' to restart",
+        bottomCenterPosition,
+        anchor: Anchor.bottomCenter,
+      );
     } else if (state == GameState.ready) {
-      textPaint.render(canvas, 'SNAKE GAME', topCenterPosition, anchor: Anchor.topCenter);
-      textPaint.render(canvas, "Press 'Space' to start.", bottomCenterPosition, anchor: Anchor.bottomCenter);
-      textPaint.render(canvas, 'Use arrow keys to play.', centerPosition, anchor: Anchor.center);
+      textPaint.render(
+        canvas,
+        'SNAKE GAME',
+        topCenterPosition,
+        anchor: Anchor.topCenter,
+      );
+      textPaint.render(
+        canvas,
+        "Press 'Space' to start.",
+        bottomCenterPosition,
+        anchor: Anchor.bottomCenter,
+      );
+      textPaint.render(
+        canvas,
+        'Use arrow keys to play.',
+        centerPosition,
+        anchor: Anchor.center,
+      );
     }
   }
 
   void placeNewFood() {
     // Check if there are no places to place the food. This is the victory condition, ie, the snake occupies the entire grid.
-    if (snake.length == gridSize * gridSize) { //game is won
+    if (snake.length == gridSize * gridSize) {
+      //game is won
       state = GameState.victory;
       return;
     }
@@ -112,7 +166,10 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
   }
 
   void updateSnake() {
-    if (kDebugMode) print('current snake: $snake, length: ${snake.length}, direction: ${direction.name}.');
+    if (kDebugMode)
+      print(
+        'current snake: $snake, length: ${snake.length}, direction: ${direction.name}.',
+      );
 
     // update the snake's position
     var newHead = nextPosition(snake.first, direction);

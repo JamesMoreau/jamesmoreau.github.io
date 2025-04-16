@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-// Common colors
 class MyColors {
   static const grey = Color.fromRGBO(66, 66, 66, 1);
   static Color darkGrey = const Color.fromARGB(255, 33, 33, 33);
@@ -11,15 +10,6 @@ class MyColors {
   static const transparent = Color.fromARGB(0, 0, 0, 0);
 }
 
-const myName = 'James Moreau';
-const jobTitle = 'Programmer';
-const myEmail = 'jp.moreau@aol.com';
-const githubUrl = 'https://github.com/JamesMoreau';
-const linkedInUrl = 'https://www.linkedin.com/in/james-moreau/';
-const university = 'University of Guelph';
-const degree = 'Honours Bachelors of Computer Science';
-const linkedinIconPath = 'assets/icons/linkedin.svg';
-const githubIconPath = 'assets/icons/github-mark.svg';
 const List<String> coopTermReports = [
   'assets/coop_term_reports/fall_2020_report.txt',
   'assets/coop_term_reports/summer_2021_report.txt',
@@ -34,8 +24,6 @@ const fieldOfDreams = 'assets/field_juleko_o.gif';
 const gauntlet_cursor = 'assets/gauntlet_cursor.png';
 const moon = 'assets/moon.gif';
 const noise = 'assets/noise.png';
-
-/* Theme data */
 
 ThemeData lightApplicationTheme = ThemeData(
   // primarySwatch: MaterialColor(0xff6fb3b8, {}),

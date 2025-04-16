@@ -14,6 +14,10 @@ class ContactTab extends StatefulWidget {
   State<ContactTab> createState() => _ContactTabState();
 }
 
+const githubUrl = 'https://github.com/JamesMoreau';
+const email = 'jp.moreau@aol.com';
+const linkedIn = 'https://www.linkedin.com/in/james-moreau/';
+
 class _ContactTabState extends State<ContactTab> {
   bool copied = false;
 
@@ -38,7 +42,7 @@ class _ContactTabState extends State<ContactTab> {
                           style: TextStyle(fontWeight: FontWeight.bold),
                           children: [
                             TextSpan(
-                              text: myEmail,
+                              text: '',
                               style: TextStyle(color: Colors.blue),
                             ),
                           ],
@@ -47,8 +51,8 @@ class _ContactTabState extends State<ContactTab> {
                       IconButton(
                         icon: copied ? const Icon(Icons.done) : const Icon(Icons.copy),
                         onPressed: () async {
-                          await Clipboard.setData(const ClipboardData(text: myEmail));
-                          
+                          await Clipboard.setData(const ClipboardData(text: email));
+
                           copied = true;
                           setState(() {});
 
@@ -69,12 +73,16 @@ class _ContactTabState extends State<ContactTab> {
                           text: 'Github: ',
                           style: const TextStyle(fontWeight: FontWeight.bold),
                           children: [
-                            TextSpan(text: githubUrl, style: const TextStyle(color: Colors.blue), recognizer: TapGestureRecognizer()..onTap = () => launchMyUrl(githubUrl)),
+                            TextSpan(
+                              text: githubUrl,
+                              style: const TextStyle(color: Colors.blue),
+                              recognizer: TapGestureRecognizer()..onTap = () => launchMyUrl(githubUrl),
+                            ),
                           ],
                         ),
                       ),
                       const SizedBox(width: 20),
-                      SvgPicture.asset(githubIconPath, width: 40, height: 40),
+                      SvgPicture.asset('assets/icons/github-mark.svg', width: 40, height: 40),
                     ],
                   ),
                   const SizedBox(height: 20),
@@ -86,15 +94,15 @@ class _ContactTabState extends State<ContactTab> {
                           style: const TextStyle(fontWeight: FontWeight.bold),
                           children: [
                             TextSpan(
-                              text: linkedInUrl,
+                              text: linkedIn,
                               style: const TextStyle(color: Colors.blue),
-                              recognizer: TapGestureRecognizer()..onTap = () => launchMyUrl(linkedInUrl),
+                              recognizer: TapGestureRecognizer()..onTap = () => launchMyUrl(linkedIn),
                             ),
                           ],
                         ),
                       ),
                       const SizedBox(width: 20),
-                      SvgPicture.asset(linkedinIconPath, width: 40, height: 40),
+                      SvgPicture.asset('assets/icons/linkedin.svg', width: 40, height: 40),
                     ],
                   ),
                   const SizedBox(height: 20),

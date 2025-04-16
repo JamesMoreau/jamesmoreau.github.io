@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print we only print if in debug mode anyway.
 
 import 'dart:math' as math;
 
@@ -200,7 +200,7 @@ class Brick extends RectangleComponent with CollisionCallbacks, HasGameReference
           ),
           child: ComputedParticle(
             renderer: (canvas, particle) {
-                var currentColor = color.withValues(alpha: 1.0 - particle.progress);
+              var currentColor = color.withValues(alpha: 1.0 - particle.progress);
               var paint = Paint()
                 ..color = currentColor
                 ..style = PaintingStyle.fill;
@@ -300,7 +300,7 @@ class Paddle extends PositionComponent with KeyboardHandler, HasGameReference<Br
           child: ComputedParticle(
             lifespan: 0.5,
             renderer: (canvas, particle) {
-                var currentColor = Colors.white.withValues(alpha: 1.0 - particle.progress);
+              var currentColor = Colors.white.withValues(alpha: 1.0 - particle.progress);
               var paint = Paint()
                 ..color = currentColor
                 ..style = PaintingStyle.fill;
@@ -350,7 +350,8 @@ class Projectile extends CircleComponent with CollisionCallbacks, HasGameReferen
   void update(double dt) {
     super.update(dt);
 
-    if (velocity.length > maxSpeed) { // Limit the speed
+    if (velocity.length > maxSpeed) {
+      // Limit the speed
       velocity = velocity.normalized() * maxSpeed;
     }
 
@@ -376,26 +377,23 @@ class Projectile extends CircleComponent with CollisionCallbacks, HasGameReferen
       var bottom = breakoutGameSize.height;
       Vector2 normal;
 
-      
-      if (position.x - radius <= left) { // Check collision with the left wall
+      if (position.x - radius <= left) {
+        // Check collision with the left wall
         normal = Vector2(1, 0); // Normal pointing right
         velocity = velocity.reflected(normal);
         position.x = left + radius;
-
-        
-      } else if (position.x + radius >= right) { // Check collision with the right wall
+      } else if (position.x + radius >= right) {
+        // Check collision with the right wall
         normal = Vector2(-1, 0); // Normal pointing left
         velocity = velocity.reflected(normal);
         position.x = right - radius;
-
-       
-      } else if (position.y - radius <= top) { // Check collision with the top wall
+      } else if (position.y - radius <= top) {
+        // Check collision with the top wall
         normal = Vector2(0, 1); // Normal pointing down
         velocity = velocity.reflected(normal);
         position.y = top + radius;
-
-        
-      } else if (position.y + radius >= bottom) { // Check collision with the bottom wall
+      } else if (position.y + radius >= bottom) {
+        // Check collision with the bottom wall
         // Game Over
         add(
           RemoveEffect(

@@ -115,7 +115,7 @@ class CRTScanLinesPainter extends CustomPainter {
 // Future<void> loadNoise() async {
 //   final path = widget.noiseFilePath;
 //   if (path == null || path.isEmpty) return;
-  
+
 //   var imageData = await rootBundle.load(path);
 //   var imageBytes = imageData.buffer.asUint8List();
 

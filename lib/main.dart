@@ -21,6 +21,8 @@ void main() {
   runApp(const MyApp());
 }
 
+const myName = 'James Moreau';
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -82,7 +84,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         if (constraints.maxWidth < 700 || constraints.maxHeight < 500) {
           return const Scaffold(body: Center(child: Text('Please resize your window to be larger.')));
         }
-    
+
         // Small Layout
         if (constraints.maxWidth < 1000 || constraints.maxHeight < 600) {
           return Scaffold(
@@ -102,7 +104,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             ),
           );
         }
-    
+
         // Wide Layout
         return Scaffold(
           body: ColoredBox(
@@ -187,7 +189,7 @@ class _TabMenuState extends State<TabMenu> with SingleTickerProviderStateMixin {
               ],
             ),
             const SizedBox(height: 10),
-                const Text(jobTitle),
+            const Text('Programmer'),
             const SizedBox(height: 40),
             for (var value in Tab.values)
               if (value == widget.currentTab) ...[
@@ -228,13 +230,13 @@ class _TabMenuState extends State<TabMenu> with SingleTickerProviderStateMixin {
                 ),
                 const SizedBox(height: 10),
               ],
-              const SizedBox(height: 25),
-              // Row(
-              //   children: [
-              //     const SizedBox(width: 20),
-              //     Image.asset(moon),
-              //   ],
-              // ),
+            const SizedBox(height: 25),
+            // Row(
+            //   children: [
+            //     const SizedBox(width: 20),
+            //     Image.asset(moon),
+            //   ],
+            // ),
             if (kDebugMode) ...[
               const SizedBox(height: 25),
               StatsFl(maxFps: 300),
