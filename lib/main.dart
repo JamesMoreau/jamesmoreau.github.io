@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:jamesmoreau_github_io/constants.dart';
 import 'package:jamesmoreau_github_io/tabs/about.dart';
 import 'package:jamesmoreau_github_io/tabs/contact.dart';
 import 'package:jamesmoreau_github_io/tabs/game.dart';
@@ -20,6 +19,56 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
+
+ThemeData lightApplicationTheme = ThemeData(
+  // primarySwatch: MaterialColor(0xff6fb3b8, {}),
+  useMaterial3: true,
+  colorScheme: const ColorScheme(
+    brightness: Brightness.light,
+    primary: Color(0xff2b2b2b),
+    onPrimary: Colors.white,
+    secondary: Color(0xff2b2b2b),
+    onSecondary: Colors.white,
+    error: Colors.red,
+    onError: Colors.white,
+    surface: Color(0xffe6e6e6),
+    onSurface: Color(0xff2b2b2b),
+  ),
+  fontFamily: 'Inconsolata',
+  textTheme: const TextTheme(bodyMedium: TextStyle(fontSize: 16)),
+  appBarTheme: const AppBarTheme(
+    iconTheme: IconThemeData(color: Colors.white),
+    backgroundColor: Color(0xff2b2b2b),
+    titleTextStyle: TextStyle(color: Color(0xffe6e6e6), fontWeight: FontWeight.bold, fontSize: 30, fontFamily: 'Inconsolata'),
+    elevation: 0,
+  ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(backgroundColor: const Color(0xff2b2b2b), foregroundColor: Colors.white, padding: const EdgeInsets.all(15)),
+  ),
+  expansionTileTheme: ExpansionTileThemeData(
+    // collapsed
+    collapsedBackgroundColor: const Color(0xff2b2b2b),
+    collapsedTextColor: Colors.white,
+    collapsedShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+    collapsedIconColor: Colors.white,
+    // open
+    backgroundColor: Colors.transparent,
+    textColor: const Color(0xff2b2b2b),
+    iconColor: const Color(0xff2b2b2b),
+    //other
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+  ),
+  snackBarTheme: const SnackBarThemeData(
+    insetPadding: EdgeInsets.only(bottom: 20),
+    backgroundColor: Color(0xff2b2b2b),
+    width: 300,
+    behavior: SnackBarBehavior.floating,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(8)),
+    ),
+    contentTextStyle: TextStyle(fontFamily: 'Inconsolata', color: Colors.white),
+  ),
+);
 
 const myName = 'James Moreau';
 
