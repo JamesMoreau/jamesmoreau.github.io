@@ -38,6 +38,8 @@ class _ContactTabState extends State<ContactTab> {
                 children: [
                   Row(
                     children: [
+                      const Icon(Icons.email, size: 40),
+                      const SizedBox(width: 20),
                       const SelectableText.rich(
                         TextSpan(
                           text: email,
@@ -57,13 +59,13 @@ class _ContactTabState extends State<ContactTab> {
                           setState(() {});
                         },
                       ),
-                      const SizedBox(width: 20),
-                      const Icon(Icons.email, size: 40),
                     ],
                   ),
                   const SizedBox(height: 20),
                   Row(
                     children: [
+                      SvgPicture.asset('assets/icons/github-mark.svg', width: 40, height: 40),
+                      const SizedBox(width: 20),
                       SelectableText.rich(
                         TextSpan(
                           text: githubUrl,
@@ -72,13 +74,13 @@ class _ContactTabState extends State<ContactTab> {
                           mouseCursor: SystemMouseCursors.click,
                         ),
                       ),
-                      const SizedBox(width: 20),
-                      SvgPicture.asset('assets/icons/github-mark.svg', width: 40, height: 40),
                     ],
                   ),
                   const SizedBox(height: 20),
                   Row(
                     children: [
+                      SvgPicture.asset('assets/icons/linkedin.svg', width: 40, height: 40),
+                      const SizedBox(width: 20),
                       SelectableText.rich(
                         TextSpan(
                           text: linkedIn,
@@ -87,8 +89,6 @@ class _ContactTabState extends State<ContactTab> {
                           mouseCursor: SystemMouseCursors.click,
                         ),
                       ),
-                      const SizedBox(width: 20),
-                      SvgPicture.asset('assets/icons/linkedin.svg', width: 40, height: 40),
                     ],
                   ),
                   const SizedBox(height: 20),
