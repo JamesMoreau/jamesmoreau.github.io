@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jamesmoreau_github_io/tabs/about.dart';
-import 'package:jamesmoreau_github_io/tabs/contact.dart';
+import 'package:jamesmoreau_github_io/tabs/contact_and_links.dart';
 import 'package:jamesmoreau_github_io/tabs/game.dart';
 import 'package:jamesmoreau_github_io/tabs/resume.dart';
-import 'package:jamesmoreau_github_io/tabs/work.dart';
+import 'package:jamesmoreau_github_io/tabs/work_and_projects.dart';
 import 'package:statsfl/statsfl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
