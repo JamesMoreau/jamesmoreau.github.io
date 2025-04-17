@@ -111,7 +111,7 @@ class _ContactTabState extends State<ContactTab> {
                 ],
               ),
               if (!widget.isMobileView) ...[
-                const SizedBox(width: 75),
+                const SizedBox(width: 50),
                 Expanded(
                   child: Center(
                     child: Stack(

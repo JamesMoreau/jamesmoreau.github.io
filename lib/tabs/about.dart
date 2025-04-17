@@ -42,7 +42,7 @@ class AboutTab extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 75),
+          const SizedBox(height: 40),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -56,22 +56,26 @@ class AboutTab extends StatelessWidget {
                   Positioned(
                     bottom: 0,
                     right: 0,
-                    child: Container(
-                      width: 250,
-                      height: 250,
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.3),
-                            spreadRadius: 2,
-                            blurRadius: 4,
+                    child: Stack(
+                      children: [
+                        Container(
+                          width: 250,
+                          height: 250,
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.3),
+                                spreadRadius: 2,
+                                blurRadius: 4,
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      child: Image.asset(natureImage, width: 300, height: 300, fit: BoxFit.cover),
+                          child: Image.asset(natureImage, width: 300, height: 300, fit: BoxFit.cover),
+                        ),
+                        Positioned(bottom: 0, right: 0, child: Text(natureTitle, style: const TextStyle(color: Colors.white))),
+                      ],
                     ),
                   ),
-                  Positioned(bottom: 0, right: 0, child: Text(natureTitle, style: const TextStyle(color: Colors.white))),
                   Positioned(
                     left: 0,
                     top: 0,
