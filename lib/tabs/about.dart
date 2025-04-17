@@ -13,7 +13,6 @@ This site was implemented using Flutter, a UI software development kit created b
 ''';
 
 class AboutTab extends StatelessWidget {
-
   const AboutTab({
     super.key,
   });
@@ -51,13 +50,15 @@ class AboutTab extends StatelessWidget {
                 alignment: Alignment.center,
                 children: [
                   const SizedBox(
-                    width: 500,
-                    height: 500,
+                    width: 400,
+                    height: 400,
                   ),
                   Positioned(
                     bottom: 0,
                     right: 0,
                     child: Container(
+                      width: 250,
+                      height: 250,
                       decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
@@ -77,8 +78,8 @@ class AboutTab extends StatelessWidget {
                     child: Stack(
                       children: [
                         Container(
-                          width: 300,
-                          height: 300,
+                          width: 250,
+                          height: 250,
                           decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
