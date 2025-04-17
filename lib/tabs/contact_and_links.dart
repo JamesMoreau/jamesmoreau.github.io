@@ -40,14 +40,8 @@ class _ContactTabState extends State<ContactTab> {
                     children: [
                       const SelectableText.rich(
                         TextSpan(
-                          text: 'Email: ',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                          children: [
-                            TextSpan(
-                              text: email,
-                              style: TextStyle(color: Colors.blue),
-                            ),
-                          ],
+                          text: email,
+                          style: TextStyle(color: Colors.blue, decoration: TextDecoration.underline),
                         ),
                       ),
                       IconButton(
@@ -72,15 +66,10 @@ class _ContactTabState extends State<ContactTab> {
                     children: [
                       SelectableText.rich(
                         TextSpan(
-                          text: 'Github: ',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                          children: [
-                            TextSpan(
-                              text: githubUrl,
-                              style: const TextStyle(color: Colors.blue),
-                              recognizer: TapGestureRecognizer()..onTap = () => launchMyUrl(githubUrl),
-                            ),
-                          ],
+                          text: githubUrl,
+                          style: const TextStyle(color: Colors.blue, decoration: TextDecoration.underline),
+                          recognizer: TapGestureRecognizer()..onTap = () => launchMyUrl(githubUrl),
+                          mouseCursor: SystemMouseCursors.click,
                         ),
                       ),
                       const SizedBox(width: 20),
@@ -92,15 +81,10 @@ class _ContactTabState extends State<ContactTab> {
                     children: [
                       SelectableText.rich(
                         TextSpan(
-                          text: 'LinkedIn: ',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                          children: [
-                            TextSpan(
-                              text: linkedIn,
-                              style: const TextStyle(color: Colors.blue),
-                              recognizer: TapGestureRecognizer()..onTap = () => launchMyUrl(linkedIn),
-                            ),
-                          ],
+                          text: linkedIn,
+                          style: const TextStyle(color: Colors.blue, decoration: TextDecoration.underline),
+                          recognizer: TapGestureRecognizer()..onTap = () => launchMyUrl(linkedIn),
+                          mouseCursor: SystemMouseCursors.click,
                         ),
                       ),
                       const SizedBox(width: 20),
@@ -120,7 +104,7 @@ class _ContactTabState extends State<ContactTab> {
                           decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.3),
+                                color: Colors.black.withAlpha(77),
                                 spreadRadius: 2,
                                 blurRadius: 4,
                               ),
@@ -129,7 +113,14 @@ class _ContactTabState extends State<ContactTab> {
                           height: MediaQuery.of(context).size.height * 0.6,
                           child: Image.asset(gifPath, fit: BoxFit.contain),
                         ),
-                        Positioned(bottom: 0, right: 0, child: Text(gifTitle, style: const TextStyle(color: Colors.white))),
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: Text(
+                            gifTitle,
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        ),
                       ],
                     ),
                   ),
