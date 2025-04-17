@@ -9,81 +9,85 @@ class WorkTab extends StatelessWidget {
     var gifPath = 'assets/lost_in_translation.gif';
     var gifTitle = gifPath.split('/').last;
 
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 2,
-            child: ListView(
-              shrinkWrap: true,
-              children: const [
-                WorkLink(
-                  text: 'Purolator Delivery Pro - Last-mile delivery service',
-                  url: 'https://apps.apple.com/ca/app/purolator-delivery-pro/id1622239326',
-                ),
-                WorkLink(
-                  text: 'Keyed - A simple password generator with WASM',
-                  url: 'https://jamesmoreau.github.io/keyed/',
-                ),
-                WorkLink(
-                  text: 'Spot Alert - A proximity based alarm app',
-                  url: 'https://apps.apple.com/ca/app/spot-alert/id6478944468',
-                ),
-                WorkLink(
-                  text: 'GemPaint - A WASM based paint program',
-                  url: 'https://jamesmoreau.github.io/GemPaint/',
-                ),
-                WorkLink(
-                  text: 'Pixel8 - Convert any image to pixel art',
-                  url: 'https://jamesmoreau.github.io/pixel8/',
-                ),
-                WorkLink(
-                  text: 'GemPlayer - A lightweight music player',
-                  url: 'https://github.com/JamesMoreau/gem-player',
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 40),
-          Expanded(
-            child: Column(
-              children: [
-                Stack(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.3),
-                            spreadRadius: 2,
-                            blurRadius: 4,
-                          ),
-                        ],
+    return CustomScrollView(
+      scrollDirection: Axis.horizontal,
+      slivers: [
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                child: SizedBox(
+                  width: 700,
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: const [
+                      WorkLink(
+                        text: 'Purolator Delivery Pro - Last-mile delivery service',
+                        url: 'https://apps.apple.com/ca/app/purolator-delivery-pro/id1622239326',
                       ),
-                      child: Image.asset(
-                        gifPath,
+                      WorkLink(
+                        text: 'Keyed - A simple password generator with WASM',
+                        url: 'https://jamesmoreau.github.io/keyed/',
+                      ),
+                      WorkLink(
+                        text: 'Spot Alert - A proximity based alarm app',
+                        url: 'https://apps.apple.com/ca/app/spot-alert/id6478944468',
+                      ),
+                      WorkLink(
+                        text: 'GemPaint - A WASM based paint program',
+                        url: 'https://jamesmoreau.github.io/GemPaint/',
+                      ),
+                      WorkLink(
+                        text: 'Pixel8 - Convert any image to pixel art',
+                        url: 'https://jamesmoreau.github.io/pixel8/',
+                      ),
+                      WorkLink(
+                        text: 'GemPlayer - A lightweight music player',
+                        url: 'https://github.com/JamesMoreau/gem-player',
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              // Right: GIF (clipped first as window shrinks)
+              const SizedBox(width: 75),
+              Expanded(
+                child: Center(
+                  child: Stack(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.3),
+                              spreadRadius: 2,
+                              blurRadius: 4,
+                            ),
+                          ],
+                        ),
                         width: 499,
                         height: 266,
-                        fit: BoxFit.contain,
+                        child: Image.asset(gifPath, fit: BoxFit.contain),
                       ),
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Text(
-                        gifTitle,
-                        style: const TextStyle(color: Colors.white),
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: Text(
+                          gifTitle,
+                          style: const TextStyle(color: Colors.white),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
