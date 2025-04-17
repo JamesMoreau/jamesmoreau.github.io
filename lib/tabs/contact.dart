@@ -22,6 +22,9 @@ class _ContactTabState extends State<ContactTab> {
 
   @override
   Widget build(BuildContext context) {
+    var gifPath = 'assets/field_juleko_o.gif';
+    var gifTitle = gifPath.split('/').last;
+
     return CustomScrollView(
       scrollDirection: Axis.horizontal,
       slivers: [
@@ -124,9 +127,9 @@ class _ContactTabState extends State<ContactTab> {
                             ],
                           ),
                           height: MediaQuery.of(context).size.height * 0.6,
-                          child: Image.asset('assets/field_juleko_o.gif', fit: BoxFit.contain),
+                          child: Image.asset(gifPath, fit: BoxFit.contain),
                         ),
-                        const Positioned(bottom: 0, right: 0, child: Text('juleko_o ', style: TextStyle(color: Colors.white))),
+                        Positioned(bottom: 0, right: 0, child: Text(gifTitle, style: const TextStyle(color: Colors.white))),
                       ],
                     ),
                   ),
