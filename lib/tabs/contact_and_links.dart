@@ -74,6 +74,7 @@ class _ContactTabState extends State<ContactTab> {
                           mouseCursor: SystemMouseCursors.click,
                         ),
                       ),
+                      const SizedBox(width: 10),
                       const Icon(Icons.open_in_new),
                     ],
                   ),
@@ -90,6 +91,7 @@ class _ContactTabState extends State<ContactTab> {
                           mouseCursor: SystemMouseCursors.click,
                         ),
                       ),
+                      const SizedBox(width: 10),
                       const Icon(Icons.open_in_new),
                     ],
                   ),
@@ -97,7 +99,7 @@ class _ContactTabState extends State<ContactTab> {
                 ],
               ),
               if (!widget.isMobileView) ...[
-                const SizedBox(width: 50),
+                const SizedBox(width: 20),
                 Expanded(
                   child: Center(
                     child: Stack(
