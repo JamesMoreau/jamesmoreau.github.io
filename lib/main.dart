@@ -10,7 +10,6 @@ import 'package:url_launcher/url_launcher.dart';
 
 /*
   TODO:
-  make work page split horizontally
   add piano
 */
 
