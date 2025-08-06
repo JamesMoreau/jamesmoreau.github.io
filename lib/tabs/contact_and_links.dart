@@ -16,6 +16,7 @@ class ContactTab extends StatefulWidget {
 const githubUrl = 'https://github.com/JamesMoreau';
 const email = 'jp.moreau@aol.com';
 const linkedIn = 'https://www.linkedin.com/in/james-moreau/';
+const kofi = 'https://ko-fi.com/jamesmoreau';
 
 class _ContactTabState extends State<ContactTab> {
   bool copied = false;
@@ -88,6 +89,23 @@ class _ContactTabState extends State<ContactTab> {
                           text: linkedIn,
                           style: const TextStyle(color: Colors.blue, decoration: TextDecoration.underline),
                           recognizer: TapGestureRecognizer()..onTap = () => launchMyUrl(linkedIn),
+                          mouseCursor: SystemMouseCursors.click,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      const Icon(Icons.open_in_new),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      SvgPicture.asset('assets/icons/kofi_symbol.svg', width: 40, height: 40),
+                      const SizedBox(width: 20),
+                      SelectableText.rich(
+                        TextSpan(
+                          text: kofi,
+                          style: const TextStyle(color: Colors.blue, decoration: TextDecoration.underline),
+                          recognizer: TapGestureRecognizer()..onTap = () => launchMyUrl(kofi),
                           mouseCursor: SystemMouseCursors.click,
                         ),
                       ),
