@@ -4,11 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:jamesmoreau_github_io/main.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
-
 const resumePdfUrl = 'https://jamesmoreau.github.io/Resume/James_Moreau.pdf';
-const resumePdfUrlFrench = 'https://jamesmoreau.github.io/Resume/Jacques_Moreau.pdf';
-
-enum ResumeLanguage { english, french }
 
 class ResumeTab extends StatefulWidget {
   final bool isMobileView;
@@ -20,72 +16,67 @@ class ResumeTab extends StatefulWidget {
 }
 
 class _ResumeTabState extends State<ResumeTab> {
-  ResumeLanguage selectedResumeLanguage = ResumeLanguage.english;
-
   @override
   Widget build(BuildContext context) {
-    // Button that links to resume pdf repository
-    var resumeButtonText = switch (selectedResumeLanguage) {
-      ResumeLanguage.english => 'Link to Resume',
-      ResumeLanguage.french => 'Link to French Resume',
-    };
-    var resumeButtonLink = switch (selectedResumeLanguage) {
-      ResumeLanguage.english => resumePdfUrl,
-      ResumeLanguage.french => resumePdfUrlFrench,
-    };
-    var raisedResumeButton = ElevatedButton.icon(onPressed: () => launchMyUrl(resumeButtonLink), icon: const Icon(Icons.open_in_new), label: Text(resumeButtonText));
-
-    // Get the url according to the selected language
-    var myUrl = switch (selectedResumeLanguage) {
-      ResumeLanguage.english => resumePdfUrl,
-      ResumeLanguage.french => resumePdfUrlFrench,
-    };
+    var raisedResumeButton = ElevatedButton.icon(onPressed: () => launchMyUrl(resumePdfUrl), icon: const Icon(Icons.open_in_new), label: const Text('Link to Resume'));
 
     if (widget.isMobileView) {
       // We don't have enough space to show the actual resume so just show the button.
       return Center(child: raisedResumeButton);
     }
 
-    // Ensure the height fits the available screen space so that the entire resume is visible.
-    var availableHeight = MediaQuery.of(context).size.height;
-    var pdfWidth = availableHeight / math.sqrt(2); // A4 paper ratio
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        var availableHeight = constraints.maxHeight;
+        var availableWidth = constraints.maxWidth;
 
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        SizedBox(
-          width: pdfWidth,
-          height: availableHeight,
-          child: SfPdfViewer.network(myUrl),
-        ),
-        Positioned(
-          right: 20,
-          top: 20,
-          child: Column(
-            children: [
-              raisedResumeButton,
-              const SizedBox(height: 20),
-              Container(
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                  color: Colors.white,
-                ),
-                child: SegmentedButton<ResumeLanguage>(
-                  segments: [
-                    const ButtonSegment(value: ResumeLanguage.english, label: Text('English')),
-                    const ButtonSegment(value: ResumeLanguage.french, label: Text('French')),
-                  ],
-                  selected: {selectedResumeLanguage},
-                  onSelectionChanged: (language) {
-                    selectedResumeLanguage = language.first;
-                    setState(() {});
-                  },
-                ),
-              ),
-            ],
+        var a4AspectRatio = 1 / math.sqrt(2);
+
+        var height = availableHeight;
+        var width = height * a4AspectRatio;
+
+        // If that width is too wide for the available space, scale down
+        if (width > availableWidth) {
+          width = availableWidth;
+          height = width / a4AspectRatio;
+        }
+
+        return Center(
+          child: SizedBox(
+            width: width,
+            height: height,
+            child: SfPdfViewer.network(resumePdfUrl),
           ),
-        ),
-      ],
+        );
+      },
     );
   }
 }
+
+/*Positioned( // For now, we are just doing english.
+  right: 20,
+  top: 20,
+  child: Column(
+    children: [
+      raisedResumeButton,
+      const SizedBox(height: 20),
+      Container(
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+          color: Colors.white,
+        ),
+        child: SegmentedButton<ResumeLanguage>(
+          segments: [
+            const ButtonSegment(value: ResumeLanguage.english, label: Text('English')),
+            const ButtonSegment(value: ResumeLanguage.french, label: Text('French')),
+          ],
+          selected: {selectedResumeLanguage},
+          onSelectionChanged: (language) {
+            selectedResumeLanguage = language.first;
+            setState(() {});
+          },
+        ),
+      ),
+    ],
+  ),
+),*/

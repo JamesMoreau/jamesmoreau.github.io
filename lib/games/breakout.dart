@@ -16,10 +16,10 @@ enum GameState { ready, play, gameOver, victory }
 
 const Size breakoutGameSize = Size(900, 600);
 const Color background = Color(0xFF181818);
-const degree = math.pi / 180;
+const double degree = math.pi / 180;
 
 const double projectileSize = 10;
-const double projectileSpeed = 250;
+const double projectileSpeed = 330;
 const double maxSpeed = 300;
 
 const double paddleSpeed = 700;
