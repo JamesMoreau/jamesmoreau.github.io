@@ -10,6 +10,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 /*
   TODO:
+  add kofi
   add piano
 */
 
