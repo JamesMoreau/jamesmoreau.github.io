@@ -26,7 +26,7 @@ class SnakeGame extends FlameGame with HasKeyboardHandlerComponents {
   }
 }
 
-class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame> {
+class Main extends PositionComponent with KeyboardHandler, HasGameReference<SnakeGame> {
   GameState state = GameState.setup;
 
   Vector2 food = Vector2(0, 0);
@@ -39,7 +39,7 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
 
   @override
   void render(Canvas canvas) {
-    var cellSize = gameRef.canvasSize.x / gridSize;
+    var cellSize = game.canvasSize.x / gridSize;
     var epsilon = 0.1;
 
     // Draw Food
@@ -91,9 +91,9 @@ class Main extends PositionComponent with KeyboardHandler, HasGameRef<SnakeGame>
         color: Colors.white,
       ),
     );
-    var centerPosition = Vector2(gameRef.canvasSize.x / 2, gameRef.canvasSize.y / 2);
-    var bottomCenterPosition = Vector2(gameRef.canvasSize.x / 2, gameRef.canvasSize.y);
-    var topCenterPosition = Vector2(gameRef.canvasSize.x / 2, 0);
+    var centerPosition = Vector2(game.canvasSize.x / 2, game.canvasSize.y / 2);
+    var bottomCenterPosition = Vector2(game.canvasSize.x / 2, game.canvasSize.y);
+    var topCenterPosition = Vector2(game.canvasSize.x / 2, 0);
 
     if (state == GameState.victory) {
       textPaint.render(
